@@ -53,5 +53,5 @@ jobs:
         with:
           app-name: 'FlightReservationjays'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_66F5CD1B063E44A78D780978DEC64D6F }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE}}
           package: .
