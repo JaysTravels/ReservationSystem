@@ -1,0 +1,8 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/.vs/ReservationApi
+/ReservationApi/ReservationSystem.Common/obj/Debug/net8.0
+/ReservationApi/ReservationSystem.Infrastructure/obj/Debug/net8.0
+/ReservationApi/obj/Debug/net8.0
