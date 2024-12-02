@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj": {}
+    "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj": {
+    "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
         "projectName": "ReservationSystem.Domain",
-        "projectPath": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
+        "projectPath": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
         "packagesPath": "C:\\Users\\zainm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\obj\\",
+        "outputPath": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\zainm\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -114,14 +114,14 @@
         }
       }
     },
-    "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj": {
+    "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
         "projectName": "ReservationSystem.Infrastructure",
-        "projectPath": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
+        "projectPath": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\zainm\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\zainm\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -138,8 +138,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj": {
-                "projectPath": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj"
+              "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj": {
+                "projectPath": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj"
               }
             }
           }
