@@ -17,10 +17,47 @@ namespace ReservationSystem.Domain.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.7")
+                .HasAnnotation("ProductVersion", "8.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FlightInfo", b =>
+                {
+                    b.Property<int>("FlightId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FlightId"));
+
+                    b.Property<DateTime?>("ArrivalTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("arrival_time");
+
+                    b.Property<DateTime?>("CabinClass")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("cabin_class");
+
+                    b.Property<string>("Departure")
+                        .HasColumnType("text")
+                        .HasColumnName("departure");
+
+                    b.Property<DateTime?>("DepartureTime")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("departure_time");
+
+                    b.Property<string>("Destination")
+                        .HasColumnType("text")
+                        .HasColumnName("destination");
+
+                    b.Property<string>("FlightNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("flight_number");
+
+                    b.HasKey("FlightId");
+
+                    b.ToTable("flight_info");
+                });
 
             modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FlightMarkup", b =>
                 {
@@ -65,6 +102,86 @@ namespace ReservationSystem.Domain.Migrations
                     b.ToTable("flight_markup");
                 });
 
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.PassengerInfo", b =>
+                {
+                    b.Property<int>("PassengerId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PassengerId"));
+
+                    b.Property<string>("DOB")
+                        .HasColumnType("text")
+                        .HasColumnName("dob");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text")
+                        .HasColumnName("email");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("text")
+                        .HasColumnName("first_name");
+
+                    b.Property<int>("FlightId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("text")
+                        .HasColumnName("last_name");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("text")
+                        .HasColumnName("phone_number");
+
+                    b.HasKey("PassengerId");
+
+                    b.HasIndex("FlightId");
+
+                    b.ToTable("passenger_info");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.ReservationFlow", b =>
+                {
+                    b.Property<long>("AutoId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint")
+                        .HasColumnName("auto_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("AutoId"));
+
+                    b.Property<string>("AmadeusSessionId")
+                        .HasColumnType("text")
+                        .HasColumnName("amadeus_session_id");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("timestamp with time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<bool?>("IsError")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_error");
+
+                    b.Property<string>("Request")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("request");
+
+                    b.Property<string>("RequestName")
+                        .HasColumnType("text")
+                        .HasColumnName("request_name");
+
+                    b.Property<string>("Response")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("response");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("AutoId");
+
+                    b.ToTable("reservation_flow");
+                });
+
             modelBuilder.Entity("ReservationSystem.Domain.DB_Models.SearchAvailabilityResults", b =>
                 {
                     b.Property<long>("result_id")
@@ -91,6 +208,22 @@ namespace ReservationSystem.Domain.Migrations
                     b.HasKey("result_id");
 
                     b.ToTable("availibility_results");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.PassengerInfo", b =>
+                {
+                    b.HasOne("ReservationSystem.Domain.DB_Models.FlightInfo", "Flight")
+                        .WithMany("Passengers")
+                        .HasForeignKey("FlightId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Flight");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FlightInfo", b =>
+                {
+                    b.Navigation("Passengers");
                 });
 #pragma warning restore 612, 618
         }

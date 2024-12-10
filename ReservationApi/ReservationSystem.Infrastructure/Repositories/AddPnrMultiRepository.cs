@@ -27,6 +27,7 @@ namespace ReservationSystem.Infrastructure.Repositories
         private readonly IConfiguration configuration;
         private readonly IMemoryCache _cache;
         private readonly IHelperRepository _helperRepository;
+        private readonly IDBRepository _dbRepository;
         public AddPnrMultiRepository(IConfiguration _configuration, IMemoryCache cache,IHelperRepository helperRepository)
         {
             configuration = _configuration;

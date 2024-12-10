@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.EntityFrameworkCore;
 using ReservationSystem.Domain.DB_Models;
+using ReservationSystem.Domain.Models.AddPnrMulti;
 
 namespace ReservationSystem.Domain.DBContext
 {
@@ -15,15 +16,20 @@ namespace ReservationSystem.Domain.DBContext
         {
         }
        
-        public static DB_Context Create(string connectionString)
-        {
-            var optionsBuilder = new DbContextOptionsBuilder<DB_Context>();
-            optionsBuilder.UseNpgsql(connectionString);
+        //public static DB_Context Create(string connectionString)
+        //{
+        //    var optionsBuilder = new DbContextOptionsBuilder<DB_Context>();
+        //    optionsBuilder.UseNpgsql(connectionString);
 
-            return new DB_Context(optionsBuilder.Options);
-        }
+        //    return new DB_Context(optionsBuilder.Options);
+        //}
 
         public DbSet<SearchAvailabilityResults> availabilityResults { get; set; }
         public DbSet<FlightMarkup> flightMarkups { get; set; }
+
+        public DbSet<ReservationFlow> reservation_flow { get; set; }
+
+        public DbSet<FlightInfo> FlightsInfo { get; set; }
+        public DbSet<PassengerInfo> PassengersInfo { get; set; }
     }
 }

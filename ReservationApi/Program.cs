@@ -40,6 +40,7 @@ builder.Services.AddScoped<IPnrQueueRepository, PnrQueueRepository>();
 builder.Services.AddScoped<IDocIssueTicketRepository, DocIssueTicketRepository>();
 builder.Services.AddScoped<IPnrCancelRepository, PnrCancelRepository>();
 builder.Services.AddScoped<ITicketCancelRepository, TicketCancelRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();

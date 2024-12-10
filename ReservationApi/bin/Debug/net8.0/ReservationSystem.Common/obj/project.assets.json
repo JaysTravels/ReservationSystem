@@ -3128,11 +3128,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
+      "projectUniqueName": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
       "projectName": "ReservationSystem.Common",
-      "projectPath": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
+      "projectPath": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
       "packagesPath": "C:\\Users\\zainm\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\zainm\\Downloads\\ReservationSystem (3)\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\obj\\",
+      "outputPath": "C:\\Users\\zainm\\OneDrive\\Desktop\\Jays Travels\\ReservationSystem\\JaysTravelsReservation\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\zainm\\AppData\\Roaming\\NuGet\\NuGet.Config",

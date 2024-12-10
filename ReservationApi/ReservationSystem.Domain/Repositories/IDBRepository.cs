@@ -1,4 +1,5 @@
 ﻿using ReservationSystem.Domain.DB_Models;
+using ReservationSystem.Domain.Models.DBLogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace ReservationSystem.Domain.Repositories
         public Task SaveAvailabilityResult(string? requset, string? response, int totlResults);
 
         public Task<List<FlightMarkup>?> GetFlightMarkup();
+
+        public Task SaveReservationFlow(SaveReservationLog requset);
     }
 }

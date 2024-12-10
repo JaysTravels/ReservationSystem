@@ -9,26 +9,6 @@ D:\work\git-ReservationSystem\ReservationSystem\ReservationSystem\ReservationApi
 D:\work\git-ReservationSystem\ReservationSystem\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\refint\ReservationSystem.Domain.dll
 D:\work\git-ReservationSystem\ReservationSystem\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.pdb
 D:\work\git-ReservationSystem\ReservationSystem\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ref\ReservationSystem.Domain.dll
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.deps.json
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.dll
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.pdb
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.csproj.AssemblyReference.cache
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.csproj.CoreCompileInputs.cache
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.dll
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\refint\ReservationSystem.Domain.dll
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.pdb
-D:\work\git-ReservationSystemJys\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ref\ReservationSystem.Domain.dll
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.deps.json
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.dll
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.pdb
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.csproj.AssemblyReference.cache
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.csproj.CoreCompileInputs.cache
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.dll
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\refint\ReservationSystem.Domain.dll
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.pdb
-C:\Users\zainm\Downloads\ReservationSystem (3)\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ref\ReservationSystem.Domain.dll
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.deps.json
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.dll
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.pdb

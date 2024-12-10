@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using ReservationSystem.Domain.DB_Models;
 using ReservationSystem.Domain.DBContext;
 using ReservationSystem.Domain.Models;
+using ReservationSystem.Domain.Models.DBLogs;
 using ReservationSystem.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -43,6 +44,28 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
           
            
+        }
+
+        public async Task SaveReservationFlow(SaveReservationLog requset)
+        {
+            try
+            {
+                var Res = new ReservationFlow();
+                Res.CreatedOn = DateTime.Now.ToUniversalTime();
+                Res.Request = requset.Request;
+                Res.Response = requset.Response;
+                Res.RequestName = requset.RequestName;
+                Res.AmadeusSessionId = requset.AmadeusSessionId;
+                Res.UserId = 0;                
+                await _context.reservation_flow.AddAsync(Res);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while saving Search Result {ex.Message.ToString()}");
+            }
+
+
         }
 
         public async Task<List<FlightMarkup>?> GetFlightMarkup()
