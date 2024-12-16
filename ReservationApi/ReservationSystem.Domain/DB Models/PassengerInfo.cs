@@ -35,5 +35,14 @@ namespace ReservationSystem.Domain.DB_Models
 
         [ForeignKey("FlightId")]
         public FlightInfo Flight { get; set; }
+
+        [Column("session_id")]
+        public string? SessionId { get; set; }
+
+        [Column("passenger_type")]
+        public string? PassengerType { get; set; }
+
+        public DateTime CreatedOn { get; set; } = DateTime.Now;
+        public bool? IsLead { get; set; }
     }
 }

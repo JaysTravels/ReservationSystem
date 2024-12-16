@@ -32,39 +32,40 @@ namespace ReservationSystem.Infrastructure.Repositories
             {
                 var _settings = configuration.GetSection("EpdqSettings");
                 string OrderId = Guid.NewGuid().ToString().Substring(0, 13);
-                string strPw = _settings["ShaInPassphrase"]?.ToString();
-                string planDigest =
-                    "ACCEPTURL=" + _settings["AcceptUrl"] + strPw +
-                    "AMOUNT=" + (request.Amount).ToString() + strPw +
-                    "CANCELURL=" + _settings["CancelUrl"] + strPw +
-                    "CN=" + "jays" + strPw +
-                    "CURRENCY=" + request.Currency + strPw +
-                    "DECLINEURL=" + _settings["DeclineUrl"] + strPw +
-                     "EMAIL=" + "jays@jays.co.uk" + strPw +
-                    "EXCEPTIONURL=" + _settings["EXCEPTIONURL"] + strPw +
-                    "LANGUAGE=" + request.Language + strPw +
-                    "ORDERID=" + OrderId + strPw +
-                    "PSPID=" + _settings["PSPID"] + strPw;
-
-             string  shaSignature = Sha1HasData(planDigest);
+                string strPw = _settings["ShaInPassphrase"]?.ToString();            
                 var parameters = new Dictionary<string, string>
             {
                     { "ACCEPTURL", _settings["AcceptUrl"] },
-                    { "AMOUNT", (request.Amount).ToString() },
-                    { "CANCELURL", _settings["CancelUrl"] },
-                    { "CN", "Jays" },
+                    { "AMOUNT", ((int)(request.Amount * 100)).ToString() },
+                    { "CANCELURL", _settings["CancelUrl"] },                  
                     { "CURRENCY", request.Currency },
-                    { "DECLINEURL", _settings["DeclineUrl"] },
-                    { "EMAIL", "jays@jays.co.uk" },
+                    { "DECLINEURL", _settings["DeclineUrl"] },                  
                     { "EXCEPTIONURL", _settings["ExceptionUrl"] },
                     { "LANGUAGE", request.Language },
                     { "ORDERID",OrderId},
-                    { "PSPID", _settings["PSPID"] },                     
+                    { "PSPID", _settings["PSPID"] },
+                 
             };
-            // string shaSignature = GenerateShaSignature(parameters, _settings["ShaInPassphrase"]);
-            parameters.Add("SHASIGN", shaSignature);
-            response.Parameters = parameters;
-            response.Url = _settings["PaymentUrl"];
+             string shaSignature = GenerateShaSignature(parameters, _settings["ShaInPassphrase"]);
+               
+                parameters = new Dictionary<string, string>
+                {
+                    { "ACCEPTURL", _settings["AcceptUrl"] },
+                    { "AMOUNT", ((int)(request.Amount * 100)).ToString() },
+                    { "CANCELURL", _settings["CancelUrl"] },
+                    { "CURRENCY", request.Currency },
+                    { "DECLINEURL", _settings["DeclineUrl"] },
+                    { "EXCEPTIONURL", _settings["ExceptionUrl"] },
+                    { "LANGUAGE", request.Language },
+                    { "ORDERID",OrderId},
+                    { "PSPID", _settings["PSPID"] },
+                    { "SHASIGN", shaSignature },
+                    
+                        
+                };
+                response.Parameters = parameters;
+                response.Url = _settings["PaymentUrl"];
+                response.BookingRefNo = _helperRepository.GenerateReferenceNumber();
             }
             catch(Exception ex)
             {
@@ -84,35 +85,27 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
             return HashedDataStringBuld.ToString();
         }
-
-        private string GenerateShaSignature(Dictionary<string, string> parameters, string passphrase)
+      
+        static string GenerateShaSignature(Dictionary<string, string> fields, string shaInPassphrase)
         {
-            try
+
+            var sortedFields = fields
+                .Where(field => !string.IsNullOrWhiteSpace(field.Value))
+                .OrderBy(field => field.Key)
+                .ToDictionary(field => field.Key.ToUpper(), field => field.Value);
+
+            var concatenatedString = new StringBuilder();
+            foreach (var field in sortedFields)
             {
-                var sortedParams = parameters.OrderBy(p => p.Key);
-                var sb = new StringBuilder();
-
-                foreach (var param in sortedParams)
-                {
-                    if (!string.IsNullOrEmpty(param.Value))
-                    {
-                        sb.Append(param.Key).Append('=').Append(param.Value).Append(passphrase);
-                    }
-                }
-
-                using var sha256 = SHA256.Create();
-                var hash = sha256.ComputeHash(Encoding.UTF8.GetBytes(sb.ToString()));
-                return BitConverter.ToString(hash).Replace("-", string.Empty).ToUpper();
-
-            }
-            catch(Exception ex)
+                concatenatedString.Append($"{field.Key}={field.Value}").Append(shaInPassphrase);
+            } 
+            using (var sha1 = SHA1.Create())
             {
-                Console.WriteLine($"Error While Generate Sha Signature {ex.Message.ToString()}");
-                return "";
+                byte[] hashBytes = sha1.ComputeHash(Encoding.UTF8.GetBytes(concatenatedString.ToString()));
+
+                return BitConverter.ToString(hashBytes).Replace("-", "").ToUpper();
             }
-           
         }
-
         public async Task<bool> VerifyShaOutSignature(Dictionary<string, string> form)
         {
             try

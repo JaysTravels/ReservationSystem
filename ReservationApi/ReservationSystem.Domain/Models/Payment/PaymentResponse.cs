@@ -12,5 +12,6 @@ namespace ReservationSystem.Domain.Models.Payment
 
         public Dictionary<string, string>? Parameters { get; set; }
         public string? Error { get; set; }
+        public string? BookingRefNo { get; set; }
     }
 }

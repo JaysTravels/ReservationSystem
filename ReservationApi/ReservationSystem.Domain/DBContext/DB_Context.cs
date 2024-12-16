@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
 using Microsoft.EntityFrameworkCore;
+using ReservationApi.ReservationSystem.Domain.DB_Models;
 using ReservationSystem.Domain.DB_Models;
 using ReservationSystem.Domain.Models.AddPnrMulti;
 
@@ -31,5 +32,7 @@ namespace ReservationSystem.Domain.DBContext
 
         public DbSet<FlightInfo> FlightsInfo { get; set; }
         public DbSet<PassengerInfo> PassengersInfo { get; set; }
+
+        public DbSet<BookingInfo> BookingInfo { get; set; }
     }
 }

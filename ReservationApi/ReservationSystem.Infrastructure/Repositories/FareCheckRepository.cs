@@ -93,7 +93,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                                 try
                                 {
                                     saveReservationLog.IsError = true;
-                                    saveReservationLog.AmadeusSessionId = "";
+                                    saveReservationLog.AmadeusSessionId = fareCheckRequest?.sessionDetails?.SessionId;
                                     await _dbRepository.SaveReservationFlow(saveReservationLog);
                                 }
                                 catch (Exception ex)

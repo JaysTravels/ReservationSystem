@@ -11,5 +11,10 @@ namespace ReservationSystem.Domain.Models.AddPnrMulti
         public HeaderSession sessionDetails { get; set; }
         public int? optionCode1 { get; set; }
         public int? optionCode2 { get; set; }
+        public decimal? TotalAmount { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? BookingRef { get; set; }
+
     }
 }

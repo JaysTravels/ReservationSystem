@@ -1,9 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
+using ReservationApi.ReservationSystem.Domain.DB_Models;
 using ReservationSystem.Domain.DB_Models;
 using ReservationSystem.Domain.DBContext;
 using ReservationSystem.Domain.Models;
+using ReservationSystem.Domain.Models.AddPnrMulti;
 using ReservationSystem.Domain.Models.DBLogs;
 using ReservationSystem.Domain.Repositories;
 using System;
@@ -12,6 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using System.Xml;
 
 namespace ReservationSystem.Infrastructure.Repositories
 {
@@ -46,13 +50,27 @@ namespace ReservationSystem.Infrastructure.Repositories
            
         }
 
+        private string GetJsonRequest(string Envelope)
+        {
+            try{
+                XmlDocument xmlReq = new XmlDocument();
+                xmlReq.LoadXml(Envelope);
+                return JsonConvert.SerializeXmlNode(xmlReq, Newtonsoft.Json.Formatting.Indented);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while conver request to json {ex.Message.ToString()}");
+                return Envelope;
+            }
+        }
         public async Task SaveReservationFlow(SaveReservationLog requset)
         {
             try
             {
                 var Res = new ReservationFlow();
                 Res.CreatedOn = DateTime.Now.ToUniversalTime();
-                Res.Request = requset.Request;
+                Res.Request = GetJsonRequest(requset.Request);
                 Res.Response = requset.Response;
                 Res.RequestName = requset.RequestName;
                 Res.AmadeusSessionId = requset.AmadeusSessionId;
@@ -68,6 +86,36 @@ namespace ReservationSystem.Infrastructure.Repositories
 
         }
 
+        public async Task SavePassengerInfo(AddPnrMultiRequset request)
+        {
+            try
+            {
+                
+                foreach(var passenger in request.passengerDetails)
+                {
+                    var Res = new PassengerInfo();
+                    Res.CreatedOn = DateTime.Now.ToUniversalTime();
+                    Res.SessionId = request.sessionDetails.SessionId;
+                    Res.FirstName = passenger.firstName;
+                    Res.LastName = passenger.surName;
+                    Res.PassengerType = passenger.type;
+                    Res.PhoneNumber = passenger?.phone;
+                    Res.Email = passenger?.email;
+                    Res.DOB = passenger?.dob;
+                    Res.IsLead = passenger?.isLeadPassenger;
+                    
+                    await _context.PassengersInfo.AddAsync(Res);
+                    await _context.SaveChangesAsync();
+                }
+              
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while saving Passenger Details {ex.Message.ToString()}");
+            }
+
+
+        }
         public async Task<List<FlightMarkup>?> GetFlightMarkup()
         {
             try
@@ -83,6 +131,29 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
 
 
+        }
+
+        public async Task SaveBookingInfo( PnrCommitRequest request , string error , string pnrNumber)
+        {
+
+            try
+            {
+                var Res = new BookingInfo();
+                Res.CreatedOn = DateTime.UtcNow;
+                Res.SessionId = request.sessionDetails.SessionId;
+                Res.FirstName = request.FirstName;
+                Res.LastName = request.LastName;
+                Res.PnrNumber = pnrNumber;
+                Res.TotalAmount = request.TotalAmount;               
+                Res.Error = error;
+                await _context.BookingInfo.AddAsync(Res);
+                await _context.SaveChangesAsync();               
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while saving Passenger Details {ex.Message.ToString()}");
+            }
         }
     }
 }

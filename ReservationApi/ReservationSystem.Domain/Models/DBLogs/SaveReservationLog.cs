@@ -26,6 +26,8 @@ namespace ReservationSystem.Domain.Models.DBLogs
         FlightPrice,
         FlightPriceBest,
         Fop,
+        FarePricePNR,
+        CreateTst,
         PNRMulti,
         GeneratePNR
     }

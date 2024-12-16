@@ -50,7 +50,7 @@ namespace ReservationApi.Controllers
 
         }
 
-        [HttpPost("callback")]
+        [HttpGet("callback")]
         public async Task<IActionResult> PaymentCallback([FromForm] Dictionary<string, string> form)
         {
             // Verify SHA-OUT signature

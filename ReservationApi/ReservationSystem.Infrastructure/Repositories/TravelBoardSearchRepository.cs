@@ -48,11 +48,11 @@ namespace ReservationSystem.Infrastructure.Repositories
             try
             {
                 #region Checking Results from Error
-                var availabilityModel = _cacheService.Get<AvailabilityModel>("amadeusRequest" + requestModel.ToString());
-                if(availabilityModel != null)
-                {
-                    return availabilityModel;
-                }
+                //var availabilityModel = _cacheService.Get<AvailabilityModel>("amadeusRequest" + requestModel.ToString());
+                //if(availabilityModel != null)
+                //{
+                //    return availabilityModel;
+                //}
                 #endregion
                 var amadeusSettings = configuration; //.GetSection("AmadeusSoap");
                 string action = Environment.GetEnvironmentVariable(amadeusSettings["AmadeusSoap:travelBoardSearchAction"]);                 
@@ -131,7 +131,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                                     Console.Write($"Error while saving Availibilty log{ex.Message.ToString()}");
                                 }
                                 #endregion
-                                _cacheService.Set("amadeusRequest" + requestModel.ToString(), returnModel, TimeSpan.FromMinutes(15));
+                               // _cacheService.Set("amadeusRequest" + requestModel.ToString(), returnModel, TimeSpan.FromMinutes(15));
                             }
                            
 

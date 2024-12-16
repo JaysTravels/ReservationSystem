@@ -1,4 +1,5 @@
 ﻿using ReservationSystem.Domain.DB_Models;
+using ReservationSystem.Domain.Models.AddPnrMulti;
 using ReservationSystem.Domain.Models.DBLogs;
 using System;
 using System.Collections.Generic;
@@ -15,5 +16,11 @@ namespace ReservationSystem.Domain.Repositories
         public Task<List<FlightMarkup>?> GetFlightMarkup();
 
         public Task SaveReservationFlow(SaveReservationLog requset);
+
+        public Task SavePassengerInfo(AddPnrMultiRequset request);
+
+        public Task SaveBookingInfo(PnrCommitRequest request, string error, string pnrNumber);
+
+
     }
 }
