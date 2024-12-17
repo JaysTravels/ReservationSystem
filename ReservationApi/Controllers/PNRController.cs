@@ -79,5 +79,21 @@ namespace ReservationApi.Controllers
 
         }
 
+        [HttpPost("UpdatePaymentStatus")]
+        public async Task<IActionResult> UpdatePaymentStatus([FromBody] UpdatePaymentStatus request)
+        {
+
+            ApiResponse res = new ApiResponse();
+
+             var data = await _Repo.UpdatePaymentStatusInBookingInfo(request);
+
+            res.IsSuccessful = data ;
+            res.StatusCode = 200;
+            res.Message = data ? " Success:" : "Failed";
+            res.Response = data ? "Success" : "Failed";           
+            return Ok(res);
+
+        }
+
     }
 }

@@ -103,6 +103,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     Res.Email = passenger?.email;
                     Res.DOB = passenger?.dob;
                     Res.IsLead = passenger?.isLeadPassenger;
+                    Res.Flight = await _context.FlightsInfo.Where(e => e.FlightId == 1).FirstOrDefaultAsync();
                     
                     await _context.PassengersInfo.AddAsync(Res);
                     await _context.SaveChangesAsync();
@@ -146,6 +147,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                 Res.PnrNumber = pnrNumber;
                 Res.TotalAmount = request.TotalAmount;               
                 Res.Error = error;
+                Res.BookingRef = request.BookingRef;
                 await _context.BookingInfo.AddAsync(Res);
                 await _context.SaveChangesAsync();               
 
@@ -153,6 +155,29 @@ namespace ReservationSystem.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError($"Error while saving Passenger Details {ex.Message.ToString()}");
+            }
+        }
+
+        public async Task<bool> UpdatePaymentStatus(string sessionId, string status)
+        {
+
+            try
+            {
+                var binfo = await _context.BookingInfo.Where(e => e.SessionId == sessionId).FirstOrDefaultAsync();
+                if(binfo != null)
+                {
+                    binfo.PaymentStatus = status;
+                    _context.BookingInfo.Update(binfo);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                else { return false; }
+                
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while Update Payment Status to bookinginfo {ex.Message.ToString()}");
+                return false;
             }
         }
     }

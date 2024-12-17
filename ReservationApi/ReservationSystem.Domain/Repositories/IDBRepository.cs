@@ -21,6 +21,8 @@ namespace ReservationSystem.Domain.Repositories
 
         public Task SaveBookingInfo(PnrCommitRequest request, string error, string pnrNumber);
 
+        public Task<bool> UpdatePaymentStatus(string sessionId, string status);
+
 
     }
 }

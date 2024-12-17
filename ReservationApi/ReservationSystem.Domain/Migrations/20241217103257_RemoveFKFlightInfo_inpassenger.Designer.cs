@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ReservationSystem.Domain.DBContext;
@@ -11,9 +12,11 @@ using ReservationSystem.Domain.DBContext;
 namespace ReservationSystem.Domain.Migrations
 {
     [DbContext(typeof(DB_Context))]
-    partial class DB_ContextModelSnapshot : ModelSnapshot
+    [Migration("20241217103257_RemoveFKFlightInfo_inpassenger")]
+    partial class RemoveFKFlightInfo_inpassenger
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -84,8 +87,8 @@ namespace ReservationSystem.Domain.Migrations
                         .HasColumnType("timestamp with time zone")
                         .HasColumnName("arrival_time");
 
-                    b.Property<string>("CabinClass")
-                        .HasColumnType("text")
+                    b.Property<DateTime?>("CabinClass")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("cabin_class");
 
                     b.Property<string>("Departure")
@@ -277,12 +280,17 @@ namespace ReservationSystem.Domain.Migrations
             modelBuilder.Entity("ReservationSystem.Domain.DB_Models.PassengerInfo", b =>
                 {
                     b.HasOne("ReservationSystem.Domain.DB_Models.FlightInfo", "Flight")
-                        .WithMany()
+                        .WithMany("Passengers")
                         .HasForeignKey("FlightId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Flight");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FlightInfo", b =>
+                {
+                    b.Navigation("Passengers");
                 });
 #pragma warning restore 612, 618
         }

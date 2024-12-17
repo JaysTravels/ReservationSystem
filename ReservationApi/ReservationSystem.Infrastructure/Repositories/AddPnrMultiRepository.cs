@@ -235,6 +235,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                                 saveReservationLog.IsError = false;
                                 saveReservationLog.AmadeusSessionId = res?.session?.SessionId;
                                 await _dbRepository.SaveReservationFlow(saveReservationLog);
+                                await _dbRepository.SavePassengerInfo(requestModel);
 
                             }
                             catch (Exception ex)
@@ -1033,6 +1034,20 @@ namespace ReservationSystem.Infrastructure.Repositories
 
             return Request;
         }
-       
+
+        public async Task<bool> UpdatePaymentStatusInBookingInfo(UpdatePaymentStatus requestModel)
+        {
+           
+            try
+            {
+             await _dbRepository.UpdatePaymentStatus(requestModel?.SessionId, requestModel?.PaymentStatus);
+             return true;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while update status of payment in booking info {ex.Message.ToString()}");
+            return false;
+            }
+        }
     }
 }

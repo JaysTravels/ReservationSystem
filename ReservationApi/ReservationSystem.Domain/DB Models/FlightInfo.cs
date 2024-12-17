@@ -33,8 +33,6 @@ namespace ReservationSystem.Domain.DB_Models
         public DateTime? ArrivalTime { get; set; }
 
         [Column("cabin_class")]
-        public DateTime? CabinClass { get; set; }
-
-        public ICollection<PassengerInfo>? Passengers { get; set; }
+        public string? CabinClass { get; set; }       
     }
 }

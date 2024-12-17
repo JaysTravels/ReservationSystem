@@ -17,4 +17,12 @@ namespace ReservationSystem.Domain.Models.AddPnrMulti
         public string? BookingRef { get; set; }
 
     }
+
+    public class UpdatePaymentStatus
+    {
+        public string? SessionId { get; set; }
+        
+        public string? PaymentStatus { get; set; }
+
+    }
 }

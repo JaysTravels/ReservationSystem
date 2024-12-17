@@ -32,9 +32,8 @@ namespace ReservationSystem.Domain.DB_Models
         public string? DOB { get; set; }
 
         public int FlightId { get; set; }
-
-        [ForeignKey("FlightId")]
-        public FlightInfo Flight { get; set; }
+       
+        public FlightInfo? Flight { get; set; }
 
         [Column("session_id")]
         public string? SessionId { get; set; }
