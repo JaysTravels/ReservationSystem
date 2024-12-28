@@ -722,3 +722,7 @@ C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReserv
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\obj\Debug\net8.0\Reservat.DBA1A5A1.Up2Date
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\obj\Debug\net8.0\ReservationApi.genruntimeconfig.cache
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\obj\Debug\net8.0\ref\ReservationApi.dll
+C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\MailKit.dll
+C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\MimeKit.dll
+C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\System.Formats.Asn1.dll

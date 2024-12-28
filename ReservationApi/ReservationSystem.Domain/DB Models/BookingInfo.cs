@@ -39,5 +39,9 @@ namespace ReservationApi.ReservationSystem.Domain.DB_Models
         [Column("booking_ref")]
         public string? BookingRef { get; set; }
 
+        [Column("sent_email")]
+        public bool? SentEmail { get; set; }
+
+
     }
 }

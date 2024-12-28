@@ -90,8 +90,36 @@ namespace ReservationSystem.Infrastructure.Repositories
         {
             try
             {
+                int flightId = 1;
+                #region  Saving Flight Info
+                try {
+                    if(request.selectedFlightOffer != null)
+                    {
+                        FlightOffer offer = System.Text.Json.JsonSerializer.Deserialize<FlightOffer>(request?.selectedFlightOffer);
+                        var flightinfo = new FlightInfo();
+                        flightinfo.AmadeusSessionId = request?.sessionDetails?.SessionId;                        
+                        flightinfo.ArrivalTime = offer?.itineraries?.Count > 1 ?  offer?.itineraries[1]?.segments?.FirstOrDefault()?.departure?.at : offer?.itineraries?[0]?.segments?.TakeLast(1)?.FirstOrDefault()?.arrival?.at;
+                        flightinfo.Destination = offer?.itineraries?.Count > 1 ? offer?.itineraries[1]?.segments?.FirstOrDefault()?.departure?.iataName : offer?.itineraries?[0]?.segments?.TakeLast(1)?.FirstOrDefault()?.arrival?.iataName;
+                        flightinfo.CabinClass = offer?.itineraries?[0]?.segments?[0]?.cabinClass;
+                        flightinfo.CreatedOn = DateTime.UtcNow;
+                        flightinfo.Departure = offer?.itineraries?[0]?.segments?[0]?.departure?.iataName;
+                        flightinfo.DepartureTime = offer?.itineraries?[0]?.segments?[0]?.departure?.at;
+                        flightinfo.FlightNumber = offer?.itineraries?[0]?.segments?[0]?.number;
+                        flightinfo.FlightOffer = request?.selectedFlightOffer;
+                        await _context.FlightsInfo.AddAsync(flightinfo);
+                        await _context.SaveChangesAsync();
+                        flightId = flightinfo.FlightId;
+
+                    }
                 
-                foreach(var passenger in request.passengerDetails)
+                }
+                catch(Exception ex)
+                {
+                    _logger.LogError($"Error while saving Flight Details {ex.Message.ToString()}");
+                }
+                #endregion
+
+                foreach (var passenger in request.passengerDetails)
                 {
                     var Res = new PassengerInfo();
                     Res.CreatedOn = DateTime.Now.ToUniversalTime();
@@ -103,7 +131,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     Res.Email = passenger?.email;
                     Res.DOB = passenger?.dob;
                     Res.IsLead = passenger?.isLeadPassenger;
-                    Res.Flight = await _context.FlightsInfo.Where(e => e.FlightId == 1).FirstOrDefaultAsync();
+                    Res.Flight = await _context.FlightsInfo.Where(e => e.FlightId == flightId).FirstOrDefaultAsync();
                     
                     await _context.PassengersInfo.AddAsync(Res);
                     await _context.SaveChangesAsync();
@@ -113,6 +141,57 @@ namespace ReservationSystem.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError($"Error while saving Passenger Details {ex.Message.ToString()}");
+            }
+
+
+        }
+
+        public async Task<List<PassengerInfo>>? GetPassengerInfo(string sessionId)
+        {
+            try
+            {
+
+                var pInfo = await _context.PassengersInfo.Where(e => e.SessionId == sessionId).ToListAsync();
+                return pInfo;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while Get Passenger Details {ex.Message.ToString()}");
+                return null;
+            }
+
+
+        }
+
+        public async Task<FlightInfo>? GetFlightInfo(string sessionId)
+        {
+            try
+            {
+
+                var pInfo = await _context.FlightsInfo.Where(e => e.AmadeusSessionId == sessionId).FirstOrDefaultAsync();
+                return pInfo;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while Get Flight info Details {ex.Message.ToString()}");
+                return null;
+            }
+
+
+        }
+
+        public async Task<BookingInfo>? GetBookingInfo(string sessionId)
+        {
+            try
+            {
+
+                var pInfo = await _context.BookingInfo.Where(e => e.SessionId == sessionId).FirstOrDefaultAsync();
+                return pInfo;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while Get booking info Details {ex.Message.ToString()}");
+                return null;
             }
 
 
@@ -177,6 +256,51 @@ namespace ReservationSystem.Infrastructure.Repositories
             catch (Exception ex)
             {
                 _logger.LogError($"Error while Update Payment Status to bookinginfo {ex.Message.ToString()}");
+                return false;
+            }
+        }
+
+        public async Task<bool> UpdateEmailStatus (string sessionId,bool status)
+        {
+
+            try
+            {
+                var binfo = await _context.BookingInfo.Where(e => e.SessionId == sessionId).FirstOrDefaultAsync();
+                if (binfo != null)
+                {
+                    binfo.SentEmail = status;
+                    _context.BookingInfo.Update(binfo);
+                    await _context.SaveChangesAsync();
+                    return true;
+                }
+                else { return false; }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while Update Email Status to bookinginfo {ex.Message.ToString()}");
+                return false;
+            }
+        }
+
+        public async Task<bool> GetEmailStatus(string sessionId)
+        {
+
+            try
+            {
+                bool Res = false;
+                var binfo = await _context.BookingInfo.Where(e => e.SessionId == sessionId).FirstOrDefaultAsync();
+                if (binfo != null)
+                {
+                    Res = binfo.SentEmail != null ? binfo.SentEmail.Value  : false;
+                    return Res;
+                }
+                else { return false; }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while Update Email Status to bookinginfo {ex.Message.ToString()}");
                 return false;
             }
         }

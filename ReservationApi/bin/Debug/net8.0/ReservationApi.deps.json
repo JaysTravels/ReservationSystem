@@ -10,12 +10,14 @@
         "dependencies": {
           "Codaxy.Xsd2": "0.10.0",
           "EPPlus": "7.4.2",
+          "MailKit": "4.9.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.6",
           "Microsoft.AspNetCore.Mvc.NewtonsoftJson": "8.0.6",
           "Microsoft.EntityFrameworkCore.Design": "8.0.10",
           "Microsoft.EntityFrameworkCore.Tools": "8.0.10",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.21.0",
           "Microsoft.VisualStudio.Azure.Kubernetes.Tools.Targets": "1.1.0",
+          "MimeKit": "4.9.0",
           "Newtonsoft.Json": "13.0.3",
           "Newtonsoft.Json.Bson": "1.0.2",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "8.0.0",
@@ -32,6 +34,14 @@
         },
         "runtime": {
           "ReservationApi.dll": {}
+        }
+      },
+      "BouncyCastle.Cryptography/2.5.0": {
+        "runtime": {
+          "lib/net6.0/BouncyCastle.Cryptography.dll": {
+            "assemblyVersion": "2.0.0.0",
+            "fileVersion": "2.5.0.6119"
+          }
         }
       },
       "ClosedXML/0.104.1": {
@@ -130,6 +140,18 @@
           "lib/net6.0/Humanizer.dll": {
             "assemblyVersion": "2.14.0.0",
             "fileVersion": "2.14.1.48190"
+          }
+        }
+      },
+      "MailKit/4.9.0": {
+        "dependencies": {
+          "MimeKit": "4.9.0",
+          "System.Formats.Asn1": "8.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/MailKit.dll": {
+            "assemblyVersion": "4.9.0.0",
+            "fileVersion": "4.9.0.0"
           }
         }
       },
@@ -786,6 +808,19 @@
           }
         }
       },
+      "MimeKit/4.9.0": {
+        "dependencies": {
+          "BouncyCastle.Cryptography": "2.5.0",
+          "System.Formats.Asn1": "8.0.1",
+          "System.Security.Cryptography.Pkcs": "8.0.1"
+        },
+        "runtime": {
+          "lib/net8.0/MimeKit.dll": {
+            "assemblyVersion": "4.9.0.0",
+            "fileVersion": "4.9.0.0"
+          }
+        }
+      },
       "Mono.TextTemplating/2.2.1": {
         "dependencies": {
           "System.CodeDom": "6.0.0"
@@ -1028,6 +1063,14 @@
             "assetType": "runtime",
             "assemblyVersion": "7.0.0.0",
             "fileVersion": "7.0.22.51805"
+          }
+        }
+      },
+      "System.Formats.Asn1/8.0.1": {
+        "runtime": {
+          "lib/net8.0/System.Formats.Asn1.dll": {
+            "assemblyVersion": "8.0.0.0",
+            "fileVersion": "8.0.724.31311"
           }
         }
       },
@@ -1585,12 +1628,14 @@
           "ClosedXML": "0.104.1",
           "Codaxy.Xsd2": "0.10.0",
           "EPPlus": "7.4.2",
+          "MailKit": "4.9.0",
           "Microsoft.AspNetCore.Authentication.JwtBearer": "8.0.6",
           "Microsoft.AspNetCore.Cors": "2.2.0",
           "Microsoft.EntityFrameworkCore": "8.0.10",
           "Microsoft.Extensions.Configuration.Abstractions": "8.0.0",
           "Microsoft.VisualStudio.Azure.Containers.Tools.Targets": "1.21.0",
           "Microsoft.VisualStudio.Azure.Kubernetes.Tools.Targets": "1.1.0",
+          "MimeKit": "4.9.0",
           "Newtonsoft.Json": "13.0.3",
           "Npgsql.EntityFrameworkCore.PostgreSQL": "8.0.0",
           "ReservationSystem.Domain": "1.0.0",
@@ -1609,6 +1654,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "BouncyCastle.Cryptography/2.5.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-rc7vRCq/KD3GtIwSgRtjanGaBwTb9nLenFDZnEcauWlssuuEoxcbMfWA3QWWho6QDMSOSkWjs657McdHzEtEcw==",
+      "path": "bouncycastle.cryptography/2.5.0",
+      "hashPath": "bouncycastle.cryptography.2.5.0.nupkg.sha512"
     },
     "ClosedXML/0.104.1": {
       "type": "package",
@@ -1679,6 +1731,13 @@
       "sha512": "sha512-lQKvtaTDOXnoVJ20ibTuSIOf2i0uO0MPbDhd1jm238I+U/2ZnRENj0cktKZhtchBMtCUSRQ5v4xBCUbKNmyVMw==",
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
+    },
+    "MailKit/4.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-wRUVzYXRWbjdUixwtSp7ivVHPhWw17h+BvwIVaouBike68B56Xk9b5+QRT39EK/QN8XF7MtOgt9caHvUaCvhIQ==",
+      "path": "mailkit/4.9.0",
+      "hashPath": "mailkit.4.9.0.nupkg.sha512"
     },
     "Microsoft.AspNetCore.Authentication.JwtBearer/8.0.6": {
       "type": "package",
@@ -2093,6 +2152,13 @@
       "path": "microsoft.win32.systemevents/7.0.0",
       "hashPath": "microsoft.win32.systemevents.7.0.0.nupkg.sha512"
     },
+    "MimeKit/4.9.0": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DZXXMZzmAABDxFhOSMb6SE8KKxcRd/sk1E6aJTUE5ys2FWOQhznYV2Gl3klaaSfqKn27hQ32haqquH1J8Z6kJw==",
+      "path": "mimekit/4.9.0",
+      "hashPath": "mimekit.4.9.0.nupkg.sha512"
+    },
     "Mono.TextTemplating/2.2.1": {
       "type": "package",
       "serviceable": true,
@@ -2274,6 +2340,13 @@
       "sha512": "sha512-KIX+oBU38pxkKPxvLcLfIkOV5Ien8ReN78wro7OF5/erwcmortzeFx+iBswlh2Vz6gVne0khocQudGwaO1Ey6A==",
       "path": "system.drawing.common/7.0.0",
       "hashPath": "system.drawing.common.7.0.0.nupkg.sha512"
+    },
+    "System.Formats.Asn1/8.0.1": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-XqKba7Mm/koKSjKMfW82olQdmfbI5yqeoLV/tidRp7fbh5rmHAQ5raDI/7SU0swTzv+jgqtUGkzmFxuUg0it1A==",
+      "path": "system.formats.asn1/8.0.1",
+      "hashPath": "system.formats.asn1.8.0.1.nupkg.sha512"
     },
     "System.Globalization/4.3.0": {
       "type": "package",

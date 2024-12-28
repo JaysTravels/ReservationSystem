@@ -33,6 +33,15 @@ namespace ReservationSystem.Domain.DB_Models
         public DateTime? ArrivalTime { get; set; }
 
         [Column("cabin_class")]
-        public string? CabinClass { get; set; }       
+        public string? CabinClass { get; set; }
+
+        [Column("flight_offer", TypeName = "jsonb")]
+        public string? FlightOffer { get; set; }
+
+        [Column("amadeus_session_id")]
+        public string? AmadeusSessionId { get; set; }
+
+        [Column("created_on")]
+        public DateTime? CreatedOn { get; set; } = DateTime.Now;
     }
 }

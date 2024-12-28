@@ -171,6 +171,10 @@
               "target": "Package",
               "version": "[7.4.2, )"
             },
+            "MailKit": {
+              "target": "Package",
+              "version": "[4.9.0, )"
+            },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
               "version": "[8.0.6, )"
@@ -194,6 +198,10 @@
             "Microsoft.VisualStudio.Azure.Kubernetes.Tools.Targets": {
               "target": "Package",
               "version": "[1.1.0, )"
+            },
+            "MimeKit": {
+              "target": "Package",
+              "version": "[4.9.0, )"
             },
             "Newtonsoft.Json": {
               "target": "Package",

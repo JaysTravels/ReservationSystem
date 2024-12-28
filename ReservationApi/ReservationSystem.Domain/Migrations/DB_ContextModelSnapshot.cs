@@ -36,7 +36,7 @@ namespace ReservationSystem.Domain.Migrations
                         .HasColumnName("booking_ref");
 
                     b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_on");
 
                     b.Property<string>("Error")
@@ -59,6 +59,10 @@ namespace ReservationSystem.Domain.Migrations
                         .HasColumnType("text")
                         .HasColumnName("pnr_number");
 
+                    b.Property<bool?>("SentEmail")
+                        .HasColumnType("boolean")
+                        .HasColumnName("sent_email");
+
                     b.Property<string>("SessionId")
                         .HasColumnType("text")
                         .HasColumnName("session_id");
@@ -80,20 +84,28 @@ namespace ReservationSystem.Domain.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FlightId"));
 
+                    b.Property<string>("AmadeusSessionId")
+                        .HasColumnType("text")
+                        .HasColumnName("amadeus_session_id");
+
                     b.Property<DateTime?>("ArrivalTime")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("arrival_time");
 
                     b.Property<string>("CabinClass")
                         .HasColumnType("text")
                         .HasColumnName("cabin_class");
 
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_on");
+
                     b.Property<string>("Departure")
                         .HasColumnType("text")
                         .HasColumnName("departure");
 
                     b.Property<DateTime?>("DepartureTime")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("departure_time");
 
                     b.Property<string>("Destination")
@@ -103,6 +115,10 @@ namespace ReservationSystem.Domain.Migrations
                     b.Property<string>("FlightNumber")
                         .HasColumnType("text")
                         .HasColumnName("flight_number");
+
+                    b.Property<string>("FlightOffer")
+                        .HasColumnType("jsonb")
+                        .HasColumnName("flight_offer");
 
                     b.HasKey("FlightId");
 
@@ -133,7 +149,7 @@ namespace ReservationSystem.Domain.Migrations
                         .HasColumnType("numeric");
 
                     b.Property<DateTime>("created_on")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<decimal?>("discount_on_airline")
                         .HasColumnType("numeric");
@@ -161,7 +177,7 @@ namespace ReservationSystem.Domain.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("PassengerId"));
 
                     b.Property<DateTime>("CreatedOn")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("DOB")
                         .HasColumnType("text")
@@ -218,7 +234,7 @@ namespace ReservationSystem.Domain.Migrations
                         .HasColumnName("amadeus_session_id");
 
                     b.Property<DateTime?>("CreatedOn")
-                        .HasColumnType("timestamp with time zone")
+                        .HasColumnType("timestamp without time zone")
                         .HasColumnName("created_on");
 
                     b.Property<bool?>("IsError")
@@ -255,7 +271,7 @@ namespace ReservationSystem.Domain.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("result_id"));
 
                     b.Property<DateTime?>("created_on")
-                        .HasColumnType("timestamp with time zone");
+                        .HasColumnType("timestamp without time zone");
 
                     b.Property<string>("request")
                         .HasColumnType("jsonb");
