@@ -44,7 +44,7 @@ namespace ReservationSystem.Infrastructure.Service
             emailMessage.Body = bodyBuilder.ToMessageBody();
             using (var client = new MailKit.Net.Smtp.SmtpClient())
             {
-                await client.ConnectAsync(_configuration["EmailSettings:SmtpServer"], int.Parse(_configuration["EmailSettings:SmtpPort"]), MailKit.Security.SecureSocketOptions.StartTls);
+                await client.ConnectAsync(_configuration["EmailSettings:SmtpServer"], int.Parse(_configuration["EmailSettings:SmtpPort"]), _configuration["EmailSettings:UseSsl"] == "true");
                 await client.AuthenticateAsync(_configuration["EmailSettings:SmtpUser"], _configuration["EmailSettings:SmtpPass"]);
                 await client.SendAsync(emailMessage);
                 await client.DisconnectAsync(true);
