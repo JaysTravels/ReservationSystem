@@ -12,6 +12,8 @@ using MailKit.Net.Smtp;
 using ReservationSystem.Domain.Repositories;
 using Org.BouncyCastle.Asn1.Ocsp;
 using ReservationSystem.Domain.Models;
+using Microsoft.Extensions.Hosting;
+using Microsoft.AspNetCore.Hosting;
 
 
 namespace ReservationSystem.Infrastructure.Service
@@ -20,10 +22,12 @@ namespace ReservationSystem.Infrastructure.Service
     {
         private readonly IConfiguration _configuration;
         private readonly IDBRepository _dBRepository;
-        public EmailService(IConfiguration configuration , IDBRepository dBRepository)
+        private readonly IWebHostEnvironment _environment;
+        public EmailService(IConfiguration configuration , IDBRepository dBRepository, IWebHostEnvironment environment)
         {
             _configuration = configuration;
             _dBRepository = dBRepository;
+            _environment = environment;
         }
 
         public async Task SendEmailAsync3(string toEmail, string subject, string message )
@@ -124,7 +128,9 @@ namespace ReservationSystem.Infrastructure.Service
         {
             try
             {
-                var template = File.ReadAllText("EmailTemplates/FlightConfirmation.html");
+                var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "FlightConfirmation.html");
+                var template = File.ReadAllText(filePath);
+            
                 if (sessionId != "")
                 {
                     var flightInfo = await _dBRepository.GetFlightInfo(sessionId);
@@ -195,7 +201,7 @@ namespace ReservationSystem.Infrastructure.Service
             catch(Exception ex)
             {
                 Console.WriteLine($"Error While Sending Success booking email {ex.Message.ToString()}");
-                return "Flights Booking";
+                return "Flights Booking Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
             }
         }
     }

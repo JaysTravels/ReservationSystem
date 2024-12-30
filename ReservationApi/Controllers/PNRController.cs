@@ -91,6 +91,10 @@ namespace ReservationApi.Controllers
             #region Email Region
             try
             {
+                if (String.IsNullOrEmpty(request?.SessionId))
+                {
+                    request.SessionId = await _dBRepository.GetLastSessionId();
+                }
                 var emailSent = await _dBRepository.GetEmailStatus(request?.SessionId);
                 if (!emailSent)
                 {

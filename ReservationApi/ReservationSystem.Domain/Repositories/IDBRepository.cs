@@ -33,6 +33,8 @@ namespace ReservationSystem.Domain.Repositories
         public Task<bool> GetEmailStatus(string sessionId);
         public Task<BookingInfo>? GetBookingInfo(string sessionId);
 
+        public Task<string> GetLastSessionId();
+
 
     }
 }
