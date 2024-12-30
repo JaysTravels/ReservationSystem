@@ -1,26 +1,38 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\",
+  "WorkspaceRootPath": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|d:\\work\\git-reservationsystemjys\\reservationsystem\\reservationapi\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}",
+      "RelativeMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|solutionrelative:dockerfile||{8B382828-6202-11D1-8870-0000F87579D2}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|d:\\work\\git-reservationsystemjys\\reservationsystem\\reservationapi\\controllers\\availabilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|solutionrelative:controllers\\availabilitycontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\reservationsystem.infrastructure\\repositories\\flightpricerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|solutionrelative:reservationsystem.infrastructure\\repositories\\flightpricerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|d:\\work\\git-reservationsystemjys\\reservationsystem\\reservationapi\\reservationapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|solutionrelative:reservationapi.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\reservationsystem.infrastructure\\repositories\\farecheckrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|solutionrelative:reservationsystem.infrastructure\\repositories\\farecheckrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{CF03DA44-0AE1-4E69-A56C-6418B3EA02F3}|ReservationSystem.Common\\ReservationSystem.Common.csproj|d:\\work\\git-reservationsystemjys\\reservationsystem\\reservationapi\\reservationsystem.common\\reservationsystem.common.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
-      "RelativeMoniker": "D:0:0:{CF03DA44-0AE1-4E69-A56C-6418B3EA02F3}|ReservationSystem.Common\\ReservationSystem.Common.csproj|solutionrelative:reservationsystem.common\\reservationsystem.common.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+      "AbsoluteMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\reservationsystem.infrastructure\\repositories\\tickettstrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|solutionrelative:reservationsystem.infrastructure\\repositories\\tickettstrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|d:\\work\\git-reservationsystemjys\\reservationsystem\\reservationapi\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{F11E2388-AE20-43FE-A69F-1226B8966C65}|ReservationApi.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+      "AbsoluteMoniker": "D:0:0:{6299168A-528D-4197-A79B-38BBEF1986A2}|ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\reservationsystem.infrastructure\\reservationsystem.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{6299168A-528D-4197-A79B-38BBEF1986A2}|ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj|solutionrelative:reservationsystem.infrastructure\\reservationsystem.infrastructure.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1F337AF7-D584-4A55-BE15-F38D0CC76712}|ReservationSystem.Domain\\ReservationSystem.Domain.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\reservationsystem.domain\\reservationsystem.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{1F337AF7-D584-4A55-BE15-F38D0CC76712}|ReservationSystem.Domain\\ReservationSystem.Domain.csproj|solutionrelative:reservationsystem.domain\\reservationsystem.domain.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{EBF3EA00-5333-49D8-87FB-4EF911C8A9A1}|ReservationSystem.Common\\ReservationSystem.Common.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\reservationsystem.common\\reservationsystem.common.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{EBF3EA00-5333-49D8-87FB-4EF911C8A9A1}|ReservationSystem.Common\\ReservationSystem.Common.csproj|solutionrelative:reservationsystem.common\\reservationsystem.common.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|d:\\work\\git-reservationsystem\\reservationsystem\\reservationsystem\\reservationapi\\reservationsystem.infrastructure\\repositories\\dbrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{47CCFF23-F4F5-492A-8FFD-224384FA637D}|ReservationApi.csproj|solutionrelative:reservationsystem.infrastructure\\repositories\\dbrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -29,8 +41,8 @@
       "VerticalTabListWidth": 256,
       "DocumentGroups": [
         {
-          "DockedHeight": 493,
-          "SelectedChildIndex": -1,
+          "DockedHeight": 278,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Bookmark",
@@ -39,80 +51,109 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            }
-          ]
-        },
-        {
-          "DockedHeight": 63,
-          "SelectedChildIndex": 1,
-          "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:2:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\Program.cs",
-              "RelativeDocumentMoniker": "Program.cs",
-              "ToolTip": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\Program.cs",
-              "RelativeToolTip": "Program.cs",
-              "ViewState": "AQIAAGwAAAAAAAAAAAAAABAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-13T07:15:01.185Z",
+              "Title": "Dockerfile",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\Dockerfile",
+              "RelativeDocumentMoniker": "Dockerfile",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\Dockerfile",
+              "RelativeToolTip": "Dockerfile",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAKAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
+              "WhenOpened": "2024-11-07T07:29:39.904Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 2,
-              "Title": "ReservationApi",
-              "DocumentMoniker": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\ReservationApi.csproj",
-              "RelativeDocumentMoniker": "ReservationApi.csproj",
-              "ToolTip": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\ReservationApi.csproj",
-              "RelativeToolTip": "ReservationApi.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAoAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-13T07:02:13.821Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "AvailabilityController.cs",
-              "DocumentMoniker": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\Controllers\\AvailabilityController.cs",
-              "RelativeDocumentMoniker": "Controllers\\AvailabilityController.cs",
-              "ToolTip": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\Controllers\\AvailabilityController.cs",
-              "RelativeToolTip": "Controllers\\AvailabilityController.cs",
-              "ViewState": "AQIAADkAAAAAAAAAAAAswEkAAAAAAAAA",
+              "Title": "FareCheckRepository.cs",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\FareCheckRepository.cs",
+              "RelativeDocumentMoniker": "ReservationSystem.Infrastructure\\Repositories\\FareCheckRepository.cs",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\FareCheckRepository.cs",
+              "RelativeToolTip": "ReservationSystem.Infrastructure\\Repositories\\FareCheckRepository.cs",
+              "ViewState": "AQIAACAAAAAAAAAAAAAWwGYAAAAYAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-11-13T07:05:03.824Z",
+              "WhenOpened": "2024-11-07T07:11:46.172Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 3,
-              "Title": "ReservationSystem.Common",
-              "DocumentMoniker": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
-              "RelativeDocumentMoniker": "ReservationSystem.Common\\ReservationSystem.Common.csproj",
-              "ToolTip": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
-              "RelativeToolTip": "ReservationSystem.Common\\ReservationSystem.Common.csproj",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABkAAAAAAAAA",
+              "Title": "TicketTstRepository.cs",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\TicketTstRepository.cs",
+              "RelativeDocumentMoniker": "ReservationSystem.Infrastructure\\Repositories\\TicketTstRepository.cs",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\TicketTstRepository.cs",
+              "RelativeToolTip": "ReservationSystem.Infrastructure\\Repositories\\TicketTstRepository.cs",
+              "ViewState": "AQIAAOoAAAAAAAAAAADgv/IAAAAqAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-07T07:02:52.312Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ReservationSystem.Domain.csproj",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
+              "RelativeDocumentMoniker": "ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
+              "RelativeToolTip": "ReservationSystem.Domain\\ReservationSystem.Domain.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAABNAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
-              "WhenOpened": "2024-11-13T06:58:04.49Z",
+              "WhenOpened": "2024-11-07T06:25:56.991Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ReservationSystem.Common.csproj",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
+              "RelativeDocumentMoniker": "ReservationSystem.Common\\ReservationSystem.Common.csproj",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Common\\ReservationSystem.Common.csproj",
+              "RelativeToolTip": "ReservationSystem.Common\\ReservationSystem.Common.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-11-07T06:24:17.029Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "FlightPriceRepository.cs",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\FlightPriceRepository.cs",
+              "RelativeDocumentMoniker": "ReservationSystem.Infrastructure\\Repositories\\FlightPriceRepository.cs",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\FlightPriceRepository.cs",
+              "RelativeToolTip": "ReservationSystem.Infrastructure\\Repositories\\FlightPriceRepository.cs",
+              "ViewState": "AQIAAKICAAAAAAAAAAAmwLACAAAUAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-07T05:57:01.874Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DBRepository.cs",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\DBRepository.cs",
+              "RelativeDocumentMoniker": "ReservationSystem.Infrastructure\\Repositories\\DBRepository.cs",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\Repositories\\DBRepository.cs",
+              "RelativeToolTip": "ReservationSystem.Infrastructure\\Repositories\\DBRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAQAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-11-07T05:49:41.988Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 4,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "D:\\work\\git-ReservationSystemJys\\ReservationSystem\\ReservationApi\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAEAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-11-13T04:59:43.916Z",
+              "Title": "ReservationSystem.Infrastructure.csproj",
+              "DocumentMoniker": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
+              "RelativeDocumentMoniker": "ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
+              "ToolTip": "D:\\work\\git-ReservationSystem\\ReservationSystem\\ReservationSystem\\ReservationApi\\ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
+              "RelativeToolTip": "ReservationSystem.Infrastructure\\ReservationSystem.Infrastructure.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAcAAABNAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-11-07T05:05:47.504Z",
               "EditorCaption": ""
             }
           ]
