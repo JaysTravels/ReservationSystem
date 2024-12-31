@@ -865,7 +865,10 @@ namespace ReservationSystem.Infrastructure.Repositories
                     offer.itineraries.AddRange(_inbounItineraries);
                     #endregion
                     offer.baggageDetails = baggageDetails.Where(e => e.itemNumber == offer.id).FirstOrDefault();
-                    ReturnModel.data.Add(offer);
+                    if (itineary != null)
+                     {
+                         ReturnModel.data.Add(offer);
+                     }
                 }
 
             }
