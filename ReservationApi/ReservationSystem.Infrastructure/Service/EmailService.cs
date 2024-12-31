@@ -91,8 +91,8 @@ namespace ReservationSystem.Infrastructure.Service
             };
 
             mailMessage.To.Add(toEmail);
-
-            await smtpClient.SendMailAsync(mailMessage);
+            smtpClient.Send(mailMessage);
+           // await smtpClient.SendMailAsync(mailMessage);
         }
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
