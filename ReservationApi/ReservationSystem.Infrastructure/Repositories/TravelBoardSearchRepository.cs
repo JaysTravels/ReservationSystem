@@ -875,7 +875,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             #endregion
 
             
-
+            ReturnModel.data = ReturnModel?.data?.Where(e => e?.itineraries?.Count > 1).ToList();
             return ReturnModel;
         }
         private string CalculateDuration(List<string> timestring)
