@@ -52,10 +52,14 @@ namespace ReservationSystem.Infrastructure.Service
                 emailMessage.Body = bodyBuilder.ToMessageBody();
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
-                    await client.ConnectAsync(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
-                    await client.AuthenticateAsync(SmtpUser, SmtpPass);
-                    await client.SendAsync(emailMessage);
-                    await client.DisconnectAsync(true);
+                   //await client.ConnectAsync(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
+                    //await client.AuthenticateAsync(SmtpUser, SmtpPass);
+                    //await client.SendAsync(emailMessage);
+                    //await client.DisconnectAsync(true);
+                    client.Connect(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
+                    client.Authenticate(SmtpUser, SmtpPass);
+                    client.Send(emailMessage);
+                    client.Disconnect(true);
                 }
             }
             catch(Exception ex)
