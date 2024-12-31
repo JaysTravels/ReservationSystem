@@ -50,6 +50,7 @@ namespace ReservationSystem.Infrastructure.Service
                     HtmlBody = message // HTML Content
                 };
                 emailMessage.Body = bodyBuilder.ToMessageBody();
+                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
                    //await client.ConnectAsync(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
