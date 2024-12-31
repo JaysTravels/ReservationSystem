@@ -32,23 +32,37 @@ namespace ReservationSystem.Infrastructure.Service
 
         public async Task SendEmailAsync3(string toEmail, string subject, string message )
         {
-           
-            var emailMessage = new MimeMessage();
-            emailMessage.From.Add(new MailboxAddress(_configuration["EmailSettings:SenderName"], _configuration["EmailSettings:SenderEmail"]));
-            emailMessage.To.Add(new MailboxAddress("", toEmail));
-            emailMessage.Subject = subject;
-            var bodyBuilder = new BodyBuilder
+            try
             {
-                HtmlBody = message // HTML Content
-            };
-            emailMessage.Body = bodyBuilder.ToMessageBody();
-            using (var client = new MailKit.Net.Smtp.SmtpClient())
-            {
-                await client.ConnectAsync(_configuration["EmailSettings:SmtpServer"], int.Parse(_configuration["EmailSettings:SmtpPort"]), MailKit.Security.SecureSocketOptions.StartTls);
-                await client.AuthenticateAsync(_configuration["EmailSettings:SmtpUser"], _configuration["EmailSettings:SmtpPass"]);
-                await client.SendAsync(emailMessage);
-                await client.DisconnectAsync(true);
+                string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
+                string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
+                string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
+                string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
+                string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
+                string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
+
+                var emailMessage = new MimeMessage();
+                emailMessage.From.Add(new MailboxAddress(SenderName, SenderEmail));
+                emailMessage.To.Add(new MailboxAddress("", toEmail));
+                emailMessage.Subject = subject;
+                var bodyBuilder = new BodyBuilder
+                {
+                    HtmlBody = message // HTML Content
+                };
+                emailMessage.Body = bodyBuilder.ToMessageBody();
+                using (var client = new MailKit.Net.Smtp.SmtpClient())
+                {
+                    await client.ConnectAsync(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync(SmtpUser, SmtpPass);
+                    await client.SendAsync(emailMessage);
+                    await client.DisconnectAsync(true);
+                }
             }
+            catch(Exception ex)
+            {
+                Console.WriteLine($" Error while sending email {ex.StackTrace.ToString()}");
+            }
+           
         }
 
         public async Task SendEmailAsync2(string toEmail, string subject, string body)

@@ -729,3 +729,4 @@ C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReserv
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\appsettings.Production.json
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\Connected Services\AmadeusServiceReference\ConnectedService.json
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\data.json
+C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\EmailTemplates\FlightConfirmation.html
