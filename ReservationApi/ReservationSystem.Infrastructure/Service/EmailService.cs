@@ -67,33 +67,41 @@ namespace ReservationSystem.Infrastructure.Service
 
         public async Task SendEmailAsync2(string toEmail, string subject, string body)
         {
-            var configuration = _configuration.GetSection("EmailSettings");
-            var _smtpServer = _configuration["EmailSettings:SmtpServer"];
-            var _smtpPort = int.Parse(_configuration["EmailSettings:SmtpPort"]);
-            var _smtpUser = _configuration["EmailSettings:SmtpUser"];
-            var _smtpPass = _configuration["EmailSettings:SmtpPass"];
-            var smtpClient = new System.Net.Mail.SmtpClient(_smtpServer)
-            {
-                Port = 587,
-                Credentials = new NetworkCredential(
-                    _smtpUser,
-                    _smtpPass
-                ),
-                EnableSsl = true,
-            };
-
-            var mailMessage = new MailMessage
-            {
-                From = new MailAddress(_smtpUser),
-                Subject = subject,
-                Body = body,
-                IsBodyHtml = true,
-            };
-
-            mailMessage.To.Add(toEmail);
-            smtpClient.Send(mailMessage);
-           // await smtpClient.SendMailAsync(mailMessage);
-        }
+          string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
+          string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
+          string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
+          string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
+          string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
+          string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");            
+  try {
+      var smtpClient = new System.Net.Mail.SmtpClient(SmtpServer)
+      {
+          Port = 587,
+          Credentials = new NetworkCredential(
+              SmtpUser,
+              SmtpPass
+          ),
+          EnableSsl = true,
+      };
+      var mailMessage = new MailMessage
+      {
+          From = new MailAddress(SmtpUser),
+          Subject = subject,
+          Body = body,
+          IsBodyHtml = true,
+      };
+      mailMessage.To.Add(toEmail);
+      smtpClient.Send(mailMessage);
+  }
+  catch (SmtpException smtpEx)
+  {
+      Console.WriteLine($"SMTP Error: {smtpEx.Message}");
+   }
+  catch (Exception ex)
+  {
+      Console.WriteLine($"Error: {ex.Message}");
+  }
+  }
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
             try
