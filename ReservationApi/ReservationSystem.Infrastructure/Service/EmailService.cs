@@ -34,12 +34,18 @@ namespace ReservationSystem.Infrastructure.Service
         {
             try
             {
-                string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
-                string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
-                string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
-                string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
-                string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
-                string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
+                //string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
+                //string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
+                //string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
+                //string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
+                //string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
+                //string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
+                string SmtpServer = "smtp.gmail.com";
+                string SenderName = "Jays Travels";
+                string SenderEmail = "a4amjad@gmail.com";
+                string SmtpUser = "a4amjad@gmail.com";
+                string SmtpPass = "snmt qjlr muly altw";
+                string SmtpPort = "587";
 
                 var emailMessage = new MimeMessage();
                 emailMessage.From.Add(new MailboxAddress(SenderName, SenderEmail));
@@ -53,14 +59,14 @@ namespace ReservationSystem.Infrastructure.Service
                 System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
                 using (var client = new MailKit.Net.Smtp.SmtpClient())
                 {
-                   //await client.ConnectAsync(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
-                    //await client.AuthenticateAsync(SmtpUser, SmtpPass);
-                    //await client.SendAsync(emailMessage);
-                    //await client.DisconnectAsync(true);
-                    client.Connect(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
-                    client.Authenticate(SmtpUser, SmtpPass);
-                    client.Send(emailMessage);
-                    client.Disconnect(true);
+                    await client.ConnectAsync(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
+                    await client.AuthenticateAsync(SmtpUser, SmtpPass);
+                    await client.SendAsync(emailMessage);
+                    await client.DisconnectAsync(true);
+                    //client.Connect(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
+                    //client.Authenticate(SmtpUser, SmtpPass);
+                    //client.Send(emailMessage);
+                    //client.Disconnect(true);
                 }
             }
             catch(Exception ex)
