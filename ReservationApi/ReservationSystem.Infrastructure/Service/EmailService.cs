@@ -34,18 +34,18 @@ namespace ReservationSystem.Infrastructure.Service
         {
             try
             {
-                //string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
-                //string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
-                //string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
-                //string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
-                //string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
-                //string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
-                string SmtpServer = "smtp.gmail.com";
-                string SenderName = "Jays Travels";
-                string SenderEmail = "a4amjad@gmail.com";
-                string SmtpUser = "a4amjad@gmail.com";
-                string SmtpPass = "snmt qjlr muly altw";
-                string SmtpPort = "587";
+                string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
+                string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
+                string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
+                string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
+                string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
+                string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
+               // string SmtpServer = "smtp.gmail.com";
+               // string SenderName = "Jays Travels";
+               // string SenderEmail = "a4amjad@gmail.com";
+               // string SmtpUser = "a4amjad@gmail.com";
+               // string SmtpPass = "snmt qjlr muly altw";
+               // string SmtpPort = "587";
 
                 var emailMessage = new MimeMessage();
                 emailMessage.From.Add(new MailboxAddress(SenderName, SenderEmail));
