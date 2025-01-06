@@ -103,8 +103,8 @@ namespace ReservationApi.Controllers
                     var pinfo = await _dBRepository.GetPassengerInfo(request?.SessionId);
                     string ToemailAddress = pinfo.Where(e => e.IsLead == true).FirstOrDefault()?.Email;
                     await _dBRepository.UpdateEmailStatus(request?.SessionId, true);
-                    await _emailService.SendEmailAsync3(ToemailAddress, subject, emailBody);
-                  // await _emailService.SendEmailAsync2(ToemailAddress, subject, emailBody);
+                      await _emailService.SendEmailAsync3(ToemailAddress, subject, emailBody);
+                   // await _emailService.SendEmailAsync2(ToemailAddress, subject, emailBody);
                 }
                
 

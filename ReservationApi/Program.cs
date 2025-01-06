@@ -42,6 +42,7 @@ builder.Services.AddScoped<IDocIssueTicketRepository, DocIssueTicketRepository>(
 builder.Services.AddScoped<IPnrCancelRepository, PnrCancelRepository>();
 builder.Services.AddScoped<ITicketCancelRepository, TicketCancelRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IEnquriyRepository, EnquriyRepository>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();
@@ -63,8 +64,7 @@ builder.Services.AddCors(options =>
             .WithOrigins("http://localhost:5173").WithOrigins("http://localhost:5273")
             .WithOrigins("http://localhost:3000")
             .WithOrigins("https://jays-travels-front.azurewebsites.net").WithOrigins("http://jays-travels-front.azurewebsites.net/")
-			.WithOrigins("https://jaystravels.co.uk/").WithOrigins("https://jaystravels.co.uk").WithOrigins("http://jaystravels.co.uk/")
-			.WithOrigins("https://jays-travels-front.azurewebsites.net/")
+            .WithOrigins("https://jays-travels-front.azurewebsites.net/")
             .AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());

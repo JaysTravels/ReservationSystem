@@ -14,6 +14,7 @@ using Org.BouncyCastle.Asn1.Ocsp;
 using ReservationSystem.Domain.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
+using ReservationSystem.Domain.Models.Enquiry;
 
 
 namespace ReservationSystem.Infrastructure.Service
@@ -34,22 +35,38 @@ namespace ReservationSystem.Infrastructure.Service
         {
             try
             {
-                string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
-                string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
-                string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
-                string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
-                string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
-                string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
-               // string SmtpServer = "smtp.gmail.com";
-               // string SenderName = "Jays Travels";
-               // string SenderEmail = "a4amjad@gmail.com";
-               // string SmtpUser = "a4amjad@gmail.com";
-               // string SmtpPass = "snmt qjlr muly altw";
-               // string SmtpPort = "587";
+                //string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
+                //string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
+                //string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
+                //string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
+                //string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
+                //string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
+                string SmtpServer = "smtp.gmail.com";
+                string SenderName = "Jays Travels";
+                string SenderEmail = "a4amjad@gmail.com";
+                string SmtpUser = "a4amjad@gmail.com";
+                string SmtpPass = "pmbp kbwf avav lyyq";
+                string SmtpPort = "587";
 
                 var emailMessage = new MimeMessage();
                 emailMessage.From.Add(new MailboxAddress(SenderName, SenderEmail));
                 emailMessage.To.Add(new MailboxAddress("", toEmail));
+                try
+                {
+                    if (_configuration["EmailSettings:BCCEmailAddress"] != null)
+                    {
+                        string[] cc = _configuration["EmailSettings:BCCEmailAddress"].Split(",");
+                        foreach (var c in cc)
+                        {
+                            emailMessage.Bcc.Add(new MailboxAddress("BCC Recipient", c));
+                        }
+                    }
+                }
+                catch
+                {
+
+                }
+                          
                 emailMessage.Subject = subject;
                 var bodyBuilder = new BodyBuilder
                 {
@@ -63,10 +80,7 @@ namespace ReservationSystem.Infrastructure.Service
                     await client.AuthenticateAsync(SmtpUser, SmtpPass);
                     await client.SendAsync(emailMessage);
                     await client.DisconnectAsync(true);
-                    //client.Connect(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
-                    //client.Authenticate(SmtpUser, SmtpPass);
-                    //client.Send(emailMessage);
-                    //client.Disconnect(true);
+                   
                 }
             }
             catch(Exception ex)
@@ -78,41 +92,43 @@ namespace ReservationSystem.Infrastructure.Service
 
         public async Task SendEmailAsync2(string toEmail, string subject, string body)
         {
-          string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
-          string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
-          string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
-          string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
-          string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
-          string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");            
-  try {
-      var smtpClient = new System.Net.Mail.SmtpClient(SmtpServer)
-      {
-          Port = 587,
-          Credentials = new NetworkCredential(
-              SmtpUser,
-              SmtpPass
-          ),
-          EnableSsl = true,
-      };
-      var mailMessage = new MailMessage
-      {
-          From = new MailAddress(SmtpUser),
-          Subject = subject,
-          Body = body,
-          IsBodyHtml = true,
-      };
-      mailMessage.To.Add(toEmail);
-      smtpClient.Send(mailMessage);
-  }
-  catch (SmtpException smtpEx)
-  {
-      Console.WriteLine($"SMTP Error: {smtpEx.Message}");
-   }
-  catch (Exception ex)
-  {
-      Console.WriteLine($"Error: {ex.Message}");
-  }
-  }
+            string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
+            string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
+            string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
+            string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
+            string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
+            string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");            
+            try {
+                var smtpClient = new System.Net.Mail.SmtpClient(SmtpServer)
+                {
+                    Port = 587,
+                    Credentials = new NetworkCredential(
+                        SmtpUser,
+                        SmtpPass
+                    ),
+                    EnableSsl = true,
+                };
+
+                var mailMessage = new MailMessage
+                {
+                    From = new MailAddress(SmtpUser),
+                    Subject = subject,
+                    Body = body,
+                    IsBodyHtml = true,
+                };
+                mailMessage.To.Add(toEmail);
+                smtpClient.Send(mailMessage);
+            }
+            catch (SmtpException smtpEx)
+            {
+                Console.WriteLine($"SMTP Error: {smtpEx.Message}");
+             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error: {ex.Message}");
+            }
+
+        }
         public async Task SendEmailAsync(string toEmail, string subject, string body)
         {
             try
@@ -235,6 +251,38 @@ namespace ReservationSystem.Infrastructure.Service
             {
                 Console.WriteLine($"Error While Sending Success booking email {ex.Message.ToString()}");
                 return "Flights Booking Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
+            }
+        }
+
+        public async Task<string> GetEnquiryTemplate(EnquiryRequest enquiry)
+        {
+            try
+            {
+                var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "Enquiry.html");
+                var template = File.ReadAllText(filePath);
+                var placeholders = new Dictionary<string, string>{
+                  { "CustomerName", enquiry.FirstName + " " + enquiry.LastName  },};
+                var segmentHtml = new StringBuilder();
+                    segmentHtml.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>Name:</th><td>{enquiry.FirstName + " " + enquiry.LastName}</td></tr>
+                    <tr><th>Email:</th><td>{enquiry.EmailAddress}</td></tr>
+                    <tr><th>Phone:</th><td>{enquiry.PhoneNumber}</td></tr>
+                    <tr><th>Enquriy Messege:</th><td>{enquiry.Message}</td></tr>
+                </table>
+            </div>");
+
+                    // Replace the placeholder with the actual segments
+                template = template.Replace("{{Enquiry}}", segmentHtml.ToString());
+                var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
+                return emailBody;
+                
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error While Sending Enquiry email {ex.Message.ToString()}");
+                return "Enquiry Email Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
             }
         }
     }
