@@ -15,6 +15,8 @@ using ReservationSystem.Domain.Models;
 using Microsoft.Extensions.Hosting;
 using Microsoft.AspNetCore.Hosting;
 using ReservationSystem.Domain.Models.Enquiry;
+using Azure;
+using Azure.Communication.Email;
 
 
 namespace ReservationSystem.Infrastructure.Service
@@ -24,41 +26,36 @@ namespace ReservationSystem.Infrastructure.Service
         private readonly IConfiguration _configuration;
         private readonly IDBRepository _dBRepository;
         private readonly IWebHostEnvironment _environment;
+        private readonly EmailClient _emailClient;
         public EmailService(IConfiguration configuration , IDBRepository dBRepository, IWebHostEnvironment environment)
         {
             _configuration = configuration;
             _dBRepository = dBRepository;
             _environment = environment;
+            string connectionString = Environment.GetEnvironmentVariable("COMMUNICATION_SERVICES_CONNECTION_STRING");
+            if(connectionString == null)
+            {
+                connectionString = "endpoint=https://communicationservicesforjaystravels.uk.communication.azure.com/;accesskey=2cdbICCaEeMIXDjgVNMIYmliL76T9hEe9d2Y98pEpNL7lTy0OqUzJQQJ99BAACULyCpm8clbAAAAAZCSDuOI";
+            }
+            _emailClient = new EmailClient(connectionString);
         }
 
-        public async Task SendEmailAsync3(string toEmail, string subject, string message )
+        public async Task SendEmailAsync3(string toEmail, string subject, string message)
         {
             try
             {
-                //string SmtpServer = Environment.GetEnvironmentVariable("EmailSettingsServer");
-                //string SenderName = Environment.GetEnvironmentVariable("EmailSettingsSenderName");
-                //string SenderEmail = Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
-                //string SmtpUser = Environment.GetEnvironmentVariable("EmailSettingsSmtpUser");
-                //string SmtpPass = Environment.GetEnvironmentVariable("EmailSettingsSmtpPass");
-                //string SmtpPort = Environment.GetEnvironmentVariable("EmailSettingsSmtpPort");
-                string SmtpServer = "smtp.gmail.com";
-                string SenderName = "Jays Travels";
-                string SenderEmail = "a4amjad@gmail.com";
-                string SmtpUser = "a4amjad@gmail.com";
-                string SmtpPass = "pmbp kbwf avav lyyq";
-                string SmtpPort = "587";
-
-                var emailMessage = new MimeMessage();
-                emailMessage.From.Add(new MailboxAddress(SenderName, SenderEmail));
-                emailMessage.To.Add(new MailboxAddress("", toEmail));
+                string SenderName = "DoNotReply"; // Environment.GetEnvironmentVariable("EmailSettingsSenderName");
+                string SenderEmail = "DoNotReply@jaystravels.co.uk"; //Environment.GetEnvironmentVariable("EmailSettingsSenderEmail");
+                var bccRecipients = new List<string> ();
+                List<EmailAddress> _bcc = new List<EmailAddress>();
                 try
                 {
                     if (_configuration["EmailSettings:BCCEmailAddress"] != null)
                     {
                         string[] cc = _configuration["EmailSettings:BCCEmailAddress"].Split(",");
-                        foreach (var c in cc)
+                       foreach(var c in cc)
                         {
-                            emailMessage.Bcc.Add(new MailboxAddress("BCC Recipient", c));
+                            _bcc.Add(new EmailAddress(c));
                         }
                     }
                 }
@@ -66,28 +63,28 @@ namespace ReservationSystem.Infrastructure.Service
                 {
 
                 }
-                          
-                emailMessage.Subject = subject;
-                var bodyBuilder = new BodyBuilder
-                {
-                    HtmlBody = message // HTML Content
-                };
-                emailMessage.Body = bodyBuilder.ToMessageBody();
-                System.Net.ServicePointManager.SecurityProtocol = System.Net.SecurityProtocolType.Tls12;
-                using (var client = new MailKit.Net.Smtp.SmtpClient())
-                {
-                    await client.ConnectAsync(SmtpServer, int.Parse(SmtpPort), MailKit.Security.SecureSocketOptions.StartTls);
-                    await client.AuthenticateAsync(SmtpUser, SmtpPass);
-                    await client.SendAsync(emailMessage);
-                    await client.DisconnectAsync(true);
-                   
-                }
+                var emailRecipients = new EmailRecipients(
+                       to: new List<EmailAddress> { new EmailAddress(toEmail) },
+                       bcc: _bcc
+                   );
+                var emailMessage = new EmailMessage(
+                    senderAddress: SenderEmail,
+                    recipients: emailRecipients,
+                    content: new EmailContent(subject)
+                    {
+                        PlainText = subject,
+                        Html = message
+                    }
+                );                
+                EmailSendOperation emailSendOperation = _emailClient.Send(
+                    WaitUntil.Completed,
+                    emailMessage);               
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine($" Error while sending email {ex.StackTrace.ToString()}");
             }
-           
+
         }
 
         public async Task SendEmailAsync2(string toEmail, string subject, string body)

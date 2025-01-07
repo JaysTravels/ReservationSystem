@@ -13,7 +13,7 @@ namespace ReservationSystem.Domain.Service
 
         public Task SendEmailAsync2(string toEmail, string subject, string body);
 
-        public Task SendEmailAsync3(string toEmail, string subject, string message);
+        public Task SendEmailAsync3(string toEmail, string subject, string message);      
 
         public Task<string> GetBookingSuccessTemplate(string sessionId = "", string bookingStatus = "", string paymentStatus = "");
 
