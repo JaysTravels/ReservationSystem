@@ -733,3 +733,4 @@ C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReserv
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\Azure.Communication.Email.dll
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\Azure.Core.dll
 C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\System.Memory.Data.dll
+C:\Users\zainm\OneDrive\Desktop\Jays Travels\ReservationSystem\JaysTravelsReservation\ReservationSystem\ReservationApi\bin\Debug\net8.0\EmailTemplates\Enquiry.html
