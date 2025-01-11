@@ -282,5 +282,100 @@ namespace ReservationSystem.Infrastructure.Service
                 return "Enquiry Email Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
             }
         }
+
+        public async Task<string> GetBookingSuccessTemplateForAdmin(string sessionId = "", string bookingStatus = "", string paymentStatus = "")
+        {
+            try
+            {
+                var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "AdminEmailFlightConfirmation.html");
+                var template = File.ReadAllText(filePath);
+
+                if (sessionId != "")
+                {
+                    var flightInfo = await _dBRepository.GetFlightInfo(sessionId);
+                    var passengerInfo = await _dBRepository.GetPassengerInfo(sessionId);
+                    var bookingInfo = await _dBRepository.GetBookingInfo(sessionId);
+                    
+                    FlightOffer offer = System.Text.Json.JsonSerializer.Deserialize<FlightOffer>(flightInfo?.FlightOffer);
+
+                    var bookingNo = bookingInfo?.BookingRef;
+                    var bookingDate = bookingInfo?.CreatedOn.Value.ToString("dd-MM-yyyy");
+                    var lastTicketDate = offer.lastTicketingDate;
+                    var placeholders = new Dictionary<string, string>{
+                  { "BookingNo", bookingNo  }};
+                    placeholders.Add("BookingDate", bookingDate);
+                    placeholders.Add("TiicketDeadLine", lastTicketDate);
+                   
+                    var segmentHtml = new StringBuilder();
+
+                    foreach (var item in offer.itineraries)
+                    {
+                        foreach (var segment in item.segments)
+                        {
+                            segmentHtml.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>Flight Number:</th><td>{segment?.number}</td></tr>
+                    <tr><th>Departure:</th><td>{segment?.departure?.iataName} ({segment?.departure?.iataCode}) at {segment?.departure?.at?.ToString()}</td></tr>
+                    <tr><th>Arrival:</th><td>{segment?.arrival?.iataName?.ToString()} ({segment?.arrival?.iataCode?.ToString()}) at {segment?.arrival?.at?.ToString()}</td></tr>
+                    <tr><th>Date:</th><td>{segment?.departure?.at?.ToString()}</td></tr>
+                </table>
+            </div>");
+                        }
+                    }
+                    // Replace the placeholder with the actual segments
+                    template = template.Replace("{{FlightSegments}}", segmentHtml.ToString());
+                   
+                    #region Search Details
+                    var searcDetails = new StringBuilder();
+                    searcDetails.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>From Location:</th><td>{offer?.itineraries?[0].airport_city}</td></tr>
+                    <tr><th>To Location:</th><td>{offer?.itineraries?[1]?.airport_city}</td></tr>
+                    <tr><th>Departure:</th><td>{offer?.itineraries[0]?.segments[0]?.departure?.at}</td></tr>
+                    <tr><th>Arrival:</th><td>{offer?.itineraries[1]?.segments[0]?.departure?.at}</td></tr>
+                    <tr><th>No of Passengers:</th><td> {passengerInfo.Where(e=>e.PassengerType == "ADT").Count()} Adults , {passengerInfo.Where(e => e.PassengerType == "CHD").Count()} Child , {passengerInfo.Where(e => e.PassengerType == "INF").Count()} Infants</td></tr>
+                </table>
+            </div>");
+                      
+                    // Replace the placeholder with the actual segments
+                    template = template.Replace("{{SearchDetails}}", searcDetails.ToString());
+                    #endregion
+
+                    StringBuilder pBuilder = new StringBuilder();
+                    foreach (var p in passengerInfo)
+                    {
+                        pBuilder.Append($"<div class='segment'>");
+                        pBuilder.Append($"<table>");
+                        pBuilder.Append($"<tr><th>Passenger Name:</th><td>{p.FirstName + " " + p.LastName}</td></tr>");
+                        pBuilder.Append($"<tr><th>Passenger Type:</th><td>{p.PassengerType}</td></tr>");
+                        pBuilder.Append($"<tr><th>Date of Birth:</th><td>{p.DOB}</td></tr>");
+                        pBuilder.Append($"</table>");
+                        pBuilder.Append($"</div>");
+                    }
+                    template = template.Replace("{{PassengerInformation}}", pBuilder.ToString());
+                   
+                    placeholders.TryAdd("BookingStatus", bookingStatus);
+                    placeholders.TryAdd("PaymentStatus", paymentStatus);
+                    placeholders.TryAdd("FlightPrice", offer?.price?.currency + " " + offer?.price?.total);
+                    var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
+                    return emailBody;
+                }
+                else
+                {
+                    return "Error in sending email";
+                }
+
+
+
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error While Sending Success booking email {ex.Message.ToString()}");
+                return "Flights Booking Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
+            }
+        }
     }
 }

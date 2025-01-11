@@ -18,5 +18,7 @@ namespace ReservationSystem.Domain.Service
         public Task<string> GetBookingSuccessTemplate(string sessionId = "", string bookingStatus = "", string paymentStatus = "");
 
         public Task<string> GetEnquiryTemplate(EnquiryRequest enquiry);
+
+         public Task<string> GetBookingSuccessTemplateForAdmin(string sessionId = "", string bookingStatus = "", string paymentStatus = "");
     }
 }
