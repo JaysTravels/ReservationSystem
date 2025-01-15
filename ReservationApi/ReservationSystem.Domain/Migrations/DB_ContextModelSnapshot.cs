@@ -92,6 +92,10 @@ namespace ReservationSystem.Domain.Migrations
                     b.Property<decimal?>("Amount")
                         .HasColumnType("numeric")
                         .HasColumnName("amount");
+                        
+                      b.Property<string>("BookingRef")
+                          .HasColumnType("text")
+                          .HasColumnName("booking_ref");
 
                     b.Property<string>("City")
                         .HasColumnType("text")
