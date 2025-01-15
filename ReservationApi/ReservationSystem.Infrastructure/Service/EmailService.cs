@@ -398,7 +398,7 @@ namespace ReservationSystem.Infrastructure.Service
                 var placeholders = new Dictionary<string, string>{
                   { "CustomerName", enquiry.FirstName + " " + enquiry.LastName  },                  
                 };
-                placeholders.Add("PaymentStatus", enquiry?.PaymentStatus.ToString());
+                 placeholders.Add("PaymentStatus", enquiry?.PaymentStatus.ToString() == "True" ? "Success" : "Faild");
                 var segmentHtml = new StringBuilder();
                 segmentHtml.Append($@"
             <div class='segment'>
