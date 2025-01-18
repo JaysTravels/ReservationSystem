@@ -194,11 +194,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             bool response;
             try
             {
-             var checkpayment = await _Context.ManulPayments.Where(e => e.Email == request.Email && e.BookingRef == request.BookingRef && e.PaymentStatus == request.PaymentStatus && e.Amount == request.Amount && e.CreatedOn.Value.Date == DateTime.Now.Date).FirstOrDefaultAsync();
-
-             if (checkpayment == null)
-             {
-                 ManualPayment payment = new ManualPayment();
+              ManualPayment payment = new ManualPayment();
                  payment.Address = request.Address;
                  payment.Amount = request?.Amount != null ? Convert.ToDecimal(request.Amount) : 0;
                  payment.City = request?.City;
@@ -212,8 +208,6 @@ namespace ReservationSystem.Infrastructure.Repositories
                  payment.PaymentStatus = request?.PaymentStatus;
                  await _Context.ManulPayments.AddAsync(payment);
                  await _Context.SaveChangesAsync();
-             }
-             else { return false; }
               return true;
             }
             catch (Exception ex)
