@@ -194,21 +194,27 @@ namespace ReservationSystem.Infrastructure.Repositories
             bool response;
             try
             {
-                ManualPayment payment = new ManualPayment();
-                payment.Address = request.Address;
-                payment.Amount = request?.Address != null ? Convert.ToDecimal(request.Address) : 0;
-                payment.City = request.City;
-                payment.Country = request.Country;
-                payment.CreatedOn = DateTime.Now;
-                payment.Email = request.Email;
-                payment.FirstName = request.FirstName;
-                payment.LastName = request.LastName;
-                payment.PhoneNumber = request.Phone;
-                payment.PostalCode = request.Postal;
-                payment.PaymentStatus = request?.PaymentStatus;
-                await _Context.ManulPayments.AddAsync(payment);
-                await _Context.SaveChangesAsync();
-                return true;
+             var checkpayment = await _Context.ManulPayments.Where(e => e.Email == request.Email && e.BookingRef == request.BookingRef && e.PaymentStatus == request.PaymentStatus && e.Amount == request.Amount && e.CreatedOn.Value.Date == DateTime.Now.Date).FirstOrDefaultAsync();
+
+             if (checkpayment == null)
+             {
+                 ManualPayment payment = new ManualPayment();
+                 payment.Address = request.Address;
+                 payment.Amount = request?.Amount != null ? Convert.ToDecimal(request.Amount) : 0;
+                 payment.City = request?.City;
+                 payment.Country = request?.Country;
+                 payment.CreatedOn = DateTime.Now;
+                 payment.Email = request?.Email;
+                 payment.FirstName = request?.FirstName;
+                 payment.LastName = request?.LastName;
+                 payment.PhoneNumber = request?.Phone;
+                 payment.PostalCode = request?.Postal;
+                 payment.PaymentStatus = request?.PaymentStatus;
+                 await _Context.ManulPayments.AddAsync(payment);
+                 await _Context.SaveChangesAsync();
+             }
+             else { return false; }
+              return true;
             }
             catch (Exception ex)
             {
