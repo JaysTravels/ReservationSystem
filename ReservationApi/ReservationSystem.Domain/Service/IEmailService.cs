@@ -1,4 +1,4 @@
-using ReservationSystem.Domain.Models.Enquiry;
+﻿using ReservationSystem.Domain.Models.Enquiry;
 using ReservationSystem.Domain.Models.ManualPayment;
 using System;
 using System.Collections.Generic;

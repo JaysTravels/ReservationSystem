@@ -21,17 +21,17 @@ namespace ReservationApi.Controllers
         private readonly IHelperRepository _helperRepository;
         private readonly IDBRepository _dBRepository;
         private readonly IEmailService _emailService;
-         private readonly IConfiguration _configuration;
-          public PNRController(IAddPnrMultiRepository Repo, IMemoryCache memoryCache, ICacheService cacheService , IHelperRepository helperRepository , IDBRepository dBRepository , IEmailService emailService , IConfiguration configuration)
-          {
-              _Repo = Repo;
-              _cache = memoryCache;
-              _cacheService = cacheService;
-              _helperRepository = helperRepository;
-              _dBRepository = dBRepository;
-              _emailService = emailService;
-              _configuration = configuration;
-          }
+        private readonly IConfiguration _configuration;
+        public PNRController(IAddPnrMultiRepository Repo, IMemoryCache memoryCache, ICacheService cacheService , IHelperRepository helperRepository , IDBRepository dBRepository , IEmailService emailService , IConfiguration configuration)
+        {
+            _Repo = Repo;
+            _cache = memoryCache;
+            _cacheService = cacheService;
+            _helperRepository = helperRepository;
+            _dBRepository = dBRepository;
+            _emailService = emailService;
+            _configuration = configuration;
+        }
         //[Authorize]
         [HttpPost]
         public async Task<IActionResult> Post([FromBody] AddPnrMultiRequset airSellRequest)
@@ -106,9 +106,9 @@ namespace ReservationApi.Controllers
                     string ToemailAddress = pinfo.Where(e => e.IsLead == true).FirstOrDefault()?.Email;
                     await _dBRepository.UpdateEmailStatus(request?.SessionId, true);
                     await _emailService.SendEmailAsync3(ToemailAddress, subject, emailBody);
-                   var AdminEmail = _configuration["EmailSettings:AdminEmail"];
-                   var AdminEmailBody = await _emailService.GetBookingSuccessTemplateForAdmin(request?.SessionId, request.PaymentStatus);
-                   await _emailService.SendEmailAsync3(AdminEmail, "Admin-Portal " + subject, AdminEmailBody);
+                    var AdminEmail = _configuration["EmailSettings:AdminEmail"];
+                    var AdminEmailBody = await _emailService.GetBookingSuccessTemplateForAdmin(request?.SessionId, request.PaymentStatus);
+                    await _emailService.SendEmailAsync3(AdminEmail, "Admin-Portal " + subject, AdminEmailBody);
                 }
                
 

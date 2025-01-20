@@ -72,21 +72,22 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-<ItemGroup>
-	<Content Include="EmailTemplates\AdminEmailFlightConfirmation.html">
-		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	</Content>
-</ItemGroup>
+	<ItemGroup>
+		<Content Include="EmailTemplates\AdminEmailFlightConfirmation.html">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 	<ItemGroup>
 		<Content Include="EmailTemplates\Enquiry.html">
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-<ItemGroup>
-	<Content Include="EmailTemplates\ManualPayment.html">
-		<CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	</Content>
-</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="EmailTemplates\ManualPayment.html">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="ReservationSystem.Common\ReservationSystem.Common.csproj" />
