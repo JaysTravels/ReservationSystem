@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using ReservationSystem.Domain.Models.Availability;
 using ReservationSystem.Domain.Models;
 using ReservationSystem.Domain.Repositories;
@@ -674,7 +674,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                         totalAdult = adultFare.Descendants(amadeus + "paxReference").Elements(amadeus+"traveller").ToList().Count();
                         adultpp = adultFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalFareAmount")?.FirstOrDefault().Value;
                         adulttax = adultFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalTaxAmount")?.FirstOrDefault().Value;
-                        decimal _totAdt = (Convert.ToDecimal ( adultpp) + Convert.ToDecimal( adulttax)) * totalAdult;
+                        // decimal _totAdt = (Convert.ToDecimal ( adultpp) + Convert.ToDecimal( adulttax)) * totalAdult;
+                        decimal _totAdt = (Convert.ToDecimal(adultpp)) * totalAdult;
                         totalPrice = _totAdt;
 
                     }
@@ -683,7 +684,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                         totalChild = childFare.Descendants(amadeus + "paxReference").Elements(amadeus + "traveller").ToList().Count();
                         childpp = childFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalFareAmount")?.FirstOrDefault().Value;
                         childtax = childFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalTaxAmount")?.FirstOrDefault().Value;
-                        decimal _totChd = (Convert.ToDecimal(childpp) + Convert.ToDecimal(childtax)) * totalChild;
+                        //   decimal _totChd = (Convert.ToDecimal(childpp) + Convert.ToDecimal(childtax)) * totalChild;
+                        decimal _totChd = (Convert.ToDecimal(childpp)) * totalChild;
                         totalPrice = totalPrice + _totChd;
                     }
                     if (infFare != null)
@@ -691,7 +693,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                         totalInfant = infFare.Descendants(amadeus + "paxReference").Elements(amadeus + "traveller").ToList().Count();
                         infantpp = infFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalFareAmount")?.FirstOrDefault().Value;
                         infanttax = infFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalTaxAmount")?.FirstOrDefault().Value;
-                        decimal _totInf = (Convert.ToDecimal(infantpp) + Convert.ToDecimal(infanttax)) * totalInfant;
+                        // decimal _totInf = (Convert.ToDecimal(infantpp) + Convert.ToDecimal(infanttax)) * totalInfant;
+                        decimal _totInf = (Convert.ToDecimal(infantpp)) * totalInfant;
                         totalPrice = totalPrice + _totInf;
                     }
 
