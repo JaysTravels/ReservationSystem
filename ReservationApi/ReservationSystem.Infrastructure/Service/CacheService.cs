@@ -78,7 +78,7 @@ namespace ReservationSystem.Infrastructure.Service
             using (var scope = _serviceProvider.CreateScope())
             {
                 var dbContext = scope.ServiceProvider.GetRequiredService<DB_Context>();
-                var data = await dbContext.FlightMarkups.ToDictionaryAsync(e => e.MarkupId, e => e);
+                var data = await dbContext.FlightMarkups.ToDictionaryAsync(e => e.MarkupId, e => e); 
                 _markup = await dbContext.FlightMarkups.ToListAsync();                
                 _applymarkup = await dbContext.Markups.Where(e => e.IsActive == true).ToListAsync();
                 _MarkupFareType = await dbContext.MarkupFareTypes.ToListAsync();
