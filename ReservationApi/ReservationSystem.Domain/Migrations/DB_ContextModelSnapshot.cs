@@ -137,6 +137,116 @@ namespace ReservationSystem.Domain.Migrations
                     b.ToTable("manual_payment");
                 });
 
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.ApplyMarkup", b =>
+                {
+                    b.Property<int>("MarkupId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("markup_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MarkupId"));
+
+                    b.Property<decimal?>("AdultMarkup")
+                        .HasColumnType("numeric")
+                        .HasColumnName("adult_markup");
+
+                    b.Property<string>("Airline")
+                        .HasColumnType("text")
+                        .HasColumnName("airline");
+
+                    b.Property<string>("BetweenHoursFrom")
+                        .HasColumnType("text")
+                        .HasColumnName("between_hours_from");
+
+                    b.Property<decimal?>("BetweenHoursTo")
+                        .HasColumnType("numeric")
+                        .HasColumnName("between_hours_to");
+
+                    b.Property<decimal?>("ChildMarkup")
+                        .HasColumnType("numeric")
+                        .HasColumnName("child_markup");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("EndAirport")
+                        .HasColumnType("text")
+                        .HasColumnName("end_airport");
+
+                    b.Property<DateOnly?>("FromDate")
+                        .HasColumnType("date")
+                        .HasColumnName("from_date");
+
+                    b.Property<decimal?>("InfantMarkup")
+                        .HasColumnType("numeric")
+                        .HasColumnName("infant_markup");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<bool?>("IsPercentage")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_percentage");
+
+                    b.Property<string>("StartAirport")
+                        .HasColumnType("text")
+                        .HasColumnName("start_airport");
+
+                    b.Property<DateOnly?>("ToDate")
+                        .HasColumnType("date")
+                        .HasColumnName("to_date");
+
+                    b.HasKey("MarkupId");
+
+                    b.ToTable("apply_markup");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.DayName", b =>
+                {
+                    b.Property<int>("DayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("day_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DayId"));
+
+                    b.Property<string>("Day_Name")
+                        .HasColumnType("text")
+                        .HasColumnName("day_name");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.HasKey("DayId");
+
+                    b.ToTable("day_name");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FareType", b =>
+                {
+                    b.Property<int>("FareTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("faretype_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("FareTypeId"));
+
+                    b.Property<string>("Fare_Type")
+                        .HasColumnType("text")
+                        .HasColumnName("fare_type_name");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.HasKey("FareTypeId");
+
+                    b.ToTable("fare_type");
+                });
+
             modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FlightInfo", b =>
                 {
                     b.Property<int>("FlightId")
@@ -318,6 +428,198 @@ namespace ReservationSystem.Domain.Migrations
                     b.HasKey("MarkupId");
 
                     b.ToTable("flight_markup");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.GDS", b =>
+                {
+                    b.Property<int>("GdsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("gds_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("GdsId"));
+
+                    b.Property<string>("GdsName")
+                        .HasColumnType("text")
+                        .HasColumnName("gds_name");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.HasKey("GdsId");
+
+                    b.ToTable("gds");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.JourneyType", b =>
+                {
+                    b.Property<int>("JournyTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("journytype_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("JournyTypeId"));
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("JournyType")
+                        .HasColumnType("text")
+                        .HasColumnName("journytype");
+
+                    b.HasKey("JournyTypeId");
+
+                    b.ToTable("journy_type");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarketingSource", b =>
+                {
+                    b.Property<int>("SourceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("source_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("SourceId"));
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("SourceName")
+                        .HasColumnType("text")
+                        .HasColumnName("source_name");
+
+                    b.HasKey("SourceId");
+
+                    b.ToTable("marketing_source");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupDay", b =>
+                {
+                    b.Property<int>("MarkupDayId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("markup_day_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MarkupDayId"));
+
+                    b.Property<int?>("DayId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int?>("MarkupId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MarkupDayId");
+
+                    b.HasIndex("DayId");
+
+                    b.HasIndex("MarkupId");
+
+                    b.ToTable("markup_day");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupFareType", b =>
+                {
+                    b.Property<int>("MarkupFareId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("markup_fare_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MarkupFareId"));
+
+                    b.Property<int>("FareTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MarkupId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MarkupFareId");
+
+                    b.HasIndex("FareTypeId");
+
+                    b.HasIndex("MarkupId");
+
+                    b.ToTable("MarkupFareTypes");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupGDS", b =>
+                {
+                    b.Property<int>("MarkupGdsId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("markup_gds_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MarkupGdsId"));
+
+                    b.Property<int>("GdsId")
+                        .HasColumnType("integer");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("MarkupId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MarkupGdsId");
+
+                    b.HasIndex("GdsId");
+
+                    b.HasIndex("MarkupId");
+
+                    b.ToTable("MarkupGds");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupJournyType", b =>
+                {
+                    b.Property<int>("MarkupJournyTypeId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("markup_journytype_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MarkupJournyTypeId"));
+
+                    b.Property<int>("JournyTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MarkupId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MarkupJournyTypeId");
+
+                    b.HasIndex("JournyTypeId");
+
+                    b.HasIndex("MarkupId");
+
+                    b.ToTable("MarkupJournyTypes");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupMarketingSource", b =>
+                {
+                    b.Property<int>("MarkupSourceId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("markup_source_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("MarkupSourceId"));
+
+                    b.Property<int>("MarkupId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("SourceId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("MarkupSourceId");
+
+                    b.HasIndex("MarkupId");
+
+                    b.HasIndex("SourceId");
+
+                    b.ToTable("MarkupMarketingSources");
                 });
 
             modelBuilder.Entity("ReservationSystem.Domain.DB_Models.PassengerInfo", b =>
@@ -520,6 +822,97 @@ namespace ReservationSystem.Domain.Migrations
                     b.ToTable("Enquiries");
                 });
 
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupDay", b =>
+                {
+                    b.HasOne("ReservationSystem.Domain.DB_Models.DayName", "Day")
+                        .WithMany("MarkupDay")
+                        .HasForeignKey("DayId");
+
+                    b.HasOne("ReservationSystem.Domain.DB_Models.ApplyMarkup", "Markup")
+                        .WithMany("MarkupDay")
+                        .HasForeignKey("MarkupId");
+
+                    b.Navigation("Day");
+
+                    b.Navigation("Markup");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupFareType", b =>
+                {
+                    b.HasOne("ReservationSystem.Domain.DB_Models.FareType", "FareType")
+                        .WithMany("MarkupFareTypes")
+                        .HasForeignKey("FareTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReservationSystem.Domain.DB_Models.ApplyMarkup", "Markup")
+                        .WithMany("MarkupFareTypes")
+                        .HasForeignKey("MarkupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("FareType");
+
+                    b.Navigation("Markup");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupGDS", b =>
+                {
+                    b.HasOne("ReservationSystem.Domain.DB_Models.GDS", "gds")
+                        .WithMany("MarkupGds")
+                        .HasForeignKey("GdsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReservationSystem.Domain.DB_Models.ApplyMarkup", "Markup")
+                        .WithMany("MarkupGds")
+                        .HasForeignKey("MarkupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Markup");
+
+                    b.Navigation("gds");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupJournyType", b =>
+                {
+                    b.HasOne("ReservationSystem.Domain.DB_Models.JourneyType", "Journy")
+                        .WithMany("MarkupJournyType")
+                        .HasForeignKey("JournyTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReservationSystem.Domain.DB_Models.ApplyMarkup", "Markup")
+                        .WithMany("MarkupJournyType")
+                        .HasForeignKey("MarkupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Journy");
+
+                    b.Navigation("Markup");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarkupMarketingSource", b =>
+                {
+                    b.HasOne("ReservationSystem.Domain.DB_Models.ApplyMarkup", "Markup")
+                        .WithMany("MarkupMarketing")
+                        .HasForeignKey("MarkupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ReservationSystem.Domain.DB_Models.MarketingSource", "Source")
+                        .WithMany("MarkupMarketing")
+                        .HasForeignKey("SourceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Markup");
+
+                    b.Navigation("Source");
+                });
+
             modelBuilder.Entity("ReservationSystem.Domain.DB_Models.PassengerInfo", b =>
                 {
                     b.HasOne("ReservationSystem.Domain.DB_Models.FlightInfo", "Flight")
@@ -529,6 +922,44 @@ namespace ReservationSystem.Domain.Migrations
                         .IsRequired();
 
                     b.Navigation("Flight");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.ApplyMarkup", b =>
+                {
+                    b.Navigation("MarkupDay");
+
+                    b.Navigation("MarkupFareTypes");
+
+                    b.Navigation("MarkupGds");
+
+                    b.Navigation("MarkupJournyType");
+
+                    b.Navigation("MarkupMarketing");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.DayName", b =>
+                {
+                    b.Navigation("MarkupDay");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FareType", b =>
+                {
+                    b.Navigation("MarkupFareTypes");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.GDS", b =>
+                {
+                    b.Navigation("MarkupGds");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.JourneyType", b =>
+                {
+                    b.Navigation("MarkupJournyType");
+                });
+
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.MarketingSource", b =>
+                {
+                    b.Navigation("MarkupMarketing");
                 });
 #pragma warning restore 612, 618
         }
