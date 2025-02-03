@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
 using ReservationSystem.Domain.Models.Availability;
 using ReservationSystem.Domain.Models;
 using ReservationSystem.Domain.Repositories;
