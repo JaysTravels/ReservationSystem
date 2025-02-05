@@ -65,7 +65,8 @@ builder.Services.AddCors(options =>
             .WithOrigins("http://localhost:3000")
             .WithOrigins("https://jays-travels-front.azurewebsites.net").WithOrigins("http://jays-travels-front.azurewebsites.net/")
             .WithOrigins("https://jays-travels-front.azurewebsites.net/")
-            .AllowAnyMethod()
+			.WithOrigins("https://jaystravels.co.uk/").WithOrigins("https://jaystravels.co.uk")
+			.AllowAnyMethod()
             .AllowAnyHeader()
             .AllowCredentials());
 });
