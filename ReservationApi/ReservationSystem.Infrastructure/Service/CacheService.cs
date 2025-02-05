@@ -94,11 +94,21 @@ namespace ReservationSystem.Infrastructure.Service
                              
             }
         }
-        public void ResetCacheData()
-        {
-            _Markupcache.Remove(FlightMarkupKey);
-            LoadDataIntoCache();
-        }
+          public void ResetCacheData()
+         {
+             _Markupcache.Remove(FlightMarkupKey);
+             _Markupcache.Remove(MarkupFareType);
+             _Markupcache.Remove(MarkupGds);
+             _Markupcache.Remove(MarkupJournyType);
+             _Markupcache.Remove(MarkupMarketingSources);
+             _Markupcache.Remove(day_name);
+             _Markupcache.Remove(fare_type);
+             _Markupcache.Remove(gds);
+             _Markupcache.Remove(journy_type);
+             _Markupcache.Remove(marketing_source);
+             _Markupcache.Remove(markup_day);
+             LoadDataIntoCache();
+         }
         public Dictionary<int, FlightMarkup> GetFlightsMarkupCachedData()
         {
 
