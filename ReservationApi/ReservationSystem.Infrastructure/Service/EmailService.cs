@@ -447,10 +447,10 @@ namespace ReservationSystem.Infrastructure.Service
 
                     var segmentHtml = new StringBuilder();
                     string FlightPrice = offer.price?.total;
-                    string AdultMarkup = offer.price?.adulMarkup;
-                    string ChildMarkup = offer.price?.childMarkup;
-                    string InfantMarkup = offer.price.infantMarkup;
-                    string FlightMarkupID = offer?.MarkupId.ToString();
+                    string AdultMarkup = offer.price?.adulMarkup != null ?  offer.price?.adulMarkup : "No Markp Applied";
+                    string ChildMarkup = offer.price?.childMarkup != null ? offer.price?.childMarkup : "No Markp Applied";
+                    string InfantMarkup = offer.price.infantMarkup != null ? offer.price?.infantMarkup : "No Markup Applied";
+                    string FlightMarkupID = offer.price?.MarkupID != null ? offer.price?.MarkupID?.ToString() : "";
                     foreach (var item in offer.itineraries)
                     {
                         foreach (var segment in item.segments)
@@ -468,10 +468,10 @@ namespace ReservationSystem.Infrastructure.Service
                     }
                     // Replace the placeholder with the actual segments
                     template = template.Replace("{{FlightSegments}}", segmentHtml.ToString());
-                    template = template.Replace("{{FlightPrice}}", FlightPrice.ToString());
-                    template = template.Replace("{{AdultMarkup}}", AdultMarkup.ToString());
-                    template = template.Replace("{{ChildMarkup}}", ChildMarkup.ToString());
-                    template = template.Replace("{{InfantMarkup}}", InfantMarkup.ToString());
+                    template = template.Replace("{{FlightPrice}}", FlightPrice?.ToString());
+                    template = template.Replace("{{AdultMarkup}}", AdultMarkup?.ToString());
+                    template = template.Replace("{{ChildMarkup}}", ChildMarkup?.ToString());
+                    template = template.Replace("{{InfantMarkup}}", InfantMarkup?.ToString());
                     template = template.Replace("{{FlightMarkupID}}", FlightMarkupID.ToString());
 
                     StringBuilder pBuilder = new StringBuilder();
