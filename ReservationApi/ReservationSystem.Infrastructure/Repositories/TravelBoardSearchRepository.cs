@@ -416,7 +416,7 @@ namespace ReservationSystem.Infrastructure.Repositories
 
             var currency = doc.Descendants(amadeus + "conversionRate").Descendants(amadeus + "conversionRateDetail")?.Elements(amadeus + "currency")?.FirstOrDefault()?.Value;
             var flightIndexOutBound = doc.Descendants(amadeus + "flightIndex").Where(f => f.Element(amadeus + "requestedSegmentRef").Element(amadeus + "segRef").Value == "1")
-                             .ToList();           
+                             .ToList();
             if (flightIndexOutBound != null)
             {
                 
@@ -486,6 +486,16 @@ namespace ReservationSystem.Infrastructure.Repositories
                         var tempRecommend = doc.Descendants(amadeus + "recommendation").Where(e => e.Element(amadeus + "itemNumber")?.Elements(amadeus + "itemNumberId")?.Elements(amadeus + "number")?.FirstOrDefault().Value == FlightProposal).FirstOrDefault();
                         if(tempRecommend != null)
                         {
+                            var segmentFlightRef = tempRecommend?.Descendants(amadeus + "segmentFlightRef")?.FirstOrDefault();
+                            List<ReferencingDetail> referenceingdetails = new List<ReferencingDetail>();
+                            foreach(var item in segmentFlightRef.Descendants(amadeus+ "referencingDetail"))
+                            {
+                                var refQuilifier = item.Descendants(amadeus + "refQualifier")?.FirstOrDefault().Value;
+                                var refNumber = item.Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
+                                ReferencingDetail refdet = new ReferencingDetail { refNumber = refNumber != null ? Convert.ToInt16(refNumber) : 0, refQualifier = refQuilifier };
+                                referenceingdetails.Add(refdet);
+
+                            }
                             var paxFareProduct = tempRecommend?.Descendants(amadeus + "paxFareProduct")?.FirstOrDefault();
                             var fareDetails = paxFareProduct?.Descendants(amadeus + "fareDetails").Where(e => e.Elements(amadeus + "segmentRef")?.Elements(amadeus+ "segRef")?.FirstOrDefault().Value == segmentRef.ToString()).FirstOrDefault();
                             var rbd = fareDetails?.Descendants(amadeus + "groupOfFares")?.Descendants(amadeus + "productInformation")?.Descendants(amadeus + "cabinProduct")?.Descendants(amadeus + "rbd")?.FirstOrDefault()?.Value;
@@ -499,7 +509,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                             segment.fareBasis = fareBasis;
                             segment.breakPoint = breakpoint;
                             segment.rateClass = fareBasis;
-                            segment.cabinStatus = availStatus;
+                            segment.cabinStatus = availStatus;                            
                         }
                         DataRow droperatingCarrier = AirlineCache != null ?  AirlineCache.AsEnumerable().FirstOrDefault(r => r.Field<string>("AirlineCode") == operatingCarrier): null;
                         var operatingCarrierName = droperatingCarrier != null ? droperatingCarrier[1].ToString() : "";
@@ -509,8 +519,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                         itinerary.flightProposal_ref = FlightProposal;
                         itinerary.duration = CalculateDuration(timeduration); 
                         itinerary.segment_type = "OutBound";
-                        itinerary.airport_city = airport_city;
-                      
+                        itinerary.airport_city = airport_city;                        
+
                     }
                     itinerariesList.Add(itinerary);
                 }
@@ -640,7 +650,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     var quantityCode = bitem.Descendants(amadeus + "freeBagAllownceInfo")?.Descendants(amadeus + "baggageDetails")?.Descendants(amadeus + "quantityCode")?.FirstOrDefault()?.Value;
                     var unitQualifier = bitem.Descendants(amadeus + "freeBagAllownceInfo")?.Descendants(amadeus + "baggageDetails")?.Descendants(amadeus + "unitQualifier")?.FirstOrDefault()?.Value;
                     baggageDetails.Add(new BaggageDetails { itemNumber = itemNumber, freeAllowance = freeAllowence, quantityCode = quantityCode, unitQualifier = unitQualifier });
-                }
+                }             
             }
             catch (Exception ex)
             {
@@ -711,7 +721,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                         decimal _totInf = (Convert.ToDecimal(infantpp)) * totalInfant;
                         totalPrice = totalPrice + _totInf;
                     }
-
+                    
                     var itemNumberId = item.Descendants(amadeus + "itemNumber").Elements(amadeus + "itemNumberId")?.FirstOrDefault()?.Value;
                     price = item.Descendants(amadeus + "recPriceInfo").Elements(amadeus + "monetaryDetail").Elements(amadeus + "amount")?.FirstOrDefault()?.Value;
                     var priceinfo2 = item.Descendants(amadeus + "recPriceInfo").Elements(amadeus + "monetaryDetail").Elements(amadeus + "amount").Skip(1)?.FirstOrDefault()?.Value;
@@ -882,8 +892,40 @@ namespace ReservationSystem.Infrastructure.Repositories
                     _inbounItineraries = itinerariesList.Where(e => e.segment_type == "InBound" && e.flightProposal_ref == itemNumberId).ToList();
                     offer.itineraries.AddRange(_outbounItineraries);
                     offer.itineraries.AddRange(_inbounItineraries);
+                   
+
+                    try
+                    {
+                         var obFlightproposalRef = _outbounItineraries.Count > 0 ? _outbounItineraries?.FirstOrDefault()?.flightProposal_ref : "0";
+                         var inFlightproposalRef = _inbounItineraries.Count > 0 ? _inbounItineraries?.FirstOrDefault()?.flightProposal_ref : "0";
+                        var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.FirstOrDefault();
+                        List<ReferencingDetail> referenceingdetails = new List<ReferencingDetail>();
+                        foreach (var itemchild in segmentFlightRef.Descendants(amadeus + "referencingDetail"))
+                        {
+                            var refQuilifier = itemchild.Descendants(amadeus + "refQualifier")?.FirstOrDefault().Value;
+                            var refNumber = itemchild.Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
+                            ReferencingDetail refdet = new ReferencingDetail { refNumber = refNumber != null ? Convert.ToInt16(refNumber) : 0, refQualifier = refQuilifier };
+                            referenceingdetails.Add(refdet);
+
+                        }
+                        var BaggageItemIumber = referenceingdetails.Where(e => e.refQualifier == "B").FirstOrDefault()?.refNumber;
+
+                        var SegMentRefNumner = referenceingdetails.Where(e => e.refQualifier == "S").FirstOrDefault()?.refNumber;
+                         if(inFlightproposalRef != "0")
+                        {
+                            offer.baggageDetails = baggageDetails.Where(e => e.itemNumber == BaggageItemIumber.ToString()).FirstOrDefault();
+                        }
+            
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine($"Error while reading baggage {ex.Message.ToString()}");
+                    }
+                    
                     #endregion
-                    offer.baggageDetails = baggageDetails.Where(e => e.itemNumber == offer.id).FirstOrDefault();
+
+
+                    // offer.baggageDetails = baggageDetails.Where(e => e.itemNumber == offer.id).FirstOrDefault();
                     if (itineary != null)
                     {
                         ReturnModel.data.Add(offer);

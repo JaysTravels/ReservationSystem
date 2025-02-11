@@ -57,14 +57,54 @@ namespace ReservationSystem.Infrastructure.Repositories
                 {
                     strPw = "f3d1f70c-b1a0-48ba-816c-88fcccf72bf3";
                 }
+                string AcceptUrl = "";
+                string CANCELURL = "";
+                string DeclineUrl = "";
+                string EXCEPTIONURL = "";
+                if (Environment.GetEnvironmentVariable("EQDP_AcceptUrl") != null)
+                {
+                    AcceptUrl = Environment.GetEnvironmentVariable("EQDP_AcceptUrl")?.ToString();
+                }
+                else
+                {
+                    AcceptUrl =  _settings["AcceptUrl"];
+                }
+                if (Environment.GetEnvironmentVariable("EQDP_DeclineUrl") != null)
+                {
+                    DeclineUrl = Environment.GetEnvironmentVariable("EQDP_DeclineUrl")?.ToString();
+                }
+                else
+                {
+                    DeclineUrl = _settings["DeclineUrl"];
+                }
+
+                if (Environment.GetEnvironmentVariable("EQDP_CancelUrl") != null)
+                {
+                    DeclineUrl = Environment.GetEnvironmentVariable("EQDP_CancelUrl")?.ToString();
+                }
+                else
+                {
+                    DeclineUrl = _settings["CancelUrl"];
+                }
+
+                if (Environment.GetEnvironmentVariable("EQDP_ExceptionUrl") != null)
+                {
+                    DeclineUrl = Environment.GetEnvironmentVariable("EQDP_ExceptionUrl")?.ToString();
+                }
+                else
+                {
+                    DeclineUrl = _settings["ExceptionUrl"];
+                }
+
+
                 var parameters = new Dictionary<string, string>
                 {
-                    { "ACCEPTURL", _settings["AcceptUrl"] },
+                    { "ACCEPTURL", AcceptUrl },
                     { "AMOUNT", ((int)(request.Amount * 100)).ToString() },
-                    { "CANCELURL", _settings["CancelUrl"] },                  
+                    { "CANCELURL", CANCELURL },                  
                     { "CURRENCY", request.Currency },
-                    { "DECLINEURL", _settings["DeclineUrl"] },                  
-                    { "EXCEPTIONURL", _settings["ExceptionUrl"] },
+                    { "DECLINEURL", DeclineUrl },                  
+                    { "EXCEPTIONURL", EXCEPTIONURL },
                     { "LANGUAGE", request.Language },
                     { "ORDERID",OrderId},
                     { "PSPID", pspid },
@@ -82,12 +122,12 @@ namespace ReservationSystem.Infrastructure.Repositories
                 }
                 parameters = new Dictionary<string, string>
                 {
-                    { "ACCEPTURL", _settings["AcceptUrl"] },
+                    { "ACCEPTURL", AcceptUrl },
                     { "AMOUNT", ((int)(request.Amount * 100)).ToString() },
-                    { "CANCELURL", _settings["CancelUrl"] },
+                    { "CANCELURL", CANCELURL },
                     { "CURRENCY", request.Currency },
-                    { "DECLINEURL", _settings["DeclineUrl"] },
-                    { "EXCEPTIONURL", _settings["ExceptionUrl"] },
+                    { "DECLINEURL", DeclineUrl },
+                    { "EXCEPTIONURL", EXCEPTIONURL },
                     { "LANGUAGE", request.Language },
                     { "ORDERID",OrderId},
                     { "PSPID", pspid },
@@ -190,15 +230,54 @@ namespace ReservationSystem.Infrastructure.Repositories
                 {
                     strPw = "f3d1f70c-b1a0-48ba-816c-88fcccf72bf3";
                 }
+                string AcceptUrl = "";
+                string CANCELURL = "";
+                string DeclineUrl = "";
+                string EXCEPTIONURL = "";
+                if (Environment.GetEnvironmentVariable("EQDP_AcceptUrlManual") != null)
+                {
+                    AcceptUrl = Environment.GetEnvironmentVariable("EQDP_AcceptUrlManual")?.ToString();
+                }
+                else
+                {
+                    AcceptUrl = _settings["AcceptUrlManual"];
+                }
+                if (Environment.GetEnvironmentVariable("EQDP_DeclineUrlManual") != null)
+                {
+                    DeclineUrl = Environment.GetEnvironmentVariable("EQDP_DeclineUrlManual")?.ToString();
+                }
+                else
+                {
+                    DeclineUrl = _settings["DeclineUrlManual"];
+                }
+
+                if (Environment.GetEnvironmentVariable("EQDP_CancelUrlManual") != null)
+                {
+                    DeclineUrl = Environment.GetEnvironmentVariable("EQDP_CancelUrlManual")?.ToString();
+                }
+                else
+                {
+                    DeclineUrl = _settings["CancelUrlManual"];
+                }
+
+                if (Environment.GetEnvironmentVariable("EQDP_ExceptionUrlManual") != null)
+                {
+                    EXCEPTIONURL = Environment.GetEnvironmentVariable("EQDP_ExceptionUrlManual")?.ToString();
+                }
+                else
+                {
+                    EXCEPTIONURL = _settings["ExceptionUrlManual"];
+                }
+
 
                 var parameters = new Dictionary<string, string>
             {
-                    { "ACCEPTURL", _settings["AcceptUrlManual"] },
+                    { "ACCEPTURL", AcceptUrl },
                     { "AMOUNT", ((int)(request.Amount * 100)).ToString() },
-                    { "CANCELURL", _settings["CancelUrlManual"] },
+                    { "CANCELURL", CANCELURL },
                     { "CURRENCY", request.Currency },
-                    { "DECLINEURL", _settings["DeclineUrlManual"] },
-                    { "EXCEPTIONURL", _settings["ExceptionUrlManual"] },
+                    { "DECLINEURL", DeclineUrl },
+                    { "EXCEPTIONURL", EXCEPTIONURL },
                     { "LANGUAGE", request.Language },
                     { "ORDERID",OrderId},
                     { "PSPID", pspid },
@@ -216,12 +295,12 @@ namespace ReservationSystem.Infrastructure.Repositories
                 }
                 parameters = new Dictionary<string, string>
                 {
-                    { "ACCEPTURL", _settings["AcceptUrlManual"] },
+                    { "ACCEPTURL", AcceptUrl },
                     { "AMOUNT", ((int)(request.Amount * 100)).ToString() },
-                    { "CANCELURL", _settings["CancelUrlManual"] },
+                    { "CANCELURL", CANCELURL },
                     { "CURRENCY", request.Currency },
-                    { "DECLINEURL", _settings["DeclineUrlManual"] },
-                    { "EXCEPTIONURL", _settings["ExceptionUrlManual"] },
+                    { "DECLINEURL", DeclineUrl },
+                    { "EXCEPTIONURL", EXCEPTIONURL },
                     { "LANGUAGE", request.Language },
                     { "ORDERID",OrderId},
                     { "PSPID", pspid },

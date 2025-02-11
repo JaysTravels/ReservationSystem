@@ -92,6 +92,11 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+	<ItemGroup>
+		<Content Include="EmailTemplates\ManualPaymentFailed.html">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="ReservationSystem.Common\ReservationSystem.Common.csproj" />
