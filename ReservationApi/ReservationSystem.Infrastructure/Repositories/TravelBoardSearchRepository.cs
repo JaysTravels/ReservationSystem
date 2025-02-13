@@ -279,12 +279,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                   <priceType>ET</priceType>
                   <priceType>RP</priceType>
                   <priceType>RU</priceType>
-                  <priceType>TAC</priceType>
-                  <priceType>XND</priceType>
-                  <priceType>XLA</priceType>
-                  <priceType>XLO</priceType>
-                  <priceType>XLC</priceType>
-                  <priceType>XND</priceType>
+                  <priceType>TAC</priceType>                  
                </pricingTicketing>
             </pricingTickInfo>           
          </fareOptions> 

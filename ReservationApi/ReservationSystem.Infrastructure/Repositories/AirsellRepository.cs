@@ -173,10 +173,10 @@ namespace ReservationSystem.Infrastructure.Repositories
             if (sessionElement != null)
             {
 
-                string sessionId = sessionElement.Element(awsse + "SessionId")?.Value;
-                string sequenceNumber = sessionElement.Element(awsse + "SequenceNumber")?.Value;
-                string securityToken = sessionElement.Element(awsse + "SecurityToken")?.Value;
-                string TransactionStatusCode = sessionElement.Attribute("TransactionStatusCode")?.Value;
+                string sessionId = sessionElement?.Element(awsse + "SessionId")?.Value;
+                string sequenceNumber = sessionElement?.Element(awsse + "SequenceNumber")?.Value;
+                string securityToken = sessionElement?.Element(awsse + "SecurityToken")?.Value;
+                string TransactionStatusCode = sessionElement?.Attribute("TransactionStatusCode")?.Value;
                 int SeqNumber = 0;
                 if (sequenceNumber != null) { SeqNumber = Convert.ToInt32(sequenceNumber); }
                 ReturnModel.session = new HeaderSession
@@ -189,57 +189,78 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
 
             XNamespace amadeus = "http://xml.amadeus.com/ITARES_05_2_IA";
-            var messegeFunction = doc.Descendants(amadeus + "message")?.Descendants(amadeus + "messageFunctionDetails")?.Descendants(amadeus + "messageFunction")?.FirstOrDefault().Value;
-            var itineraryDetails = doc.Descendants(amadeus + "itineraryDetails").ToList();
+            var messegeFunction = doc.Descendants(amadeus + "message")?.Descendants(amadeus + "messageFunctionDetails")?.Descendants(amadeus + "messageFunction")?.FirstOrDefault()?.Value;
+            var itineraryDetails = doc.Descendants(amadeus + "itineraryDetails")?.ToList();
             if (itineraryDetails != null)
             {
                 foreach (var item in itineraryDetails)
                 {
                     AirSellItineraryDetails airSellItinerary = new AirSellItineraryDetails();
                     airSellItinerary.messageFunction = messegeFunction;
-                    var origin = item.Descendants(amadeus + "originDestination").Elements(amadeus + "origin")?.FirstOrDefault().Value;
-                    var destination = item.Descendants(amadeus + "originDestination").Elements(amadeus + "destination")?.FirstOrDefault().Value;
+                    var origin = item?.Descendants(amadeus + "originDestination")?.Elements(amadeus + "origin")?.FirstOrDefault()?.Value;
+                    var destination = item?.Descendants(amadeus + "originDestination")?.Elements(amadeus + "destination")?.FirstOrDefault()?.Value;
                     airSellItinerary.originDestination = new OriginDestination { origin = origin, destination = destination };
                     List<AirSellFlightDetails> LstflightDetails = new List<AirSellFlightDetails>();
-                    var segmentInformation = item.Descendants(amadeus + "segmentInformation")?.ToList();
+                    var segmentInformation = item?.Descendants(amadeus + "segmentInformation")?.ToList();
                     foreach( var item2 in segmentInformation)
                     {
                         AirSellFlightDetails flightDetails = new AirSellFlightDetails();
-                        var departureDate = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "departureDate").FirstOrDefault().Value;
+                        var departureDate = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "departureDate")?.FirstOrDefault()?.Value;
                         if (departureDate != null)
                         {
-                            DateTime deptdate = DateTime.ParseExact(departureDate, "ddMMyy", System.Globalization.CultureInfo.InvariantCulture);
-                            flightDetails.departureDate = DateOnly.FromDateTime(deptdate);
+                            try
+                            {
+                                DateTime deptdate = DateTime.ParseExact(departureDate, "ddMMyy", System.Globalization.CultureInfo.InvariantCulture);
+                                flightDetails.departureDate = DateOnly.FromDateTime(deptdate);
+                            }
+                            catch{}
+                          
                         }
-                        var departureTime = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "departureTime").FirstOrDefault().Value;
+                        var departureTime = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "departureTime")?.FirstOrDefault().Value;
                         if (departureTime != null)
                         {
-                            TimeOnly deptTime = TimeOnly.ParseExact(departureTime, "HHmm");
-                            flightDetails.departureTime = deptTime;
+                            try {
+                                TimeOnly deptTime = TimeOnly.ParseExact(departureTime, "HHmm");
+                                flightDetails.departureTime = deptTime;
+                            }
+                            catch { }
+                            
                         }
-                        var arrivalDate = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "arrivalDate").FirstOrDefault().Value;
+                        var arrivalDate = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "arrivalDate")?.FirstOrDefault()?.Value;
                         if (arrivalDate != null)
                         {
-                            DateTime date = DateTime.ParseExact(arrivalDate, "ddMMyy", System.Globalization.CultureInfo.InvariantCulture);
-                            flightDetails.arrivalDate = DateOnly.FromDateTime(date);
+                            try
+                            {
+                                DateTime date = DateTime.ParseExact(arrivalDate, "ddMMyy", System.Globalization.CultureInfo.InvariantCulture);
+                                flightDetails.arrivalDate = DateOnly.FromDateTime(date);
+                            }
+                            catch
+                            {
+
+                            }
+                            
                         }
-                        var arrivalTime = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "arrivalTime").FirstOrDefault().Value;
+                        var arrivalTime = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightDate")?.Elements(amadeus + "arrivalTime")?.FirstOrDefault()?.Value;
                         if (arrivalTime != null)
                         {
-                            TimeOnly arrTime = TimeOnly.ParseExact(arrivalTime, "HHmm");
-                            flightDetails.arrivalTime = arrTime;
+                            try
+                            {
+                                TimeOnly arrTime = TimeOnly.ParseExact(arrivalTime, "HHmm");
+                                flightDetails.arrivalTime = arrTime;
+                            } catch { }
+                           
                         }
 
                         var fromAirport = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "boardPointDetails")?.Elements(amadeus + "trueLocationId")?.FirstOrDefault()?.Value;
                         var toAirport = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "offpointDetails")?.Elements(amadeus + "trueLocationId")?.FirstOrDefault()?.Value;
                         flightDetails.fromAirport = fromAirport;
-                        DataRow fromAirportName = AirportCache != null ? AirportCache.AsEnumerable().FirstOrDefault(r => r.Field<string>("AirportCode") == fromAirport): null;
-                        var depAirportName = fromAirportName != null ? fromAirportName[2].ToString() + " , " + fromAirportName[4].ToString() : "";
+                        DataRow fromAirportName = AirportCache != null ? AirportCache?.AsEnumerable()?.FirstOrDefault(r => r.Field<string>("AirportCode") == fromAirport): null;
+                        var depAirportName = fromAirportName != null ? fromAirportName[2]?.ToString() + " , " + fromAirportName[4]?.ToString() : "";
                         flightDetails.fromAirportName = depAirportName;
 
                         flightDetails.toAirport = toAirport;
-                        DataRow toAirportName = AirportCache != null ? AirportCache.AsEnumerable().FirstOrDefault(r => r.Field<string>("AirportCode") == toAirport) : null;
-                        var arrAirportName = toAirportName != null ? toAirportName[2].ToString() + " , " + toAirportName[4].ToString() : "";
+                        DataRow toAirportName = AirportCache != null ? AirportCache?.AsEnumerable()?.FirstOrDefault(r => r.Field<string>("AirportCode") == toAirport) : null;
+                        var arrAirportName = toAirportName != null ? toAirportName[2]?.ToString() + " , " + toAirportName[4]?.ToString() : "";
                         flightDetails.toAirportName = arrAirportName;
 
                         var marketingCompany = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "companyDetails")?.Elements(amadeus + "marketingCompany")?.FirstOrDefault()?.Value;
@@ -249,8 +270,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                         flightDetails.flightNumber = flightNumber;
                         flightDetails.marketingCompany = marketingCompany;
                         flightDetails.bookingClass = bookingClass;
-                        DataRow carrier = AirlineCache != null ? AirlineCache.AsEnumerable().FirstOrDefault(r => r.Field<string>("AirlineCode") == marketingCompany): null;
-                        var carriername = carrier != null ? carrier[1].ToString() : "";
+                        DataRow carrier = AirlineCache != null ? AirlineCache?.AsEnumerable()?.FirstOrDefault(r => r.Field<string>("AirlineCode") == marketingCompany): null;
+                        var carriername = carrier != null ? carrier[1]?.ToString() : "";
                         flightDetails.marketingCompanyName = carriername; 
                         var flightIndicator = item2?.Descendants(amadeus + "flightDetails")?.Descendants(amadeus + "flightTypeDetails")?.Elements(amadeus + "flightIndicator")?.FirstOrDefault()?.Value;
                         flightDetails.flightIndicator = flightIndicator;
