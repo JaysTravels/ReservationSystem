@@ -22,6 +22,7 @@ using System.Data;
 using ReservationSystem.Domain.Models.FlightPrice;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 
 
@@ -499,6 +500,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                             var cabin = fareDetails?.Descendants(amadeus + "groupOfFares")?.Descendants(amadeus + "productInformation")?.Descendants(amadeus + "cabinProduct")?.Descendants(amadeus + "cabin")?.FirstOrDefault()?.Value;
                             var availStatus = fareDetails?.Descendants(amadeus + "groupOfFares")?.Descendants(amadeus + "productInformation")?.Descendants(amadeus + "cabinProduct")?.Descendants(amadeus + "avlStatus")?.FirstOrDefault()?.Value;
                             var fareBasis = fareDetails?.Descendants(amadeus + "groupOfFares")?.Descendants(amadeus + "productInformation")?.Descendants(amadeus + "fareProductDetail")?.Descendants(amadeus + "fareBasis")?.FirstOrDefault()?.Value;
+                            var fareTypeRecom = fareDetails?.Descendants(amadeus + "groupOfFares")?.Descendants(amadeus + "productInformation")?.Descendants(amadeus + "fareProductDetail")?.Descendants(amadeus + "fareType")?.FirstOrDefault()?.Value;
                             var breakpoint = fareDetails?.Descendants(amadeus + "groupOfFares")?.Descendants(amadeus + "productInformation")?.Descendants(amadeus + "breakPoint")?.FirstOrDefault()?.Value;
                             segment.avlStatus = availStatus;
                             segment.bookingClass = rbd;
@@ -765,7 +767,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                     cabinClass = string.Empty; bookingClass = string.Empty; avlStatus = string.Empty; farebasis = string.Empty;
                     passengerType = string.Empty; faretype = string.Empty; avlStatus = string.Empty;
                     var fareDetailsGroupOfFare = item.Descendants(amadeus + "fareDetails").Descendants(amadeus + "groupOfFares").ToList();
-
+                    var ftype = item.Descendants(amadeus + "fareDetails").Descendants(amadeus + "groupOfFares")?.Descendants(amadeus + "productInformation").Descendants(amadeus + "fareProductDetail")?.Descendants(amadeus + "fareType")?.FirstOrDefault()?.Value;
+                    fareType = ftype;
                     if (fareDetailsGroupOfFare != null)
                     {
 
@@ -781,11 +784,9 @@ namespace ReservationSystem.Infrastructure.Repositories
 
                             var fbasis = productInfo.Descendants(amadeus + "productInformation").Descendants(amadeus + "fareProductDetail")?.Descendants(amadeus + "fareBasis")?.FirstOrDefault()?.Value;
                             var pasType = productInfo.Descendants(amadeus + "productInformation").Descendants(amadeus + "fareProductDetail")?.Descendants(amadeus + "passengerType")?.FirstOrDefault()?.Value;
-                            var ftype = productInfo.Descendants(amadeus + "productInformation").Descendants(amadeus + "fareProductDetail")?.Descendants(amadeus + "fareType")?.FirstOrDefault()?.Value;
                             var breakpoint = productInfo.Descendants(amadeus + "productInformation").Descendants(amadeus + "breakPoint")?.FirstOrDefault()?.Value;
                             farebasis = fbasis;
-                            passengerType = pasType;
-                            fareType = ftype;
+                            passengerType = pasType;                            
                             breakPoint = breakpoint;
                         }
                     }
@@ -834,7 +835,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     offer.type = "Availability";
                     offer.lastTicketingDate = LastTicketDate;
                     offer.oneWay = flightIndexInbound != null ? false : true;
-                    offer.pricingOptions = new PriceOption { fareType = faretype.Split(',').ToList<string>(), includedCheckedBagsOnly = false };
+                    offer.pricingOptions = new PriceOption {  includedCheckedBagsOnly = false };
                     offer.source = "Amadeus";
                     offer.travelerPricings = new List<TravelerPricing>();
                     foreach (var pfx in paxReferece)
@@ -880,9 +881,9 @@ namespace ReservationSystem.Infrastructure.Repositories
                     offer.avlStatus = avlStatus;
                     offer.fareBasis = farebasis;
                     offer.passengerType = passengerType;
-                    offer.fareType = faretype;
-                    offer.fareTypeName = faretype == "RA" ? "CAT Fare" : offer.fareTypeName;
-                    offer.fareTypeName = faretype == "RP" ? "Published Fare" : offer.fareTypeName;
+                    offer.fareType = ftype;
+                    offer.fareTypeName = ftype == "RA" ? "CAT Fare" : offer.fareTypeName;
+                    offer.fareTypeName = ftype == "RP" ? "Published Fare" : offer.fareTypeName;
                     offer.breakPoint = breakPoint;
                     offer.validatingAirlineCodes = companyname.Split(" ").ToList<string>();
                     #region Get Itineraries from outbound
