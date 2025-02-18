@@ -881,6 +881,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                     offer.fareBasis = farebasis;
                     offer.passengerType = passengerType;
                     offer.fareType = faretype;
+                    offer.fareTypeName = faretype == "RA" ? "CAT Fare" : offer.fareTypeName;
+                    offer.fareTypeName = faretype == "RP" ? "Published Fare" : offer.fareTypeName;
                     offer.breakPoint = breakPoint;
                     offer.validatingAirlineCodes = companyname.Split(" ").ToList<string>();
                     #region Get Itineraries from outbound
