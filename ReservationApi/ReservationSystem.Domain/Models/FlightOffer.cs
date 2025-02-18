@@ -24,6 +24,7 @@ namespace ReservationSystem.Domain.Models
         public string? fareBasis { get; set; }
         public string? passengerType { get; set; }
         public string? fareType { get; set; }
+        public string? fareTypeName { get; set; }
         public string? breakPoint { get; set; }
         public BaggageDetails? baggageDetails { get; set; }
         public int? MarkupId { get; set; }
