@@ -37,6 +37,8 @@ namespace ReservationSystem.Domain.DBContext
         public DbSet<Users> Users { get; set; }
         public DbSet<Enquiry> Enquiries { get; set; }
 
+        public DbSet<InsuranceInfo> InsuranceInfos { get; set; }
+
         public DbSet<ManualPayment> ManulPayments { get; set; }
 
         public DbSet<MarketingSource> MarketingSources { get; set; }

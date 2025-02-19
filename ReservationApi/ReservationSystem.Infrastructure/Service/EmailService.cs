@@ -19,6 +19,7 @@ using Azure;
 using Azure.Communication.Email;
 using ReservationSystem.Domain.Models.ManualPayment;
 using DocumentFormat.OpenXml.Wordprocessing;
+using ReservationSystem.Domain.Models.Insurance;
 
 
 namespace ReservationSystem.Infrastructure.Service
@@ -507,5 +508,38 @@ namespace ReservationSystem.Infrastructure.Service
             }
         }
 
+        public async Task<string> GetInsuranceTemplate(InsuranceRequest request)
+        {
+            try
+            {
+                var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "Insurance.html");
+                var template = File.ReadAllText(filePath);
+                var placeholders = new Dictionary<string, string>{
+                  { "Customer", "Customer"  },};
+                var segmentHtml = new StringBuilder();
+                segmentHtml.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>Where To:</th><td>{request?.WhereTo}</td></tr>
+                    <tr><th>Number of Travellers:</th><td>{request?.NumnerOfTravellers}</td></tr>
+                    <tr><th>Departure Date:</th><td>{request?.DepartureDate}</td></tr>
+                    <tr><th>Return Date:</th><td>{request?.ReturnDate}</td></tr>
+                    <tr><th>Email:</th><td>{request?.Email}</td></tr>
+                    <tr><th>Contact:</th><td>{request?.Contact}</td></tr>
+                </table>
+            </div>");
+
+                // Replace the placeholder with the actual segments
+                template = template.Replace("{{Insurance}}", segmentHtml.ToString());
+                var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
+                return emailBody;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error While Sending Enquiry email {ex.Message.ToString()}");
+                return "Enquiry Email Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
+            }
+        }
     }
 }
