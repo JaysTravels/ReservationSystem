@@ -32,18 +32,26 @@ namespace ReservationSystem.Infrastructure.Repositories
             try
             {
                 #region Save Enquiry To Database
-                InsuranceInfo ins = new InsuranceInfo
+                try
                 {
-                    CreatedOn = DateTime.UtcNow,
-                    Email = requestModel.Email,
-                    WhereTo = requestModel.WhereTo,
-                    DepartureDate = requestModel.DepartureDate,
-                    ReturnDate = requestModel.ReturnDate,
-                    NumberOfTravellers = requestModel.NumnerOfTravellers,
-                    Contact = requestModel.Contact
-                };
-                await _dbRepository.InsuranceInfos.AddAsync(ins);
-                await _dbRepository.SaveChangesAsync();
+                    InsuranceInfo ins = new InsuranceInfo
+                    {
+                        CreatedOn = DateTime.UtcNow,
+                        Email = requestModel.Email,
+                        WhereTo = requestModel.WhereTo,
+                        DepartureDate = requestModel.DepartureDate,
+                        ReturnDate = requestModel.ReturnDate,
+                        NumberOfTravellers = requestModel.NumnerOfTravellers,
+                        Contact = requestModel.Contact
+                    };
+                    await _dbRepository.InsuranceInfos.AddAsync(ins);
+                    await _dbRepository.SaveChangesAsync();
+                }
+                catch(Exception ex)
+                {
+
+                }
+             
                 #endregion
 
                 #region Email Sending Region
