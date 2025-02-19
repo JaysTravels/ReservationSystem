@@ -199,6 +199,7 @@ namespace ReservationSystem.Infrastructure.Service
                     bookingref.Append($"</div>");
                     
                     template = template.Replace("{{BookingRef}}", bookingref.ToString());
+                    template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
                     var segmentHtml = new StringBuilder(); 
                    
                     foreach (var item in offer.itineraries)
@@ -275,6 +276,7 @@ namespace ReservationSystem.Infrastructure.Service
 
                     // Replace the placeholder with the actual segments
                 template = template.Replace("{{Enquiry}}", segmentHtml.ToString());
+                template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
                 var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
                 return emailBody;
                 
@@ -358,7 +360,8 @@ namespace ReservationSystem.Infrastructure.Service
                         pBuilder.Append($"</div>");
                     }
                     template = template.Replace("{{PassengerInformation}}", pBuilder.ToString());
-                   
+                    template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
+
                     placeholders.TryAdd("BookingStatus", bookingStatus);
                     placeholders.TryAdd("PaymentStatus", paymentStatus);
                     placeholders.TryAdd("HotelInformation", "<div class='segment'><span>None</span></div>");
@@ -418,6 +421,7 @@ namespace ReservationSystem.Infrastructure.Service
 
                 // Replace the placeholder with the actual segments
                 template = template.Replace("{{PaymentDetails}}", segmentHtml.ToString());
+                template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
                 var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
                 return emailBody;
 
@@ -487,7 +491,8 @@ namespace ReservationSystem.Infrastructure.Service
                         pBuilder.Append($"</div>");
                     }
                     
-                    template = template.Replace("{{PassengerList}}", pBuilder.ToString());                   
+                    template = template.Replace("{{PassengerList}}", pBuilder.ToString());
+                    template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
                     placeholders.TryAdd("FlightPrice", offer?.price?.currency + " " + offer?.price?.total);
                     var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
                     return emailBody;
@@ -515,15 +520,15 @@ namespace ReservationSystem.Infrastructure.Service
                 var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "Insurance.html");
                 var template = File.ReadAllText(filePath);
                 var placeholders = new Dictionary<string, string>{
-                  { "Customer", "Customer"  },};
+                  { "Customer", "Customer"  },{ "currentyear" , DateTime.Now.Year.ToString() } };
                 var segmentHtml = new StringBuilder();
                 segmentHtml.Append($@"
             <div class='segment'>
                  <table>
                     <tr><th>Where To:</th><td>{request?.WhereTo}</td></tr>
                     <tr><th>Number of Travellers:</th><td>{request?.NumnerOfTravellers}</td></tr>
-                    <tr><th>Departure Date:</th><td>{request?.DepartureDate}</td></tr>
-                    <tr><th>Return Date:</th><td>{request?.ReturnDate}</td></tr>
+                    <tr><th>Departure Date:</th><td>{request?.DepartureDate.ToString("dd-MM-yyyy")}</td></tr>
+                    <tr><th>Return Date:</th><td>{request?.ReturnDate.ToString("dd-MM-yyyy")}</td></tr>
                     <tr><th>Email:</th><td>{request?.Email}</td></tr>
                     <tr><th>Contact:</th><td>{request?.Contact}</td></tr>
                 </table>
