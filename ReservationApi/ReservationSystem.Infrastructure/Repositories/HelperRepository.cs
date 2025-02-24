@@ -49,8 +49,70 @@ namespace ReservationSystem.Infrastructure.Repositories
                
             }
         }
-
         public async Task SaveXmlResponse(string filename, string response)
+        {
+            try
+            {
+                var allowLogs = configuration.GetSection("writelogs")?.Value;
+                if (allowLogs?.ToLower() == "true")
+                {
+                    // Parse XML with proper error handling
+                    XDocument xmlDoc;
+                    try
+                    {
+                        xmlDoc = XDocument.Parse(response);
+                    }
+                    catch (Exception xmlEx)
+                    {
+                        Console.WriteLine($"Invalid XML format: {xmlEx.Message}");
+                        return; // Exit if XML is invalid
+                    }
+
+                    // XML Writer Settings
+                    XmlWriterSettings settings = new XmlWriterSettings
+                    {
+                        Indent = true,
+                        OmitXmlDeclaration = false,
+                        Encoding = System.Text.Encoding.UTF8
+                    };
+
+                    // Determine logs path
+                    var logsPath = configuration.GetSection("Logspath")?.Value;
+
+                    if (!string.IsNullOrEmpty(logsPath))
+                    {
+                        // Auto-detect environment (Azure or Local)
+                        logsPath = Environment.GetEnvironmentVariable("HOME") != null
+                            ? Path.Combine(Environment.GetEnvironmentVariable("HOME"), "LogFiles") // Azure App Service
+                            : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs"); // Local bin/logs
+                    }
+
+                    // Ensure the directory exists
+                    if (!Directory.Exists(logsPath))
+                    {
+                        Directory.CreateDirectory(logsPath);
+                    }
+
+                    // Generate a timestamped filename
+                    string timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmss");
+                    string fullPath = Path.Combine(logsPath, $"{filename}_{timestamp}.xml");
+
+                    // Write XML to file asynchronously
+                    using (XmlWriter writer = XmlWriter.Create(fullPath, settings))
+                    {
+                        xmlDoc.Save(writer);
+                    }
+
+                    Console.WriteLine($"XML log saved successfully: {fullPath}");
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while saving XML response: {ex.Message}");
+            }
+        }
+
+        public async Task SaveXmlResponseOld(string filename, string response)
         {
             try
             {
