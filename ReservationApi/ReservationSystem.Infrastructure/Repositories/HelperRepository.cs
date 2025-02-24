@@ -81,10 +81,11 @@ namespace ReservationSystem.Infrastructure.Repositories
 
                     if (!string.IsNullOrEmpty(logsPath))
                     {
+                        logsPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..", "App_Data", "logs");
                         // Auto-detect environment (Azure or Local)
-                        logsPath = Environment.GetEnvironmentVariable("HOME") != null
-                            ? Path.Combine(Environment.GetEnvironmentVariable("HOME"), "LogFiles") // Azure App Service
-                            : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs"); // Local bin/logs
+                        //logsPath = Environment.GetEnvironmentVariable("HOME") != null
+                        //    ? Path.Combine(Environment.GetEnvironmentVariable("HOME"), "LogFiles") // Azure App Service
+                        //    : Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "logs"); // Local bin/logs
                     }
 
                     // Ensure the directory exists
