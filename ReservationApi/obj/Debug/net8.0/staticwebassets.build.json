@@ -1,11 +1,12 @@
 {
   "Version": 1,
-  "Hash": "/l8aBE83r1V8Oj3W5lCnpJcVAbkchzILF7d8pkVsTTQ=",
+  "Hash": "SDB4KMT/pEiLMnAKUmEBnWNdoTW1LraV46OD7Oi7VAI=",
   "Source": "ReservationApi",
   "BasePath": "_content/ReservationApi",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
   "DiscoveryPatterns": [],
-  "Assets": []
+  "Assets": [],
+  "Endpoints": []
 }

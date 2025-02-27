@@ -225,6 +225,168 @@ namespace ReservationSystem.Domain.Migrations
                     b.ToTable("day_name");
                 });
 
+            modelBuilder.Entity("ReservationSystem.Domain.DB_Models.Deeplink", b =>
+                {
+                    b.Property<int>("DeeplinkId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("deeplink_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("DeeplinkId"));
+
+                    b.Property<int?>("Adults")
+                        .HasColumnType("integer")
+                        .HasColumnName("adults");
+
+                    b.Property<int?>("Adults2")
+                        .HasColumnType("integer")
+                        .HasColumnName("adults2");
+
+                    b.Property<int?>("Adults3")
+                        .HasColumnType("integer")
+                        .HasColumnName("adults3");
+
+                    b.Property<string>("CabinClass")
+                        .HasColumnType("text")
+                        .HasColumnName("cabin_class");
+
+                    b.Property<string>("CabinClass2")
+                        .HasColumnType("text")
+                        .HasColumnName("cabin_class2");
+
+                    b.Property<string>("CabinClass3")
+                        .HasColumnType("text")
+                        .HasColumnName("cabin_class3");
+
+                    b.Property<int?>("Children")
+                        .HasColumnType("integer")
+                        .HasColumnName("children");
+
+                    b.Property<int?>("Children2")
+                        .HasColumnType("integer")
+                        .HasColumnName("children2");
+
+                    b.Property<int?>("Children3")
+                        .HasColumnType("integer")
+                        .HasColumnName("children3");
+
+                    b.Property<string>("CityName1")
+                        .HasColumnType("text")
+                        .HasColumnName("city_name1");
+
+                    b.Property<string>("CityName2")
+                        .HasColumnType("text")
+                        .HasColumnName("city_name2");
+
+                    b.Property<string>("CityName3")
+                        .HasColumnType("text")
+                        .HasColumnName("city_name3");
+
+                    b.Property<string>("CountryName")
+                        .HasColumnType("text")
+                        .HasColumnName("country_name");
+
+                    b.Property<DateTime?>("CreatedOn")
+                        .HasColumnType("timestamp without time zone")
+                        .HasColumnName("created_on");
+
+                    b.Property<string>("DepartureDate")
+                        .HasColumnType("text")
+                        .HasColumnName("departuredate");
+
+                    b.Property<string>("DepartureDate2")
+                        .HasColumnType("text")
+                        .HasColumnName("departuredate2");
+
+                    b.Property<string>("DepartureDate3")
+                        .HasColumnType("text")
+                        .HasColumnName("departuredate3");
+
+                    b.Property<string>("Destination")
+                        .HasColumnType("text")
+                        .HasColumnName("destination");
+
+                    b.Property<string>("Destination2")
+                        .HasColumnType("text")
+                        .HasColumnName("destination2");
+
+                    b.Property<string>("Destination3")
+                        .HasColumnType("text")
+                        .HasColumnName("destination3");
+
+                    b.Property<string>("FlightType")
+                        .HasColumnType("text")
+                        .HasColumnName("flight_type");
+
+                    b.Property<string>("FlightType2")
+                        .HasColumnType("text")
+                        .HasColumnName("flight_type2");
+
+                    b.Property<string>("FlightType3")
+                        .HasColumnType("text")
+                        .HasColumnName("flight_type3");
+
+                    b.Property<string>("ImageUrl")
+                        .HasColumnType("text")
+                        .HasColumnName("image_url");
+
+                    b.Property<int?>("Infant")
+                        .HasColumnType("integer")
+                        .HasColumnName("infant");
+
+                    b.Property<int?>("Infant2")
+                        .HasColumnType("integer")
+                        .HasColumnName("infant2");
+
+                    b.Property<int?>("Infant3")
+                        .HasColumnType("integer")
+                        .HasColumnName("infant3");
+
+                    b.Property<bool?>("IsActive")
+                        .HasColumnType("boolean")
+                        .HasColumnName("is_active");
+
+                    b.Property<string>("Origin")
+                        .HasColumnType("text")
+                        .HasColumnName("origin");
+
+                    b.Property<string>("Origin2")
+                        .HasColumnType("text")
+                        .HasColumnName("origin2");
+
+                    b.Property<string>("Origin3")
+                        .HasColumnType("text")
+                        .HasColumnName("origin3");
+
+                    b.Property<decimal?>("Price1")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price1");
+
+                    b.Property<decimal?>("Price2")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price2");
+
+                    b.Property<decimal?>("Price3")
+                        .HasColumnType("numeric")
+                        .HasColumnName("price3");
+
+                    b.Property<string>("ReturnDate")
+                        .HasColumnType("text")
+                        .HasColumnName("returndate");
+
+                    b.Property<string>("ReturnDate2")
+                        .HasColumnType("text")
+                        .HasColumnName("returndate2");
+
+                    b.Property<string>("ReturnDate3")
+                        .HasColumnType("text")
+                        .HasColumnName("returndate3");
+
+                    b.HasKey("DeeplinkId");
+
+                    b.ToTable("deeplink");
+                });
+
             modelBuilder.Entity("ReservationSystem.Domain.DB_Models.FareType", b =>
                 {
                     b.Property<int>("FareTypeId")
