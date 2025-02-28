@@ -49,7 +49,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                
             }
         }
-        public async Task SaveXmlResponseold(string filename, string response)
+        public async Task SaveXmlResponse(string filename, string response)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
         }
 
-        public async Task SaveXmlResponse(string filename, string response)
+        public async Task SaveXmlResponseold(string filename, string response)
         {
             try
             {
