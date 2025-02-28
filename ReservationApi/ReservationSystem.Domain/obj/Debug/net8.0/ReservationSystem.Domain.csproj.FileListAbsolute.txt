@@ -31,3 +31,14 @@ D:\work\git-ReservationSystem\ReservationSystemV2\ReservationSystem\ReservationA
 D:\work\git-ReservationSystem\ReservationSystemV2\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\refint\ReservationSystem.Domain.dll
 D:\work\git-ReservationSystem\ReservationSystemV2\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.pdb
 D:\work\git-ReservationSystem\ReservationSystemV2\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ref\ReservationSystem.Domain.dll
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.deps.json
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.dll
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\bin\Debug\net8.0\ReservationSystem.Domain.pdb
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.csproj.AssemblyReference.cache
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.csproj.CoreCompileInputs.cache
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.sourcelink.json
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.dll
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\refint\ReservationSystem.Domain.dll
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ReservationSystem.Domain.pdb
+E:\Work\JaysBackend\ReservationSystem\ReservationApi\ReservationSystem.Domain\obj\Debug\net8.0\ref\ReservationSystem.Domain.dll

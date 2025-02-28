@@ -44,6 +44,7 @@ builder.Services.AddScoped<ITicketCancelRepository, TicketCancelRepository>();
 builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IEnquriyRepository, EnquriyRepository>();
 builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>();
+builder.Services.AddScoped<IDeeplinkRepository, DeeplinkRepository>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();

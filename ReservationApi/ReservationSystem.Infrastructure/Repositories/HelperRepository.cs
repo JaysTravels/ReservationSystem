@@ -113,7 +113,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
         }
 
-        public async Task SaveXmlResponseOld(string filename, string response)
+        public async Task SaveXmlResponseold(string filename, string response)
         {
             try
             {

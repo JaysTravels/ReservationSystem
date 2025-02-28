@@ -24,7 +24,7 @@ namespace ReservationSystem.Domain.DBContext
           
         }
   
-    public DbSet<SearchAvailabilityResults> AvailabilityResults { get; set; }
+        public DbSet<SearchAvailabilityResults> AvailabilityResults { get; set; }
         public DbSet<FlightMarkup> FlightMarkups { get; set; }
 
         public DbSet<ReservationFlow> ReservationFlow { get; set; }
@@ -61,5 +61,7 @@ namespace ReservationSystem.Domain.DBContext
         public DbSet<MarkupJournyType> MarkupJournyTypes { get; set; }
 
         public DbSet<JourneyType> JourneyTypes { get; set; }
+
+        public DbSet<Deeplink> Deeplinks { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using ReservationSystem.Domain.DB_Models;
 using ReservationSystem.Domain.Models.AddPnrMulti;
 using ReservationSystem.Domain.Models.DBLogs;
+using ReservationSystem.Domain.Models.Deeplink;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,6 +35,8 @@ namespace ReservationSystem.Domain.Repositories
         public Task<BookingInfo>? GetBookingInfo(string sessionId);
 
         public Task<string> GetLastSessionId();
+
+        public Task<List<Deeplink>> GetDeeplink();
 
 
     }
