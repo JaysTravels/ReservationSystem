@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DocumentFormat.OpenXml.Office.CustomUI;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
@@ -8,6 +9,7 @@ using ReservationSystem.Domain.DBContext;
 using ReservationSystem.Domain.Models;
 using ReservationSystem.Domain.Models.AddPnrMulti;
 using ReservationSystem.Domain.Models.DBLogs;
+using ReservationSystem.Domain.Models.Deeplink;
 using ReservationSystem.Domain.Repositories;
 using System;
 using System.Collections.Generic;
@@ -325,6 +327,23 @@ namespace ReservationSystem.Infrastructure.Repositories
                 _logger.LogError($"Error while Get SessionID {ex.Message.ToString()}");
                 return "";
             }
+        }
+
+        public async Task<List<Deeplink>> GetDeeplink()
+        {
+            try
+            {
+                string Res = string.Empty;
+                var deeplinks = await _context.Deeplinks.Where(e => e.IsActive == true).OrderByDescending(e => e.DeeplinkId).ToListAsync();
+                return deeplinks;
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError($"Error while Get SessionID {ex.Message.ToString()}");
+                return null;
+            }
+
         }
     }
 }
