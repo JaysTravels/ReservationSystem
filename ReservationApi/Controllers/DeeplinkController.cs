@@ -31,10 +31,10 @@ namespace ReservationApi.Controllers
 
             var data = await _Repo.GetDeepLink();
 
-            res.IsSuccessful = data?.Error == null ? true : false;
-            res.StatusCode = data?.Error == null ? 200 : 500;
-            res.Message = data?.Error == null ? "Found Success: Total records:" + data.deepLinkModels.Count() : "Error";
-            res.Response = data?.Error == null ? "Success" : "Failed";            
+            res.IsSuccessful = data?.Error == "" ? true : false;
+            res.StatusCode = data?.Error == "" ? 200 : 500;
+            res.Message = data?.Error == "" ? "Found Success: Total records:" + data.deepLinkModels.Count() : "Error";
+            res.Response = data?.Error == "" ? "Success" : "Failed";            
             res.Data = data;           
 
             return Ok(res);
