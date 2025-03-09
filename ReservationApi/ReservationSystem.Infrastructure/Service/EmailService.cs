@@ -399,7 +399,12 @@ namespace ReservationSystem.Infrastructure.Service
         {
             try
             {
-                var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "ManualPayment.html");
+                string templateName = "ManualPayment.html";
+                if(enquiry.PaymentStatus == false)
+                {
+                    templateName = "ManualPaymentFailed.html";
+                }
+                var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", templateName);
                 var template = File.ReadAllText(filePath);
                 var placeholders = new Dictionary<string, string>{
                   { "CustomerName", enquiry.FirstName + " " + enquiry.LastName  },                  
@@ -462,7 +467,17 @@ namespace ReservationSystem.Infrastructure.Service
                   { "CustomerName", enquiry.FirstName + " " + enquiry.LastName  },
                 };
                 placeholders.Add("PaymentStatus", enquiry?.PaymentStatus.ToString() == "True" ? "Success" : "Faild");
-                var segmentHtml = new StringBuilder();
+                var paymentMsg = new StringBuilder();
+                if (enquiry?.PaymentStatus == true)
+                {
+                    paymentMsg.Append($@"<p>Thank you for paying! Payment status: Success. We have received your payment with the details below:</p>");
+                }
+                else
+                {
+                    paymentMsg.Append($@"<p> Thank you for your payment! However, we have not received it. Payment status: Failed.</p>");
+                }
+
+                    var segmentHtml = new StringBuilder();
                 segmentHtml.Append($@"
             <div class='segment'>
                  <table>
@@ -506,6 +521,7 @@ namespace ReservationSystem.Infrastructure.Service
                 // Replace the placeholder with the actual segments
                 template = template.Replace("{{PaymentDetails}}", segmentHtml.ToString());
                 template = template.Replace("{{CardDetails}}", segmentHtmlPayResponse.ToString());
+                template = template.Replace("{{PaymentMessage}}", paymentMsg.ToString());
                 template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
                 var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
                 return emailBody;
