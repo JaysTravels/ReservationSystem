@@ -92,8 +92,10 @@ namespace ReservationApi.Controllers
                     string subject = request?.PaymentStatus.Value == true ? "Payment Success" : "Payment Failed";
                     string ToemailAddress = request?.Email;
                     await _emailService.SendEmailAsync3(ToemailAddress, subject, emailBody);
+
+                    var emailBodyAdmin = await _emailService.GetManualPaymentTemplateAdmin(request);
                     var AdminEmail = _configuration["EmailSettings:AdminEmail"];
-                    await _emailService.SendEmailAsync3(AdminEmail, "Admin-Email Customer" + subject, emailBody);
+                    await _emailService.SendEmailAsync3(AdminEmail, "Admin-Email Customer" + subject, emailBodyAdmin);
                
                       
             }

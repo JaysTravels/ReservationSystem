@@ -20,6 +20,8 @@ using Azure.Communication.Email;
 using ReservationSystem.Domain.Models.ManualPayment;
 using DocumentFormat.OpenXml.Wordprocessing;
 using ReservationSystem.Domain.Models.Insurance;
+using DocumentFormat.OpenXml.Math;
+using ReservationApi.ReservationSystem.Domain.Models.Payment;
 
 
 namespace ReservationSystem.Infrastructure.Service
@@ -432,6 +434,90 @@ namespace ReservationSystem.Infrastructure.Service
                 return "Enquiry Email Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
             }
         }
+
+        public async Task<string> GetManualPaymentTemplateAdmin(ManualPaymentCustomerDetails enquiry)
+        {
+            try
+            {
+                string paymentMessage = "No Payment Status Available";
+                try
+                {
+                    paymentMessage = enquiry?.Status != null
+                        ? (BarclaysPaymentStatus)Convert.ToInt16(enquiry.Status) switch
+                        {
+                            BarclaysPaymentStatus.Authorized => "Payment Authorized",
+                            BarclaysPaymentStatus.PaymentCaptured => "Payment Captured",
+                            BarclaysPaymentStatus.Refunded => "Payment Refunded",
+                            BarclaysPaymentStatus.RefundInProgress => "Refund in Progress",
+                            BarclaysPaymentStatus.AuthorizationDeclined => "Payment Declined",
+                            BarclaysPaymentStatus.CancelledByCustomer => "Payment Cancelled",
+                            _ => "Unknown Payment Status"
+                        }
+                        : "No Payment Status Available";
+                }
+                catch { }
+                var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "ManualPaymentAdmin.html");
+                var template = File.ReadAllText(filePath);
+                var placeholders = new Dictionary<string, string>{
+                  { "CustomerName", enquiry.FirstName + " " + enquiry.LastName  },
+                };
+                placeholders.Add("PaymentStatus", enquiry?.PaymentStatus.ToString() == "True" ? "Success" : "Faild");
+                var segmentHtml = new StringBuilder();
+                segmentHtml.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>Booking Ref:</th><td>{enquiry.BookingRef}</td></tr>
+                    <tr><th>Amount:</th><td>{enquiry.Amount}</td></tr>
+                    <tr><th>Name:</th><td>{enquiry.FirstName + " " + enquiry.LastName}</td></tr>
+                    <tr><th>Email:</th><td>{enquiry.Email}</td></tr>
+                    <tr><th>Phone:</th><td>{enquiry.Phone}</td></tr>
+                    <tr><th>Address:</th><td>{enquiry.Address}</td></tr>
+                    <tr><th>City:</th><td>{enquiry.City}</td></tr>
+                    <tr><th>Country:</th><td>{enquiry.Country}</td></tr>
+                    <tr><th>Postal:</th><td>{enquiry.Postal}</td></tr>
+                </table>
+            </div>");
+
+                var segmentHtmlPayResponse = new StringBuilder();
+                segmentHtmlPayResponse.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>Authorization Code:</th><td>{enquiry?.AuthorizationCode}</td></tr>
+                    <tr><th>Authorization Date:</th><td>{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}</td></tr>
+                    <tr><th>Payment Date:</th><td>{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}</td></tr>
+                    <tr><th>Currency:</th><td>{enquiry?.Currency}</td></tr>
+                    <tr><th>Amount:</th><td>{enquiry?.Amount}</td></tr>
+                    <tr><th>Pay Id:</th><td>{enquiry?.PayId}</td></tr>
+                    <tr><th>Order ID:</th><td>{enquiry?.OrderID}</td></tr>
+                    <tr><th>Payment Method:</th><td>{enquiry?.PaymentMethod}</td></tr>
+                    <tr><th>Acceptance:</th><td>{enquiry?.Acceptance}</td></tr>
+                    <tr><th>Status:</th><td>{ paymentMessage}</td></tr>
+                    <tr><th>Card No:</th><td>{enquiry?.CardNo}</td></tr>
+                    <tr><th>Brand:</th><td>{enquiry?.Brand}</td></tr>
+                    <tr><th>Card Holder Namee:</th><td>{enquiry?.CardHolderName}</td></tr>
+                    <tr><th>Expiry Date:</th><td>{enquiry?.ExpiryDate}</td></tr>
+                    <tr><th>Error:</th><td>{enquiry?.NcError}</td></tr>
+                    <tr><th>IpCity:</th><td>{enquiry?.IpCity}</td></tr>
+                    <tr><th>Ip:</th><td>{enquiry?.IP}</td></tr>
+                  
+                </table>
+            </div>");
+
+                // Replace the placeholder with the actual segments
+                template = template.Replace("{{PaymentDetails}}", segmentHtml.ToString());
+                template = template.Replace("{{CardDetails}}", segmentHtmlPayResponse.ToString());
+                template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
+                var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
+                return emailBody;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error While Sending Enquiry email {ex.Message.ToString()}");
+                return "Enquiry Email Error in sending Email " + ex.Message.ToString() + " " + ex.StackTrace.ToString();
+            }
+        }
+
 
         public async Task<string> GetPassengerSelectedFlightTemplate(string sessionId = "")
         {
