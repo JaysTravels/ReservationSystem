@@ -1113,6 +1113,8 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
             #endregion
             ReturnModel.data = ReturnModel.data.OrderBy(e => e.price.total).ToList();
+           
+            
             return ReturnModel;
         }
         private string CalculateDuration(List<string> timestring)

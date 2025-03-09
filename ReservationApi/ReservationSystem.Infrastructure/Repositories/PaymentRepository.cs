@@ -15,6 +15,9 @@ using ReservationSystem.Domain.DBContext;
 using ReservationApi.ReservationSystem.Domain.DB_Models;
 using Microsoft.EntityFrameworkCore;
 using DocumentFormat.OpenXml.Math;
+using ReservationApi.ReservationSystem.Domain.Models.Payment;
+using ReservationSystem.Domain.Models.Enquiry;
+using DocumentFormat.OpenXml.Drawing.Diagrams;
 
 namespace ReservationSystem.Infrastructure.Repositories
 {
@@ -324,8 +327,24 @@ namespace ReservationSystem.Infrastructure.Repositories
           
             try
             {
-                 
-                    ManualPayment payment = new ManualPayment();
+                string paymentMessage = "";
+                try
+                {
+                    paymentMessage = request?.Status != null
+                        ? (BarclaysPaymentStatus)Convert.ToInt16(request.Status) switch
+                        {
+                            BarclaysPaymentStatus.Authorized => "Payment Authorized",
+                            BarclaysPaymentStatus.PaymentCaptured => "Payment Captured",
+                            BarclaysPaymentStatus.Refunded => "Payment Refunded",
+                            BarclaysPaymentStatus.RefundInProgress => "Refund in Progress",
+                            BarclaysPaymentStatus.AuthorizationDeclined => "Payment Declined",
+                            BarclaysPaymentStatus.CancelledByCustomer => "Payment Cancelled",
+                            _ => "Unknown Payment Status"
+                        }
+                        : "No Payment Status Available";
+                }
+                catch { }
+                ManualPayment payment = new ManualPayment();
                     payment.Address = request.Address;
                     payment.Amount = request?.Amount != null ? Convert.ToDecimal(request.Amount) : 0;
                     payment.City = request?.City;
@@ -337,6 +356,16 @@ namespace ReservationSystem.Infrastructure.Repositories
                     payment.PhoneNumber = request?.Phone;
                     payment.PostalCode = request?.Postal;
                     payment.PaymentStatus = request?.PaymentStatus;
+                    payment.OrderID = request?.OrderID;
+                    payment.PaymentMethod = request?.PaymentMethod;
+                    payment.Acceptance = request?.Acceptance;
+                    payment.BarclaysStatus = paymentMessage;
+                    payment.CardNumber = request?.CardNo;
+                    payment.Brand = request?.Brand;
+                    payment.CardHolderName = request?.CardHolderName;
+                    payment.ExpiryDate = request?.ExpiryDate;
+                    payment.Error = request?.NcError;
+                    payment.Ip = request?.IP;
                     await _Context.ManulPayments.AddAsync(payment);
                     await _Context.SaveChangesAsync();
                 
