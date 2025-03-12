@@ -497,19 +497,19 @@ namespace ReservationSystem.Infrastructure.Service
                 segmentHtmlPayResponse.Append($@"
             <div class='segment'>
                  <table>
-                    <tr><th>Authorization Code:</th><td>{enquiry?.AuthorizationCode}</td></tr>
+                    <tr><th>Payment Details:</th><td></td></tr>
+                    <tr><th>Authorization Code:</th><td>{enquiry?.Acceptance}</td></tr>
                     <tr><th>Authorization Date:</th><td>{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}</td></tr>
                     <tr><th>Payment Date:</th><td>{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}</td></tr>
                     <tr><th>Currency:</th><td>{enquiry?.Currency}</td></tr>
                     <tr><th>Amount:</th><td>{enquiry?.Amount}</td></tr>
                     <tr><th>Pay Id:</th><td>{enquiry?.PayId}</td></tr>
                     <tr><th>Order ID:</th><td>{enquiry?.OrderID}</td></tr>
-                    <tr><th>Payment Method:</th><td>{enquiry?.PaymentMethod}</td></tr>
-                    <tr><th>Acceptance:</th><td>{enquiry?.Acceptance}</td></tr>
+                    <tr><th>Payment Method:</th><td>{enquiry?.PaymentMethod}</td></tr>                    
                     <tr><th>Status:</th><td>{ paymentMessage}</td></tr>
                     <tr><th>Card No:</th><td>{enquiry?.CardNo}</td></tr>
                     <tr><th>Brand:</th><td>{enquiry?.Brand}</td></tr>
-                    <tr><th>Card Holder Namee:</th><td>{enquiry?.CardHolderName}</td></tr>
+                    <tr><th>Card Holder Name:</th><td>{enquiry?.CardHolderName}</td></tr>
                     <tr><th>Expiry Date:</th><td>{enquiry?.ExpiryDate}</td></tr>
                     <tr><th>Error:</th><td>{enquiry?.NcError}</td></tr>
                     <tr><th>IpCity:</th><td>{enquiry?.IpCity}</td></tr>
