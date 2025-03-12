@@ -23,7 +23,15 @@
 /ReservationSystem.Infrastructure/obj/ReservationSystem.Infrastructure.csproj.nuget.dgspec.json
 ReservationApi/.vs/ProjectEvaluation/reservationapi.metadata.v8.bin
 ReservationApi/.vs/ProjectEvaluation/reservationapi.metadata.v8.bin
+ReservationApi/bin
+ReservationApi/obj
+/ReservationApi/.vs
+ReservationSystem.Domain/obj
+ReservationSystem.Domain/bin
+ReservationSystem.Infrastructure/bin
+ReservationSystem.Infrastructure/obj
 *.bin
+*.obj
 *.config
 *.config
 *.v2
