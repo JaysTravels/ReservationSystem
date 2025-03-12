@@ -358,6 +358,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     payment.PaymentStatus = request?.PaymentStatus;
                     payment.OrderID = request?.OrderID;
                     payment.PaymentMethod = request?.PaymentMethod;
+                    payment.AuthorizationCode = request?.Acceptance;
                     payment.Acceptance = request?.Acceptance;
                     payment.BarclaysStatus = paymentMessage;
                     payment.CardNumber = request?.CardNo;

@@ -76,5 +76,8 @@ namespace ReservationApi.ReservationSystem.Domain.DB_Models
 
         [Column("Ip")]
         public string? Ip { get; set; }
+
+        [Column("authorization_code")]
+        public string? AuthorizationCode { get; set; }
     }
 }
