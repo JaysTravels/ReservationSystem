@@ -278,7 +278,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             <pricingTickInfo>
                <pricingTicketing>
                   <priceType>ET</priceType>
-                  <priceType>RP</priceType>
+                  <priceType>RP</priceType> 
                   <priceType>RU</priceType>
                   <priceType>TAC</priceType>                  
                </pricingTicketing>
@@ -902,14 +902,14 @@ namespace ReservationSystem.Infrastructure.Repositories
                         var inFlightproposalRef = _inbounItineraries.Count > 0 ? _inbounItineraries?.FirstOrDefault()?.flightProposal_ref : "0";
                         var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.FirstOrDefault();
                         List<ReferencingDetail> referenceingdetails = new List<ReferencingDetail>();
-                        foreach (var itemchild in segmentFlightRef.Descendants(amadeus + "referencingDetail"))
-                        {
-                            var refQuilifier = itemchild.Descendants(amadeus + "refQualifier")?.FirstOrDefault().Value;
-                            var refNumber = itemchild.Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
-                            ReferencingDetail refdet = new ReferencingDetail { refNumber = refNumber != null ? Convert.ToInt16(refNumber) : 0, refQualifier = refQuilifier };
-                            referenceingdetails.Add(refdet);
+                            foreach (var itemchild in segmentFlightRef.Descendants(amadeus + "referencingDetail"))
+                            {
+                                var refQuilifier = itemchild.Descendants(amadeus + "refQualifier")?.FirstOrDefault().Value;
+                                var refNumber = itemchild.Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
+                                ReferencingDetail refdet = new ReferencingDetail { refNumber = refNumber != null ? Convert.ToInt16(refNumber) : 0, refQualifier = refQuilifier };
+                                referenceingdetails.Add(refdet);
 
-                        }
+                            }
                         var BaggageItemIumber = referenceingdetails.Where(e => e.refQualifier == "B").FirstOrDefault()?.refNumber;
 
                         var SegMentRefNumner = referenceingdetails.Where(e => e.refQualifier == "S").FirstOrDefault()?.refNumber;
@@ -926,12 +926,80 @@ namespace ReservationSystem.Infrastructure.Repositories
 
                     #endregion
 
-
+                    var ShowMoreFlights = configuration.GetSection("ShowMoreFlights")?.Value;
                     // offer.baggageDetails = baggageDetails.Where(e => e.itemNumber == offer.id).FirstOrDefault();
                     if (itineary != null)
                     {
-                        ReturnModel.data.Add(offer);
+                        try
+                        {
+                            if (ShowMoreFlights == "false")
+                            {
+                                ReturnModel.data.Add(offer);
+                            }
+                        }
+                        catch
+                        {
+                            ReturnModel.data.Add(offer);
+                        }
                     }
+
+                    #region Working For More Flight Offers
+                    try
+                    {
+                      
+                        if (ShowMoreFlights == "true")
+                        {
+                            List<ReferencingDetail> referenceingdetails = new List<ReferencingDetail>();
+                            var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.ToList();                           
+                            int morFlightOfferId = Convert.ToInt16(offer.id);
+                            foreach (var itemSegRef in segmentFlightRef)
+                            {
+
+                                FlightOffer offerMore = new FlightOffer();
+                                offerMore.avlStatus = offer.avlStatus;
+                                offerMore.price = offer.price;
+                                offerMore.bookingClass = offer.bookingClass;
+                                offerMore.pricingOptions = offer.pricingOptions;
+                                offerMore.MarkupId = offer.MarkupId;
+                                offerMore.bookingClass = offer.bookingClass;
+                                offerMore.breakPoint = offer.breakPoint;
+                                offerMore.cabinClass = offer.cabinClass;
+                                offerMore.fareBasis = offer.fareBasis;
+                                offerMore.fareType = offer.fareType;
+                                offerMore.type = offer.type;
+                                offerMore.fareTypeCode = offer.fareTypeCode;
+                                offerMore.fareTypeName = offer.fareTypeName;
+                                offerMore.lastTicketingDate = offer.lastTicketingDate;
+                                offerMore.oneWay = offer.oneWay;
+                                offerMore.passengerType = offer.passengerType;
+                                offerMore.source = offer.source;
+                                offerMore.travelerPricings = offer.travelerPricings;
+                                offerMore.validatingAirlineCodes = offer.validatingAirlineCodes;  
+                                offerMore.itineraries = new List<Itinerary>();
+                                var outboundRefNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "S").Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
+                                var inboundRefNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "S").Descendants(amadeus + "refNumber")?.Skip(1).FirstOrDefault()?.Value;
+                               
+                                    List<Itinerary> _outbounItinerariesMore = new List<Itinerary>();
+                                    List<Itinerary> _inbounItinerariesMore = new List<Itinerary>();
+                                    _outbounItinerariesMore = itinerariesList.Where(e => e.segment_type == "OutBound" && e.flightProposal_ref == outboundRefNumber).ToList();
+                                    _inbounItinerariesMore = itinerariesList.Where(e => e.segment_type == "InBound" && e.flightProposal_ref == inboundRefNumber).ToList();
+                                    offerMore.itineraries.AddRange(_outbounItinerariesMore);
+                                    offerMore.itineraries.AddRange(_inbounItinerariesMore);
+                                    var baggageNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "B").Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
+                                    offerMore.baggageDetails = baggageDetails.Where(e => e.itemNumber == baggageNumber.ToString()).FirstOrDefault();
+                                    offerMore.id = morFlightOfferId.ToString() + "-MoreFlights";
+                                    ReturnModel.data.Add(offerMore);
+                                    morFlightOfferId = morFlightOfferId + 1;
+                              
+                            }
+                        }
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.WriteLine($"Error in more flights {ex.Message?.ToString()}");
+                    }
+
+                    #endregion
 
                 }
 
@@ -1112,9 +1180,18 @@ namespace ReservationSystem.Infrastructure.Repositories
                 Console.WriteLine($"Error while apply markup {ex.Message.ToString()}");
             }
             #endregion
-            ReturnModel.data = ReturnModel.data.OrderBy(e => e.price.total).ToList();
+            // ReturnModel.data = ReturnModel.data.OrderBy(e => e.price.total).ToList();
+            try
+            {
+                ReturnModel.data = ReturnModel.data.OrderBy(e => decimal.TryParse(e.price.total, out var price) ? price : decimal.MaxValue).ToList();
+                ReturnModel.data = ReturnModel.data.DistinctBy(e => e.id).ToList();               
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error while sorting {ex.Message.ToString()}");
+            }
            
-            
+
             return ReturnModel;
         }
         private string CalculateDuration(List<string> timestring)
