@@ -950,23 +950,35 @@ namespace ReservationSystem.Infrastructure.Repositories
                         if (ShowMoreFlights == "true")
                         {
                             List<ReferencingDetail> referenceingdetails = new List<ReferencingDetail>();
-                            var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.ToList();
-
+                            var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.ToList();                           
                             int morFlightOfferId = Convert.ToInt16(offer.id);
                             foreach (var itemSegRef in segmentFlightRef)
                             {
 
                                 FlightOffer offerMore = new FlightOffer();
-                                offerMore = offer;
-                                if(offer.id == "76")
-                                {
-                                    Console.WriteLine("test");
-                                }
+                                offerMore.avlStatus = offer.avlStatus;
+                                offerMore.price = offer.price;
+                                offerMore.bookingClass = offer.bookingClass;
+                                offerMore.pricingOptions = offer.pricingOptions;
+                                offerMore.MarkupId = offer.MarkupId;
+                                offerMore.bookingClass = offer.bookingClass;
+                                offerMore.breakPoint = offer.breakPoint;
+                                offerMore.cabinClass = offer.cabinClass;
+                                offerMore.fareBasis = offer.fareBasis;
+                                offerMore.fareType = offer.fareType;
+                                offerMore.type = offer.type;
+                                offerMore.fareTypeCode = offer.fareTypeCode;
+                                offerMore.fareTypeName = offer.fareTypeName;
+                                offerMore.lastTicketingDate = offer.lastTicketingDate;
+                                offerMore.oneWay = offer.oneWay;
+                                offerMore.passengerType = offer.passengerType;
+                                offerMore.source = offer.source;
+                                offerMore.travelerPricings = offer.travelerPricings;
+                                offerMore.validatingAirlineCodes = offer.validatingAirlineCodes;  
                                 offerMore.itineraries = new List<Itinerary>();
                                 var outboundRefNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "S").Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
                                 var inboundRefNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "S").Descendants(amadeus + "refNumber")?.Skip(1).FirstOrDefault()?.Value;
-                               // if (outboundRefNumber != inboundRefNumber)
-                               // {
+                               
                                     List<Itinerary> _outbounItinerariesMore = new List<Itinerary>();
                                     List<Itinerary> _inbounItinerariesMore = new List<Itinerary>();
                                     _outbounItinerariesMore = itinerariesList.Where(e => e.segment_type == "OutBound" && e.flightProposal_ref == outboundRefNumber).ToList();
@@ -978,7 +990,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                                     offerMore.id = morFlightOfferId.ToString() + "-MoreFlights";
                                     ReturnModel.data.Add(offerMore);
                                     morFlightOfferId = morFlightOfferId + 1;
-                               // }
+                              
                             }
                         }
                     }
