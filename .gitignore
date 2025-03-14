@@ -467,3 +467,4 @@ bin/
 /ReservationApi/ReservationSystem.Infrastructure/bin/Debug/net8.0/ReservationSystem.Infrastructure.dll
 /ReservationApi/ReservationSystem.Infrastructure/bin/Debug/net8.0/ReservationSystem.Infrastructure.pdb
 /ReservationApi/ReservationSystem.Infrastructure/obj/Debug/net8.0/ref/ReservationSystem.Infrastructure.dll
+/ReservationApi/bin/Debug/net8.0/appsettings.Development.json
