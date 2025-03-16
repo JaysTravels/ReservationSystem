@@ -989,11 +989,11 @@ namespace ReservationSystem.Infrastructure.Repositories
                                     var baggageNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "B").Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
                                     offerMore.baggageDetails = baggageDetails.Where(e => e.itemNumber == baggageNumber.ToString()).FirstOrDefault();
                                     offerMore.id = morFlightOfferId.ToString(); //+ "-MoreFlights";
-                                    var testData = ReturnModel.data.Where(e => e.id == morFlightOfferId.ToString())?.ToList();
-                                    if(testData?.Count != 0)
-                                        {
-                                    Console.WriteLine("Dupplicate Id");
-                                        }
+                                    //var testData = ReturnModel.data.Where(e => e.id == morFlightOfferId.ToString())?.ToList();
+                                    //if(testData?.Count != 0)
+                                    //    {
+                                    //Console.WriteLine("Dupplicate Id");
+                                    //    }
                                     ReturnModel.data.Add(offerMore);
                                     morFlightOfferId = morFlightOfferId + 1;
                               
