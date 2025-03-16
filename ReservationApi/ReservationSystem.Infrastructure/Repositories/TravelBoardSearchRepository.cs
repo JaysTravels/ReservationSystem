@@ -950,8 +950,9 @@ namespace ReservationSystem.Infrastructure.Repositories
                         if (ShowMoreFlights == "true")
                         {
                             List<ReferencingDetail> referenceingdetails = new List<ReferencingDetail>();
-                            var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.ToList();                           
-                            int morFlightOfferId = Convert.ToInt16(offer.id);
+                            var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.ToList();
+                            var TempId = ReturnModel.data?.OrderBy(e => e.id)?.LastOrDefault()?.id == null ? 1 : Convert.ToInt16(ReturnModel.data?.OrderBy(e => Convert.ToInt32(e.id))?.LastOrDefault()?.id)+1;
+                            int morFlightOfferId = TempId;
                             foreach (var itemSegRef in segmentFlightRef)
                             {
 
@@ -987,7 +988,12 @@ namespace ReservationSystem.Infrastructure.Repositories
                                     offerMore.itineraries.AddRange(_inbounItinerariesMore);
                                     var baggageNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "B").Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
                                     offerMore.baggageDetails = baggageDetails.Where(e => e.itemNumber == baggageNumber.ToString()).FirstOrDefault();
-                                    offerMore.id = morFlightOfferId.ToString() + "-MoreFlights";
+                                    offerMore.id = morFlightOfferId.ToString(); //+ "-MoreFlights";
+                                    var testData = ReturnModel.data.Where(e => e.id == morFlightOfferId.ToString())?.ToList();
+                                    if(testData?.Count != 0)
+                                        {
+                                    Console.WriteLine("Dupplicate Id");
+                                        }
                                     ReturnModel.data.Add(offerMore);
                                     morFlightOfferId = morFlightOfferId + 1;
                               
@@ -1005,6 +1011,7 @@ namespace ReservationSystem.Infrastructure.Repositories
 
             }
             #endregion
+            var tempModel = ReturnModel?.data?.Where(e => e?.itineraries?.Count <= 1).ToList();
 
             ReturnModel.data = ReturnModel?.data?.Where(e => e?.itineraries?.Count > 1).ToList();
             var filterList = new List<List<FlightOffer>>();
@@ -1166,7 +1173,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                         HashSet<string> filteredIds = filterData.Select(f => f.id).ToHashSet();
 
                         // Step 2: Remove existing records with those IDs from the original list
-                        ReturnModel.data = ReturnModel.data.Where(f => !filteredIds.Contains(f.id)).ToList();
+                        ReturnModel.data = ReturnModel.data.Where(f => f.id != null && !filteredIds.Contains(Convert.ToInt16(f.id).ToString())).ToList();
+                        //ReturnModel.data = ReturnModel.data.Where(f => !filteredIds.Contains(f.id)).ToList();
 
                         // Step 3: Add filtered data to the original list
                         ReturnModel.data.AddRange(filterData);
