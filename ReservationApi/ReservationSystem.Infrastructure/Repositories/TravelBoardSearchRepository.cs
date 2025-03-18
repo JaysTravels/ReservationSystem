@@ -953,29 +953,177 @@ namespace ReservationSystem.Infrastructure.Repositories
                             var segmentFlightRef = item?.Descendants(amadeus + "segmentFlightRef")?.ToList();
                             var TempId = ReturnModel.data?.OrderBy(e => e.id)?.LastOrDefault()?.id == null ? 1 : Convert.ToInt16(ReturnModel.data?.OrderBy(e => Convert.ToInt32(e.id))?.LastOrDefault()?.id)+1;
                             int morFlightOfferId = TempId;
+                            var adultFareMore = item.Descendants(amadeus + "paxFareProduct").Where(e => e.Element(amadeus + "paxReference")?.Elements(amadeus + "ptc")?.FirstOrDefault().Value == "ADT").FirstOrDefault();
+                            var childFareMore = item.Descendants(amadeus + "paxFareProduct").Where(e => e.Element(amadeus + "paxReference")?.Elements(amadeus + "ptc")?.FirstOrDefault().Value == "CNN").FirstOrDefault();
+                            var infFareMore = item.Descendants(amadeus + "paxFareProduct").Where(e => e.Element(amadeus + "paxReference")?.Elements(amadeus + "ptc")?.FirstOrDefault().Value == "INF").FirstOrDefault();
+                            if (adultFareMore != null)
+                            {
+                                totalAdult = adultFare.Descendants(amadeus + "paxReference").Elements(amadeus + "traveller").ToList().Count();
+                                adultpp = adultFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalFareAmount")?.FirstOrDefault().Value;
+                                adulttax = adultFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalTaxAmount")?.FirstOrDefault().Value;
+                                // decimal _totAdt = (Convert.ToDecimal ( adultpp) + Convert.ToDecimal( adulttax)) * totalAdult;
+                                decimal _totAdt = (Convert.ToDecimal(adultpp)) * totalAdult;
+                                totalPrice = _totAdt;
+
+                            }
+                            if (childFareMore != null)
+                            {
+                                totalChild = childFare.Descendants(amadeus + "paxReference").Elements(amadeus + "traveller").ToList().Count();
+                                childpp = childFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalFareAmount")?.FirstOrDefault().Value;
+                                childtax = childFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalTaxAmount")?.FirstOrDefault().Value;
+                                //   decimal _totChd = (Convert.ToDecimal(childpp) + Convert.ToDecimal(childtax)) * totalChild;
+                                decimal _totChd = (Convert.ToDecimal(childpp)) * totalChild;
+                                totalPrice = totalPrice + _totChd;
+                            }
+                            if (infFareMore != null)
+                            {
+                                totalInfant = infFare.Descendants(amadeus + "paxReference").Elements(amadeus + "traveller").ToList().Count();
+                                infantpp = infFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalFareAmount")?.FirstOrDefault().Value;
+                                infanttax = infFare?.Descendants(amadeus + "paxFareDetail")?.Elements(amadeus + "totalTaxAmount")?.FirstOrDefault().Value;
+                                // decimal _totInf = (Convert.ToDecimal(infantpp) + Convert.ToDecimal(infanttax)) * totalInfant;
+                                decimal _totInf = (Convert.ToDecimal(infantpp)) * totalInfant;
+                                totalPrice = totalPrice + _totInf;
+                            }
+
+                            var itemNumberIdMore = item.Descendants(amadeus + "itemNumber").Elements(amadeus + "itemNumberId")?.FirstOrDefault()?.Value;
+                            price = item.Descendants(amadeus + "recPriceInfo").Elements(amadeus + "monetaryDetail").Elements(amadeus + "amount")?.FirstOrDefault()?.Value;
+                            var priceinfo2More = item.Descendants(amadeus + "recPriceInfo").Elements(amadeus + "monetaryDetail").Elements(amadeus + "amount").Skip(1)?.FirstOrDefault()?.Value;
+                            var totalFareAmountMore = item.Descendants(amadeus + "paxFareProduct").Elements(amadeus + "paxFareDetail").Elements(amadeus + "totalFareAmount")?.FirstOrDefault()?.Value;
+                            totalTax = item.Descendants(amadeus + "paxFareProduct").Elements(amadeus + "paxFareDetail").Elements(amadeus + "totalTaxAmount")?.FirstOrDefault()?.Value;
+                            var paxRefereceMore = item.Descendants(amadeus + "paxFareProduct").Elements(amadeus + "paxReference").ToList();
+                            var companylistMore = item.Descendants(amadeus + "paxFareProduct").Elements(amadeus + "paxFareDetail").Elements(amadeus + "codeShareDetails").ToList();
+                            companyname = string.Empty;
+                            foreach (var company in companylist)
+                            {
+                                if (companyname == string.Empty)
+                                {
+                                    companyname = company.Descendants(amadeus + "company")?.FirstOrDefault()?.Value;
+                                }
+                                else
+                                {
+                                    companyname = companyname + " " + company.Descendants(amadeus + "company")?.FirstOrDefault()?.Value;
+                                }
+
+                            }
+
+
+                            var taxesMore = new List<Taxes>();
+                            if (adultpp != string.Empty)
+                            {
+                                Taxes t = new Taxes { amount = adulttax, code = "ADT" };
+                                taxesMore.Add(t);
+                            }
+                            if (childpp != string.Empty)
+                            {
+                                Taxes t = new Taxes { amount = childtax, code = "CNN" };
+                                taxesMore.Add(t);
+                            }
+                            if (infantpp != string.Empty)
+                            {
+                                Taxes t = new Taxes { amount = infanttax, code = "INF" };
+                                taxesMore.Add(t);
+                            }
                             foreach (var itemSegRef in segmentFlightRef)
                             {
 
                                 FlightOffer offerMore = new FlightOffer();
-                                offerMore.avlStatus = offer.avlStatus;
-                                offerMore.price = offer.price;
-                                offerMore.bookingClass = offer.bookingClass;
-                                offerMore.pricingOptions = offer.pricingOptions;
-                                offerMore.MarkupId = offer.MarkupId;
-                                offerMore.bookingClass = offer.bookingClass;
-                                offerMore.breakPoint = offer.breakPoint;
-                                offerMore.cabinClass = offer.cabinClass;
-                                offerMore.fareBasis = offer.fareBasis;
-                                offerMore.fareType = offer.fareType;
-                                offerMore.type = offer.type;
-                                offerMore.fareTypeCode = offer.fareTypeCode;
-                                offerMore.fareTypeName = offer.fareTypeName;
-                                offerMore.lastTicketingDate = offer.lastTicketingDate;
-                                offerMore.oneWay = offer.oneWay;
-                                offerMore.passengerType = offer.passengerType;
-                                offerMore.source = offer.source;
-                                offerMore.travelerPricings = offer.travelerPricings;
-                                offerMore.validatingAirlineCodes = offer.validatingAirlineCodes;  
+                                
+                                offerMore.price = new Price
+                                {
+                                    adultPP = adultpp,
+                                    adultTax = adulttax,
+                                    childPp = childpp,
+                                    childTax = childtax,
+                                    infantPp = infantpp,
+                                    infantTax = infanttax,
+                                    baseAmount = "",
+                                    currency = currency,
+                                    grandTotal = (totalPrice).ToString(),
+                                    taxes = taxes,
+                                    total = (totalPrice).ToString(),
+                                    discount = 0,
+                                    billingCurrency = currency,
+                                    markup = 0
+                                };
+
+
+                                //offerMore.id = itemNumberId;
+                                offerMore.type = "Availability";
+                                offerMore.lastTicketingDate = LastTicketDate;
+                                offerMore.oneWay = flightIndexInbound != null ? false : true;
+                                offerMore.pricingOptions = new PriceOption { includedCheckedBagsOnly = false };
+                                offerMore.source = "Amadeus";
+                                offerMore.travelerPricings = new List<TravelerPricing>();
+                                foreach (var pfx in paxReferece)
+                                {
+                                    var ptc = pfx.Element(amadeus + "ptc").Value;
+                                    var traveler = pfx.Descendants(amadeus + "traveller").ToList();
+                                    foreach (var tr in traveler)
+                                    {
+                                        var tempPrice = new Price();
+                                        if (ptc == "ADT")
+                                        {
+
+                                            tempPrice.currency = offerMore.price.currency;
+                                            tempPrice.adultPP = offerMore.price.adultPP;
+                                            tempPrice.adultTax = offerMore.price.adultTax;
+                                            tempPrice.billingCurrency = offerMore.price.currency;
+                                            tempPrice.baseAmount = offerMore.price.baseAmount;
+
+                                        }
+                                        else if (ptc == "CNN")
+                                        {
+                                            tempPrice.childPp = offerMore.price.childPp;
+                                            tempPrice.childTax = offerMore.price.childTax;
+                                            tempPrice.currency = offerMore.price.currency;
+                                            tempPrice.baseAmount = offerMore.price.baseAmount;
+                                            tempPrice.billingCurrency = offerMore.price.currency;
+                                        }
+                                        else if (ptc == "INF")
+                                        {
+                                            tempPrice.infantPp = offerMore.price.infantPp;
+                                            tempPrice.infantTax = offerMore.price.infantTax;
+                                            tempPrice.currency = offerMore.price.currency;
+                                            tempPrice.baseAmount = offerMore.price.baseAmount;
+                                            tempPrice.billingCurrency = offerMore.price.currency;
+                                        }
+
+                                        TravelerPricing tp = new TravelerPricing { travelerType = ptc, travelerId = tr.Element(amadeus + "ref").Value, price = tempPrice };
+                                        offer.travelerPricings.Add(tp);
+                                    }
+                                }
+                                offerMore.bookingClass = bookingClass;
+                                offerMore.cabinClass = cabinClass;
+                                offerMore.avlStatus = avlStatus;
+                                offerMore.fareBasis = farebasis;
+                                offerMore.passengerType = passengerType;
+                                offerMore.fareType = ftype;
+                                offerMore.fareTypeName = ftype == "RA" ? "CAT Fare" : offerMore.fareTypeName;
+                                offerMore.fareTypeName = ftype == "RP" ? "Published Fare" : offerMore.fareTypeName;
+                                offerMore.fareTypeCode = ftype == "RA" ? "(0.0)" : offerMore.fareTypeCode;
+                                offerMore.fareTypeCode = ftype == "RP" ? "0.0" : offerMore.fareTypeCode;
+                                offerMore.breakPoint = breakPoint;
+                                offerMore.validatingAirlineCodes = companyname.Split(" ").ToList<string>();
+
+                                //offerMore.avlStatus = offer.avlStatus;
+                                //offerMore.price = offer.price;
+                                //offerMore.bookingClass = offer.bookingClass;
+                                //offerMore.pricingOptions = offer.pricingOptions;
+                                //offerMore.MarkupId = offer.MarkupId;
+                                //offerMore.bookingClass = offer.bookingClass;
+                                //offerMore.breakPoint = offer.breakPoint;
+                                //offerMore.cabinClass = offer.cabinClass;
+                                //offerMore.fareBasis = offer.fareBasis;
+                                //offerMore.fareType = offer.fareType;
+                                //offerMore.type = offer.type;
+                                //offerMore.fareTypeCode = offer.fareTypeCode;
+                                //offerMore.fareTypeName = offer.fareTypeName;
+                                //offerMore.lastTicketingDate = offer.lastTicketingDate;
+                                //offerMore.oneWay = offer.oneWay;
+                                //offerMore.passengerType = offer.passengerType;
+                                //offerMore.source = offer.source;
+                                //offerMore.travelerPricings = offer.travelerPricings;
+                                //offerMore.validatingAirlineCodes = offer.validatingAirlineCodes;  
                                 offerMore.itineraries = new List<Itinerary>();
                                 var outboundRefNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "S").Descendants(amadeus + "refNumber")?.FirstOrDefault().Value;
                                 var inboundRefNumber = itemSegRef.Descendants(amadeus + "referencingDetail").Where(f => f.Element(amadeus + "refQualifier").Value == "S").Descendants(amadeus + "refNumber")?.Skip(1).FirstOrDefault()?.Value;
