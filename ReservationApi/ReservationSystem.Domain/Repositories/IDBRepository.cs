@@ -23,7 +23,7 @@ namespace ReservationSystem.Domain.Repositories
 
         public Task SaveBookingInfo(PnrCommitRequest request, string error, string pnrNumber);
 
-        public Task<bool> UpdatePaymentStatus(string sessionId, string status);
+        public Task<bool> UpdatePaymentStatus(UpdatePaymentStatus requestModel);
 
         public Task<List<PassengerInfo>>? GetPassengerInfo(string sessionId);
 

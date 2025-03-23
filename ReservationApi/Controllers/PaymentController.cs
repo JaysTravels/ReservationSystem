@@ -34,7 +34,7 @@ namespace ReservationApi.Controllers
             _emailService = emailservice;
         }
         [HttpPost("generate")]
-        public async Task<IActionResult> GeneratePaymentRequest([FromBody] PaymentRequest request)          
+        public async Task<IActionResult> GeneratePaymentRequest([FromBody] PaymentRequest request)
         {
             ApiResponse res = new ApiResponse();
             var data = await _repo.GeneratePaymentRequest(request);

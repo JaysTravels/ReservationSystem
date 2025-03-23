@@ -1,4 +1,6 @@
-﻿using ReservationSystem.Domain.Models.Enquiry;
+﻿using ReservationSystem.Domain.DB_Models;
+using ReservationSystem.Domain.Models.AddPnrMulti;
+using ReservationSystem.Domain.Models.Enquiry;
 using ReservationSystem.Domain.Models.Insurance;
 using ReservationSystem.Domain.Models.ManualPayment;
 using System;
@@ -23,11 +25,11 @@ namespace ReservationSystem.Domain.Service
 
         public Task<string> GetInsuranceTemplate(InsuranceRequest request);
 
-        public Task<string> GetBookingSuccessTemplateForAdmin(string sessionId = "", string bookingStatus = "", string paymentStatus = "");
+        public Task<string> GetBookingSuccessTemplateForAdmin(UpdatePaymentStatus payment, string bookingStatus = "");
 
         public Task<string> GetManualPaymentTemplate(ManualPaymentCustomerDetails enquiry);
 
-        public Task<string> GetPassengerSelectedFlightTemplate(string sessionId = "");
+        public Task<string> GetPassengerSelectedFlightTemplate(List<PassengerInfo> passengerInfo,string sessionId = "" , string selectedFlight="");
 
         public Task<string> GetManualPaymentTemplateAdmin(ManualPaymentCustomerDetails enquiry);
     }

@@ -239,15 +239,25 @@ namespace ReservationSystem.Infrastructure.Repositories
             }
         }
 
-        public async Task<bool> UpdatePaymentStatus(string sessionId, string status)
+        public async Task<bool> UpdatePaymentStatus(UpdatePaymentStatus requestModel)
         {
 
             try
             {
-                var binfo = await _context.BookingInfo.Where(e => e.SessionId == sessionId).FirstOrDefaultAsync();
+                var binfo = await _context.BookingInfo.Where(e => e.SessionId == requestModel.SessionId).FirstOrDefaultAsync();
                 if(binfo != null)
                 {
-                    binfo.PaymentStatus = status;
+                    binfo.PaymentStatus = requestModel?.Status;
+                    binfo.AuthorizationCode = requestModel?.Acceptance;
+                    binfo.OrderID = requestModel?.OrderID;
+                    binfo.PaymentMethod = requestModel?.PaymentMethod;
+                    binfo.Acceptance = requestModel?.Acceptance;
+                    binfo.CardNumber = requestModel?.CardNumber;
+                    binfo.CardHolderName = requestModel?.CardHolderName;
+                    binfo.ExpiryDate = requestModel?.ExpiryDate;
+                    binfo.BarclaysStatus = requestModel?.PaymentStatus;
+                    binfo.Brand = requestModel?.Brand;
+                    binfo.Ip = requestModel?.IP;
                     _context.BookingInfo.Update(binfo);
                     await _context.SaveChangesAsync();
                     return true;

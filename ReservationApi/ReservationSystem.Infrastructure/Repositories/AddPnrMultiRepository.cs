@@ -1040,7 +1040,7 @@ namespace ReservationSystem.Infrastructure.Repositories
            
             try
             {
-             await _dbRepository.UpdatePaymentStatus(requestModel?.SessionId, requestModel?.PaymentStatus);
+             await _dbRepository.UpdatePaymentStatus(requestModel);
              return true;
             }
             catch (Exception ex)

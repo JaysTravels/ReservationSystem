@@ -42,6 +42,36 @@ namespace ReservationApi.ReservationSystem.Domain.DB_Models
         [Column("sent_email")]
         public bool? SentEmail { get; set; }
 
+        [Column("order_id")]
+        public string? OrderID { get; set; }
+
+        [Column("payment_method")]
+        public string? PaymentMethod { get; set; }
+
+        [Column("acceptance")]
+        public string? Acceptance { get; set; }
+
+        [Column("barclays_status")]
+        public string? BarclaysStatus { get; set; }
+
+        [Column("card_number")]
+        public string? CardNumber { get; set; }
+
+        [Column("brand")]
+        public string? Brand { get; set; }
+
+        [Column("card_holder_name")]
+        public string? CardHolderName { get; set; }
+
+        [Column("expiry_date")]
+        public string? ExpiryDate { get; set; }
+
+        [Column("Ip")]
+        public string? Ip { get; set; }
+
+        [Column("authorization_code")]
+        public string? AuthorizationCode { get; set; }
+
 
     }
 }
