@@ -107,8 +107,8 @@ namespace ReservationApi.Controllers
                     await _dBRepository.UpdateEmailStatus(request?.SessionId, true);
                     await _emailService.SendEmailAsync3(ToemailAddress, subject, emailBody);
                     var AdminEmail = _configuration["EmailSettings:AdminEmail"];
-                    var AdminEmailBody = await _emailService.GetBookingSuccessTemplateForAdmin(request?.SessionId, request.PaymentStatus);
-                    await _emailService.SendEmailAsync3(AdminEmail, "Admin-Portal " + subject, AdminEmailBody);
+                    var AdminEmailBody = await _emailService.GetBookingSuccessTemplateForAdmin(request);
+                    await _emailService.SendEmailAsync3(AdminEmail, "AdminEmail-" + subject, AdminEmailBody);
                 }
                
 
@@ -142,9 +142,9 @@ namespace ReservationApi.Controllers
                 if (!String.IsNullOrEmpty(request?.SessionId))
                 {
                     //request.SessionId = await _dBRepository.GetLastSessionId();
-                    var emailBody = await _emailService.GetPassengerSelectedFlightTemplate(request?.SessionId);
-                    string subject = "Passenger Selected Flights details with markup";
-                    var pinfo = await _dBRepository.GetPassengerInfo(request?.SessionId);
+                    var emailBody = await _emailService.GetPassengerSelectedFlightTemplate(request?.passengerInfo,request?.SessionId,request?.selectedFlightOffer);
+                    string subject = "Customer Interested in Flights details with markup";
+                    //var pinfo = await _dBRepository.GetPassengerInfo(request?.SessionId);
                     var AdminEmail = _configuration["EmailSettings:AdminEmail"];
                     await _emailService.SendEmailAsync3(AdminEmail, subject, emailBody);
                     res.IsSuccessful = true;

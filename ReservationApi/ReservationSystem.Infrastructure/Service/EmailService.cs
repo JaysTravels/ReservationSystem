@@ -22,6 +22,9 @@ using DocumentFormat.OpenXml.Wordprocessing;
 using ReservationSystem.Domain.Models.Insurance;
 using DocumentFormat.OpenXml.Math;
 using ReservationApi.ReservationSystem.Domain.Models.Payment;
+using ReservationSystem.Domain.Models.AddPnrMulti;
+using ReservationSystem.Domain.DB_Models;
+using Newtonsoft.Json;
 
 
 namespace ReservationSystem.Infrastructure.Service
@@ -290,18 +293,35 @@ namespace ReservationSystem.Infrastructure.Service
             }
         }
 
-        public async Task<string> GetBookingSuccessTemplateForAdmin(string sessionId = "", string bookingStatus = "", string paymentStatus = "")
+        public async Task<string> GetBookingSuccessTemplateForAdmin(UpdatePaymentStatus payment, string bookingStatus = "")
         {
             try
             {
                 var filePath = Path.Combine(_environment.ContentRootPath, "EmailTemplates", "AdminEmailFlightConfirmation.html");
                 var template = File.ReadAllText(filePath);
-
-                if (sessionId != "")
+                string paymentStatus = payment?.PaymentStatus;
+                if (payment?.SessionId != "")
                 {
-                    var flightInfo = await _dBRepository.GetFlightInfo(sessionId);
-                    var passengerInfo = await _dBRepository.GetPassengerInfo(sessionId);
-                    var bookingInfo = await _dBRepository.GetBookingInfo(sessionId);
+                    string paymentMessage = "No Payment Status Available";
+                    try
+                    {
+                        paymentMessage = payment?.Status != null
+                            ? (BarclaysPaymentStatus)Convert.ToInt16(payment?.Status) switch
+                            {
+                                BarclaysPaymentStatus.Authorized => "Payment Authorized",
+                                BarclaysPaymentStatus.PaymentCaptured => "Payment Captured",
+                                BarclaysPaymentStatus.Refunded => "Payment Refunded",
+                                BarclaysPaymentStatus.RefundInProgress => "Refund in Progress",
+                                BarclaysPaymentStatus.AuthorizationDeclined => "Payment Declined",
+                                BarclaysPaymentStatus.CancelledByCustomer => "Payment Cancelled",
+                                _ => "Unknown Payment Status"
+                            }
+                            : "No Payment Status Available";
+                    }
+                    catch { }
+                    var flightInfo = await _dBRepository.GetFlightInfo(payment.SessionId);
+                    var passengerInfo = await _dBRepository.GetPassengerInfo(payment.SessionId);
+                    var bookingInfo = await _dBRepository.GetBookingInfo(payment.SessionId);
                     
                     FlightOffer offer = System.Text.Json.JsonSerializer.Deserialize<FlightOffer>(flightInfo?.FlightOffer);
 
@@ -312,7 +332,8 @@ namespace ReservationSystem.Infrastructure.Service
                   { "BookingNo", bookingNo  }};
                     placeholders.Add("BookingDate", bookingDate);
                     placeholders.Add("TiicketDeadLine", lastTicketDate);
-                   
+                    placeholders.Add("PnrNumber", bookingInfo?.PnrNumber);
+
                     var segmentHtml = new StringBuilder();
 
                     foreach (var item in offer.itineraries)
@@ -332,7 +353,72 @@ namespace ReservationSystem.Infrastructure.Service
                     }
                     // Replace the placeholder with the actual segments
                     template = template.Replace("{{FlightSegments}}", segmentHtml.ToString());
+
+                    #region Price List
+                    var priceList = new StringBuilder();
+                    priceList.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>Fare Type:</th><td>{offer?.fareType}</td></tr>
+                    <tr><th>Adult Price:</th><td>{offer?.price?.adultPP}</td></tr>
+                    <tr><th>Adult Tax:</th><td>{offer?.price?.adultTax}</td></tr>
+                    <tr><th>Adult Markup:</th><td>{offer?.price?.adulMarkup}</td></tr>
+                    <tr><th>Child Price:</th><td>{offer?.price?.childPp}</td></tr>
+                    <tr><th>Child Tax:</th><td>{offer?.price?.childTax}</td></tr>
+                    <tr><th>Child Markup:</th><td>{offer?.price?.childMarkup}</td></tr>
+                    <tr><th>Infant Price:</th><td>{offer?.price?.infantPp}</td></tr>
+                    <tr><th>Infant Tax:</th><td>{offer?.price?.infantTax}</td></tr>
+                    <tr><th>Infant Markup:</th><td>{offer?.price?.infantMarkup}</td></tr>
+                    <tr><th>Total Price:</th><td>{offer?.price?.total}</td></tr>
+                </table>
+            </div>");
+                    template = template.Replace("{{PriceList}}", priceList.ToString());
+                    #endregion
+
+                    #region Fare Info
+                    var fareInfo = new StringBuilder();
+                    fareInfo.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>Fare Type:</th><td>{offer?.fareType}</td></tr>
+                    <tr><th>Fare Name:</th><td>{offer?.fareTypeName}</td></tr>
+                    <tr><th>Fare Basis:</th><td>{offer?.fareBasis}</td></tr>
+                    <tr><th>Booking Class:</th><td>{offer?.bookingClass}</td></tr>
                    
+                </table>
+            </div>");
+                    template = template.Replace("{{FareInformation}}", fareInfo.ToString());
+                    #endregion
+
+                    #region payment details
+
+                    var segmentHtmlPayResponse = new StringBuilder();
+                    segmentHtmlPayResponse.Append($@"
+<div class='segment'>
+     <table>
+        <tr><th>Payment Details:</th><td></td></tr>
+        <tr><th>Authorization Code:</th><td>{payment?.Acceptance}</td></tr>
+        <tr><th>Authorization Date:</th><td>{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}</td></tr>
+        <tr><th>Payment Date:</th><td>{DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss")}</td></tr>
+        <tr><th>Currency:</th><td>{payment?.Currency}</td></tr>
+        <tr><th>Amount:</th><td>{bookingInfo?.TotalAmount}</td></tr>
+        <tr><th>Pay Id:</th><td>{payment?.PayId}</td></tr>
+        <tr><th>Order ID:</th><td>{payment?.OrderID}</td></tr>
+        <tr><th>Payment Method:</th><td>{payment?.PaymentMethod}</td></tr>                    
+        <tr><th>Status:</th><td>{paymentMessage}</td></tr>
+        <tr><th>Card No:</th><td>{payment?.CardNo}</td></tr>
+        <tr><th>Brand:</th><td>{payment?.Brand}</td></tr>
+        <tr><th>Card Holder Name:</th><td>{payment?.CardHolderName}</td></tr>
+        <tr><th>Expiry Date:</th><td>{payment?.ExpiryDate}</td></tr>
+        <tr><th>Error:</th><td>{payment?.NcError}</td></tr>
+        <tr><th>IpCity:</th><td>{payment?.IpCity}</td></tr>
+        <tr><th>Ip:</th><td>{payment?.IP}</td></tr>
+      
+    </table>
+</div>");
+                    template = template.Replace("{{CardDetails}}", segmentHtmlPayResponse.ToString());
+                    #endregion
+
                     #region Search Details
                     var searcDetails = new StringBuilder();
                     searcDetails.Append($@"
@@ -363,17 +449,17 @@ namespace ReservationSystem.Infrastructure.Service
                     }
                     template = template.Replace("{{PassengerInformation}}", pBuilder.ToString());
                     template = template.Replace("{{currentyear}}", DateTime.Now.Year.ToString());
-
+                    bookingStatus = bookingInfo?.PnrNumber != null ? "Success" : "Failed";
                     placeholders.TryAdd("BookingStatus", bookingStatus);
-                    placeholders.TryAdd("PaymentStatus", paymentStatus);
-                    placeholders.TryAdd("HotelInformation", "<div class='segment'><span>None</span></div>");
-                    placeholders.TryAdd("TransferInformation", "<div class='segment'><span>None</span></div>");
-                    placeholders.TryAdd("TourInformation", "<div class='segment'><span>None</span></div>");
-                    placeholders.TryAdd("CarInformation", "<div class='segment'><span>None</span></div>");
-                    placeholders.TryAdd("InsuranceInformation", "<div class='segment'><span>None</span></div>");
-                    placeholders.TryAdd("ParkingInformation", "<div class='segment'><span>None</span></div>");
-                    placeholders.TryAdd("PassengerList", "<div class='segment'><span>None</span></div>");
-                    placeholders.TryAdd("FareInformation", "<div class='segment'><span>None</span></div>");
+                    placeholders.TryAdd("PaymentStatus",  paymentStatus);
+                   // placeholders.TryAdd("HotelInformation", "<div class='segment'><span>None</span></div>");
+                   // placeholders.TryAdd("TransferInformation", "<div class='segment'><span>None</span></div>");
+                  //  placeholders.TryAdd("TourInformation", "<div class='segment'><span>None</span></div>");
+                   // placeholders.TryAdd("CarInformation", "<div class='segment'><span>None</span></div>");
+                   // placeholders.TryAdd("InsuranceInformation", "<div class='segment'><span>None</span></div>");
+                   // placeholders.TryAdd("ParkingInformation", "<div class='segment'><span>None</span></div>");
+                   // placeholders.TryAdd("PassengerList", "<div class='segment'><span>None</span></div>");
+                  //  placeholders.TryAdd("FareInformation", fareInfo);
 
                     placeholders.TryAdd("FlightPrice", offer?.price?.currency + " " + offer?.price?.total);
                     var emailBody = GenerateFlightConfirmationEmail(template, placeholders);
@@ -535,7 +621,7 @@ namespace ReservationSystem.Infrastructure.Service
         }
 
 
-        public async Task<string> GetPassengerSelectedFlightTemplate(string sessionId = "")
+        public async Task<string> GetPassengerSelectedFlightTemplate(List<PassengerInfo> passengerInfo,string sessionId = "", string selectedFlight = "")
         {
             try
             {
@@ -544,12 +630,11 @@ namespace ReservationSystem.Infrastructure.Service
 
                 if (sessionId != "")
                 {
-                    var flightInfo = await _dBRepository.GetFlightInfo(sessionId);
-                    var passengerInfo = await _dBRepository.GetPassengerInfo(sessionId);
-                    var bookingInfo = await _dBRepository.GetBookingInfo(sessionId);
-                    FlightOffer offer = System.Text.Json.JsonSerializer.Deserialize<FlightOffer>(flightInfo?.FlightOffer);
-
-                    var placeholders = new Dictionary<string, string>{
+          
+                    //var bookingInfo = await _dBRepository.GetBookingInfo(sessionId);
+                    FlightOffer offer = new FlightOffer();
+                    offer = System.Text.Json.JsonSerializer.Deserialize<FlightOffer>(selectedFlight);
+                   var placeholders = new Dictionary<string, string>{
                   { "CustomerName", passengerInfo.Where(e=>e.IsLead == true).FirstOrDefault()?.FirstName + " " + passengerInfo.Where(e=>e.IsLead == true).FirstOrDefault()?.LastName  }, };
 
                     var segmentHtml = new StringBuilder();
@@ -579,7 +664,7 @@ namespace ReservationSystem.Infrastructure.Service
                     template = template.Replace("{{AdultMarkup}}", AdultMarkup?.ToString());
                     template = template.Replace("{{ChildMarkup}}", ChildMarkup?.ToString());
                     template = template.Replace("{{InfantMarkup}}", InfantMarkup?.ToString());
-                    template = template.Replace("{{FlightMarkupID}}", FlightMarkupID.ToString());
+                    template = template.Replace("{{FlightMarkupID}}", FlightMarkupID?.ToString());
 
                     StringBuilder pBuilder = new StringBuilder();
                     foreach (var p in passengerInfo)
