@@ -63,5 +63,7 @@ namespace ReservationSystem.Domain.DBContext
         public DbSet<JourneyType> JourneyTypes { get; set; }
 
         public DbSet<Deeplink> Deeplinks { get; set; }
+
+        public DbSet<ActiveUser> ActiveUsers { get; set; }
     }
 }
