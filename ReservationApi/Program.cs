@@ -45,6 +45,7 @@ builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
 builder.Services.AddScoped<IEnquriyRepository, EnquriyRepository>();
 builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>();
 builder.Services.AddScoped<IDeeplinkRepository, DeeplinkRepository>();
+builder.Services.AddScoped<IActiveUsersRepository, ActiveUsersRepository>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();
