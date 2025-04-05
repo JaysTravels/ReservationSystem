@@ -674,6 +674,18 @@ namespace ReservationSystem.Infrastructure.Service
                         pBuilder.Append($"<tr><th>Passenger Name:</th><td>{p.FirstName + " " + p.LastName}</td></tr>");
                         pBuilder.Append($"<tr><th>Passenger Type:</th><td>{p.PassengerType}</td></tr>");
                         pBuilder.Append($"<tr><th>Date of Birth:</th><td>{p.DOB}</td></tr>");
+                        try
+                        {
+                            if (!String.IsNullOrEmpty(p.PhoneNumber))
+                            {
+                                pBuilder.Append($"<tr><th>Contact:</th><td>{p.PhoneNumber}</td></tr>");
+                            }
+                            if (!String.IsNullOrEmpty(p.Email))
+                            {
+                                pBuilder.Append($"<tr><th>Email:</th><td>{p.Email}</td></tr>");
+                            }
+                        }
+                        catch { }
                         pBuilder.Append($"</table>");
                         pBuilder.Append($"</div>");
                     }
