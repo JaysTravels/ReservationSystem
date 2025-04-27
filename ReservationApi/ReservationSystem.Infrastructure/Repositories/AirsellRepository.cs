@@ -424,8 +424,8 @@ namespace ReservationSystem.Infrastructure.Repositories
             {
                 Request = Request + @"<itineraryDetails>
             <originDestinationDetails>
-               <origin>{requestModel?.inBound?.origin}</origin>
-               <destination>{requestModel?.inBound?.destination}</destination>
+               <origin>"+requestModel?.inBound?.origin+@"</origin>
+               <destination>"+requestModel?.inBound?.destination +@"</destination>
             </originDestinationDetails>
             <message>
                <messageFunctionDetails>
