@@ -424,15 +424,15 @@ namespace ReservationSystem.Infrastructure.Repositories
             {
                 Request = Request + @"<itineraryDetails>
             <originDestinationDetails>
-               <origin>{requestModel?.inBound?.origin}</origin>
-               <destination>{requestModel?.inBound?.destination}</destination>
+               <origin>"+requestModel?.inBound?.origin+@"</origin>
+               <destination>"+requestModel?.inBound?.destination+@"</destination>
             </originDestinationDetails>
             <message>
                <messageFunctionDetails>
-                  <messageFunction>{requestModel?.messageFunction}</messageFunction>
+                  <messageFunction>"+requestModel?.messageFunction+@"</messageFunction>
                </messageFunctionDetails>
             </message>
-            {getSegmentInfoInbound(requestModel)}
+            " +getSegmentInfoInbound(requestModel)+@"
          </itineraryDetails>";
             }
            Request = Request + 
