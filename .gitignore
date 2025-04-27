@@ -471,3 +471,9 @@ bin/
 /ReservationApi/appsettings.json
 /ReservationApi/appsettings.Development.json
 /ReservationApi/appsettings.Production.json
+/ReservationApi/appsettings.Development.json
+/ReservationApi/appsettings.json
+/ReservationApi/Microsoft.Extensions.Configuration.ConfigurationSectionPNRMultiResponse20250426124210.xml
+/ReservationApi/Microsoft.Extensions.Configuration.ConfigurationSectionPNRMultiResponse20250426172646.xml
+/ReservationApi/Microsoft.Extensions.Configuration.ConfigurationSectionPNRMultiResponse20250426181231.xml
+/ReservationApi/Microsoft.Extensions.Configuration.ConfigurationSectionPNRMultiResponse20250426182329.xml

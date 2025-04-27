@@ -421,19 +421,37 @@ namespace ReservationSystem.Infrastructure.Service
 
                     #region Search Details
                     var searcDetails = new StringBuilder();
-                    searcDetails.Append($@"
+                    if(offer?.itineraries?.Count > 1) // For Return Way
+                    {
+                        searcDetails.Append($@"
             <div class='segment'>
                  <table>
                     <tr><th>From Location:</th><td>{offer?.itineraries?[0].airport_city}</td></tr>
                     <tr><th>To Location:</th><td>{offer?.itineraries?[1]?.airport_city}</td></tr>
                     <tr><th>Departure:</th><td>{offer?.itineraries[0]?.segments[0]?.departure?.at}</td></tr>
                     <tr><th>Arrival:</th><td>{offer?.itineraries[1]?.segments[0]?.departure?.at}</td></tr>
-                    <tr><th>No of Passengers:</th><td> {passengerInfo.Where(e=>e.PassengerType == "ADT").Count()} Adults , {passengerInfo.Where(e => e.PassengerType == "CHD").Count()} Child , {passengerInfo.Where(e => e.PassengerType == "INF").Count()} Infants</td></tr>
+                    <tr><th>No of Passengers:</th><td> {passengerInfo.Where(e => e.PassengerType == "ADT").Count()} Adults , {passengerInfo.Where(e => e.PassengerType == "CHD").Count()} Child , {passengerInfo.Where(e => e.PassengerType == "INF").Count()} Infants</td></tr>
                 </table>
             </div>");
-                      
-                    // Replace the placeholder with the actual segments
-                    template = template.Replace("{{SearchDetails}}", searcDetails.ToString());
+                    }
+                    else  // For One Way
+                    {
+                        int? segCount = offer?.itineraries?[0].segments?.Count();
+                        searcDetails.Append($@"
+            <div class='segment'>
+                 <table>
+                    <tr><th>From Location:</th><td>{offer?.itineraries?[0]?.segments[0]?.departure?.iataCode + " " + offer?.itineraries?[0]?.segments[0]?.departure?.iataName}</td></tr>
+                    <tr><th>To Location:</th><td>{offer?.itineraries?[0]?.segments[segCount.Value-1]?.arrival?.iataCode + " " + offer?.itineraries?[0]?.segments[segCount.Value-1]?.arrival?.iataName}</td></tr>
+                    <tr><th>Departure:</th><td>{offer?.itineraries[0]?.segments[0]?.departure?.at}</td></tr>
+                    <tr><th>Arrival:</th><td>{offer?.itineraries[0]?.segments[segCount.Value-1]?.arrival?.at}</td></tr>
+                    <tr><th>No of Passengers:</th><td> {passengerInfo.Where(e => e.PassengerType == "ADT").Count()} Adults , {passengerInfo.Where(e => e.PassengerType == "CHD").Count()} Child , {passengerInfo.Where(e => e.PassengerType == "INF").Count()} Infants</td></tr>
+                </table>
+            </div>");
+                    }
+
+
+                        // Replace the placeholder with the actual segments
+                        template = template.Replace("{{SearchDetails}}", searcDetails.ToString());
                     #endregion
 
                     StringBuilder pBuilder = new StringBuilder();

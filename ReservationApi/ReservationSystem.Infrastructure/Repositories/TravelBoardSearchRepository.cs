@@ -23,6 +23,7 @@ using ReservationSystem.Domain.Models.FlightPrice;
 using DocumentFormat.OpenXml.Office.CustomUI;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using DocumentFormat.OpenXml.Wordprocessing;
 
 
 
@@ -120,7 +121,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                                 return returnModel;
 
                             }
-                            var res = ConvertXmlToModel(xmlDoc);
+                            var res = ConvertXmlToModel(xmlDoc,requestModel.oneWay != null ? requestModel.oneWay.Value : false);
 
                             returnModel.data = res.data;
                             if (res?.data.Count > 0)
@@ -307,7 +308,10 @@ namespace ReservationSystem.Infrastructure.Repositories
                   <date>" + requestModel.departureDate + @"</date>
                </firstDateTimeDetail>
             </timeDetails>
-         </itinerary>
+         </itinerary>";
+          if(requestModel.oneWay == false || requestModel.oneWay == null)
+            {
+                Request = Request + @"
          <itinerary>
             <requestedSegmentRef>
                <segRef>2</segRef>
@@ -323,10 +327,11 @@ namespace ReservationSystem.Infrastructure.Repositories
                </arrivalPointDetails>
             </arrivalLocalization>
            " + getReturnDate(requestModel.returnDate) + @"
-         </itinerary>
-      </Fare_MasterPricerTravelBoardSearch>
+         </itinerary>";
+            }
+            Request = Request + @"
+       </Fare_MasterPricerTravelBoardSearch>
    </soapenv:Body>
-
 </soapenv:Envelope>";
 
             return Request;
@@ -386,7 +391,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             catch { }
             return returnflightType;
         }
-        public AvailabilityModel ConvertXmlToModel(XDocument response)
+        public AvailabilityModel ConvertXmlToModel(XDocument response , bool IsOneWay = false)
         {
             AvailabilityModel ReturnModel = new AvailabilityModel();
             ReturnModel.data = new List<FlightOffer>();
@@ -530,7 +535,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             var flightIndexInbound = doc.Descendants(amadeus + "flightIndex").Where(f => f.Element(amadeus + "requestedSegmentRef").Element(amadeus + "segRef").Value == "2")
                             .ToList();
 
-            if (flightIndexInbound != null)
+            if (flightIndexInbound != null && flightIndexInbound?.Count > 0)
             {
 
                 var flightDetails1 = flightIndexInbound.Descendants(amadeus + "groupOfFlights").ToList();
@@ -1161,7 +1166,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             #endregion
             var tempModel = ReturnModel?.data?.Where(e => e?.itineraries?.Count <= 1).ToList();
 
-            ReturnModel.data = ReturnModel?.data?.Where(e => e?.itineraries?.Count > 1).ToList();
+            ReturnModel.data = IsOneWay == false ? ReturnModel?.data?.Where(e => e?.itineraries?.Count > 1).ToList(): ReturnModel.data;
             var filterList = new List<List<FlightOffer>>();
             #region Apply Markups
             try

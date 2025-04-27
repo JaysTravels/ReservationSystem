@@ -29,6 +29,7 @@ namespace ReservationSystem.Domain.Models.Availability
         public string? currencyCode { get; set; }
         public int? maxPrice { get; set; }
         public int? maxFlights { get; set; }
+        public bool? oneWay { get; set; }
 
         public override string ToString()
         {
