@@ -419,20 +419,24 @@ namespace ReservationSystem.Infrastructure.Repositories
                </messageFunctionDetails>
             </message>
             {getSegmentInfoOutbound(requestModel)}
-         </itineraryDetails>
-         <itineraryDetails>
+         </itineraryDetails>";
+            if(requestModel.inBound != null)
+            {
+                Request = Request + @"<itineraryDetails>
             <originDestinationDetails>
-               <origin>{requestModel.inBound.origin}</origin>
-               <destination>{requestModel.inBound.destination}</destination>
+               <origin>{requestModel?.inBound?.origin}</origin>
+               <destination>{requestModel?.inBound?.destination}</destination>
             </originDestinationDetails>
             <message>
                <messageFunctionDetails>
-                  <messageFunction>{requestModel.messageFunction}</messageFunction>
+                  <messageFunction>{requestModel?.messageFunction}</messageFunction>
                </messageFunctionDetails>
             </message>
             {getSegmentInfoInbound(requestModel)}
-         </itineraryDetails>
-      </Air_SellFromRecommendation>
+         </itineraryDetails>";
+            }
+           Request = Request + 
+      @"</Air_SellFromRecommendation>
    </soap:Body>
 
 </soap:Envelope>";
