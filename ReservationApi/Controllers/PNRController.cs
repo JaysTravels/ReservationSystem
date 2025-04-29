@@ -105,7 +105,10 @@ namespace ReservationApi.Controllers
                     var pinfo = await _dBRepository.GetPassengerInfo(request?.SessionId);
                     string ToemailAddress = pinfo.Where(e => e.IsLead == true).FirstOrDefault()?.Email;
                     await _dBRepository.UpdateEmailStatus(request?.SessionId, true);
-                    await _emailService.SendEmailAsync3(ToemailAddress, subject, emailBody);
+                    if(emailBody.Contains("Error") == false)
+                    {
+                        await _emailService.SendEmailAsync3(ToemailAddress, subject, emailBody);
+                    }                   
                     var AdminEmail = _configuration["EmailSettings:AdminEmail"];
                     var AdminEmailBody = await _emailService.GetBookingSuccessTemplateForAdmin(request);
                     await _emailService.SendEmailAsync3(AdminEmail, "AdminEmail-" + subject, AdminEmailBody);

@@ -322,6 +322,10 @@ namespace ReservationSystem.Infrastructure.Service
                     var flightInfo = await _dBRepository.GetFlightInfo(payment.SessionId);
                     var passengerInfo = await _dBRepository.GetPassengerInfo(payment.SessionId);
                     var bookingInfo = await _dBRepository.GetBookingInfo(payment.SessionId);
+                    if(flightInfo == null)
+                    {
+                        return "Error Flight object is null for SessionId " + payment?.SessionId;
+                    }
                     
                     FlightOffer offer = System.Text.Json.JsonSerializer.Deserialize<FlightOffer>(flightInfo?.FlightOffer);
 
