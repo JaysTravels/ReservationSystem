@@ -5,6 +5,8 @@ using ReservationApi.Model;
 using ReservationSystem.Domain.Models.Availability;
 using ReservationSystem.Domain.Repositories;
 using ReservationSystem.Domain.Service;
+using System.Text;
+using System.Xml.Linq;
 
 namespace ReservationApi.Controllers
 {
@@ -17,39 +19,44 @@ namespace ReservationApi.Controllers
         private readonly IMemoryCache _cache;
         private readonly IConfiguration _configuration;
         private readonly IHelperRepository _helperRepository;
-        public GoogleFlightsController(ITravelBoardSearchRepository availability, IMemoryCache memoryCache, ICacheService cacheService, IConfiguration configuration, IHelperRepository helperRepository)
+        private readonly IGoogleFlightsRepository _googleRepository;
+        public GoogleFlightsController(ITravelBoardSearchRepository availability, IMemoryCache memoryCache, ICacheService cacheService, IConfiguration configuration, IHelperRepository helperRepository, IGoogleFlightsRepository googleRepository)
         {
             _availability = availability;
             _cache = memoryCache;
             _cacheService = cacheService;
             _configuration = configuration;
             _helperRepository = helperRepository;
+            _googleRepository = googleRepository;
         }
 
         //[Authorize]
         [HttpPost]
-        public async Task<IActionResult> Post([FromBody] string flightRequest)
+        [Consumes("application/xml")]
+        [Produces("application/xml")]
+        public async Task<IActionResult> Post()
         {
 
             ApiResponse res = new ApiResponse();
+            using var reader = new StreamReader(Request.Body, Encoding.UTF8);
+            var flightRequest = await reader.ReadToEndAsync();
 
-            // var data = await _availability.GetAvailability(availabilityRequest);
 
-            //res.IsSuccessful = data?.amadeusError == null ? true : false;
-            //res.StatusCode = data?.amadeusError == null ? 200 : 500;
-            //res.Message = data?.amadeusError == null ? "Found Success: Total records:" + data.data.ToList().Count() : "Error";
-            //res.Response = data?.amadeusError == null ? "Success" : "Failed";
-            //if (data?.amadeusError != null)
-            //{
-            //    res.Data = data?.amadeusError;
-            //    res.StatusCode = data?.amadeusError?.errorCode.Value != 0 ? data.amadeusError.errorCode.Value : 500;
-            //}
-            //else
-            //{
-            //    res.Data = data.data;
-            //}
+            var availabilityRequest = await _googleRepository.GetFlightRequeust(flightRequest);
+            var data = await _availability.GetAvailability(availabilityRequest);
+            if(data?.amadeusError == null)
+            {
+                var Responsne = await _googleRepository.CreateXmlFeed(availabilityRequest, data);
+                return Ok(Responsne.ToString());
+            }
+        
 
-            return Ok();
+            res.IsSuccessful = data?.amadeusError == null ? true : false;
+            res.StatusCode = data?.amadeusError == null ? 200 : 500;
+            res.Message = data?.amadeusError == null ? "Found Success: Total records:" + data.data.ToList().Count() : "Error";
+            res.Response = data?.amadeusError == null ? "Success" : "Failed";
+           
+            return Ok(res);
 
         }
     }

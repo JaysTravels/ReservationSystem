@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
+using ReservationSystem.Domain.Models;
 using ReservationSystem.Domain.Models.Availability;
 using ReservationSystem.Domain.Repositories;
 using ReservationSystem.Domain.Service;
@@ -23,29 +24,11 @@ namespace ReservationSystem.Infrastructure.Repositories
         }
         public async Task<AvailabilityRequest> GetFlightRequeust(string requestModel)
         {
+           
 
             var availabilityRequest = ParseFlightRequestXml(requestModel);
             return availabilityRequest;
-            //StringBuilder sb = new StringBuilder();
-            //sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-            //sb.AppendLine("<FlightSearchRequest>");
-            //sb.AppendLine("  <Origin>DXB</Origin>");
-            //sb.AppendLine("  <Destination>LHR</Destination>");
-            //sb.AppendLine("  <DepartureDate>2025-05-03</DepartureDate>");
-            //sb.AppendLine("  <ReturnDate>2025-05-10</ReturnDate>");
-            //sb.AppendLine("  <Adults>1</Adults>");
-            //sb.AppendLine("  <Children>0</Children>");
-            //sb.AppendLine("  <Infant>0</Infant>");
-            //sb.AppendLine("  <CabinClass>y</CabinClass>");
-            //sb.AppendLine("  <FlightType>c</FlightType>");
-            //sb.AppendLine("  <IncludeAirlines></IncludeAirlines>");
-            //sb.AppendLine("  <ExcludeAirlines></ExcludeAirlines>");
-            //sb.AppendLine("  <NonStop></NonStop>");
-            //sb.AppendLine("  <MaxFlights>250</MaxFlights>");
-            //sb.AppendLine("</FlightSearchRequest>");
-            //string xmlRequest = sb.ToString();
-            //XmlDocument doc = new XmlDocument();
-            //doc.LoadXml(xmlRequest);
+           
 
 
         }
@@ -65,8 +48,269 @@ namespace ReservationSystem.Infrastructure.Repositories
                 children = int.Parse(root.Element("Children")?.Value ?? "0"),
                 infant = int.Parse(root.Element("Infant")?.Value ?? "0"),
                 cabinClass = root.Element("CabinClass")?.Value?.ToUpper(),
-                flightType = root.Element("FlightType")?.Value
+                flightType = root.Element("FlightType")?.Value,
+                oneWay = root.Element("oneWay")?.Value != null ? Convert.ToBoolean(root.Element("oneWay")?.Value)  : false,
+
             };
+        }
+
+
+        public async Task<string> CreateXmlFeed(AvailabilityRequest objsearch , AvailabilityModel punitflights)
+        { 
+            StringBuilder sbresponse = new StringBuilder();
+            try
+            {
+                string journey = "";
+                string? cabin = objsearch.cabinClass;
+                int? childcount = objsearch?.children + objsearch?.infant;
+                int? intNoOfPassenger = objsearch?.adults + objsearch?.children + objsearch?.infant;
+               
+
+                if (objsearch?.oneWay == true)
+                    journey = "O";
+                else
+                    journey = "R";
+
+                try
+                {
+                    string sAges = "";
+                    if (objsearch?.children > 0)
+                    {
+                        for (int iChild = 0; iChild < objsearch.children; iChild++)
+                        {
+                            sAges += "3,";
+                        }
+                    }
+                    if (objsearch?.infant > 0)
+                    {
+                        for (int iInfant = 0; iInfant < objsearch.infant; iInfant++)
+                        {
+                            sAges += "1,";
+                        }
+                    }
+
+                    int iLoopEnd = (4 - childcount.Value);
+                    for (int iFinal = 0; iFinal < (4 - childcount); iFinal++)
+                    {
+                        iLoopEnd -= 1;
+
+                        if (iLoopEnd == 0)
+                        {
+                            sAges += "0";
+                        }
+                        else
+                        {
+                            sAges += "0,";
+                        }
+                    }
+
+                    sbresponse.Append("<FlightJourneyAvailabilityResponse>");
+
+                    for (int loop = 0; loop < punitflights?.data?.Count(); loop++)
+                    {
+                         StringBuilder deeplink = new StringBuilder();
+
+                        deeplink.Append("https://jaystravels.co.uk/wait?");
+                        deeplink.Append("google_redirectid=" + System.Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss") + "&");
+                        deeplink.Append("DeparturingFrom=" + objsearch?.origin + "&");
+                        deeplink.Append("Goingto=" + objsearch?.destination + "&");
+                        deeplink.Append("DeparturingDate=" + objsearch?.departureDate + "&");
+                        deeplink.Append("ReturnDate=" + objsearch?.returnDate + "&");
+                        deeplink.Append("JourneyType=" + objsearch?.oneWay != null && objsearch?.oneWay == true ? "OneWay" : "Return" + "&");
+                        deeplink.Append("DirectFlight=False&");
+                        deeplink.Append("CabinClass="+cabin+"&");                       
+                        deeplink.Append("adult=" + objsearch?.adults + "&");
+                        deeplink.Append("child=" + objsearch?.children + "&");
+                        deeplink.Append("Airline=&");
+                        
+                        if (childcount > 0)
+                            deeplink.Append("ChildAges=" + sAges + "&");
+                        else
+                            deeplink.Append("ChildAges=0,0,0,0&");
+                        deeplink.Append("Infanttype=0&");
+
+                        string? dLPrice = punitflights?.data?[loop]?.price?.total;    // This price logic due to First Position on Sky
+                        deeplink.Append("price=" + dLPrice + "&");
+                        deeplink.Append("airline=" + punitflights?.data?[loop]?.itineraries?[0]?.segments?[0]?.marketingCarrierCode + "&");
+                        sbresponse.Append("<Flight CabinClass=" + "\"" + cabin + "\"" + ">");
+                        sbresponse.Append("<Itinerary JourneyType=" + "\"" + journey + "\"" + ">");
+
+
+                        string? tempAirlinecode = punitflights?.data?[loop]?.itineraries?[0]?.segments?[0]?.marketingCarrierCode;
+                        string? tempAirlineName = punitflights?.data?[loop]?.itineraries?[0]?.segments?[0]?.marketingCarrierName;
+
+                        sbresponse.Append("<OutboundLegs>");
+                        for (int legsLoop = 0; legsLoop < punitflights?.data?[loop]?.itineraries?[0]?.segments?.Count(); legsLoop++)
+                        {
+                            sbresponse.Append("<Leg id=" + "\"" + (legsLoop + 1) + "\"" + ">");
+                            sbresponse.Append(" <DepartureAirportCode>" + punitflights?.data?[loop]?.itineraries?[0].segments?[legsLoop]?.departure?.iataCode  + "</DepartureAirportCode> ");
+                            sbresponse.Append(" <DepartureAirportName>" + punitflights?.data?[loop]?.itineraries?[0].segments?[legsLoop]?.departure?.iataName + "</DepartureAirportName> ");
+                            sbresponse.Append(" <DestinationAirportCode>" + punitflights?.data?[loop]?.itineraries?[0].segments?[legsLoop]?.arrival?.iataCode + "</DestinationAirportCode> ");
+                            sbresponse.Append(" <DestinationAirportName>" + punitflights?.data?[loop]?.itineraries?[0].segments?[legsLoop]?.arrival?.iataName + "</DestinationAirportName>");
+             
+                            string[]? deptdatetime = punitflights?.data?[loop]?.itineraries?[0]?.segments?[legsLoop]?.departure?.at?.ToString().Split(' ');
+                            deptdatetime[0] = deptdatetime[0].Replace('/', '-');
+                            string[] deptdatepart = deptdatetime[0].Split('-');
+                            sbresponse.Append(" <DepartureDate>" + deptdatepart[2] + "-" + deptdatepart[1] + "-" + deptdatepart[0] + "</DepartureDate> ");
+                            string[] deptime = deptdatetime[1].Split(':');
+                            sbresponse.Append(" <DepartureTime>" + deptime[0] + ":" + deptime[1] + "</DepartureTime> ");
+
+                            string[]? arrdatetime = punitflights?.data?[loop]?.itineraries?[0]?.segments?[legsLoop]?.arrival?.at?.ToString().Split(' ');
+                            arrdatetime[0] = arrdatetime[0].Replace('/', '-');
+                            string[] arrdatepart = arrdatetime[0].Split('-');
+                            sbresponse.Append(" <ArrivalDate>" + arrdatepart[2] + "-" + arrdatepart[1] + "-" + arrdatepart[0] + "</ArrivalDate> ");
+                            string[] arrtime = arrdatetime[1].Split(':');
+                            sbresponse.Append(" <ArrivalTime>" + arrtime[0] + ":" + arrtime[1] + "</ArrivalTime>");
+                            sbresponse.Append(" <AirlineCode>" + punitflights?.data?[loop]?.itineraries?[0].segments?[legsLoop]?.marketingCarrierCode + "</AirlineCode>");
+                            sbresponse.Append(" <AirlineName>" + punitflights?.data?[loop]?.itineraries?[0].segments?[legsLoop]?.marketingCarrierName + "</AirlineName>");
+                            sbresponse.Append(" <FlightNumber>" + punitflights?.data?[loop]?.itineraries?[0].segments?[legsLoop]?.aircraft?.code + "</FlightNumber>");
+                            sbresponse.Append("</Leg>");
+                        }
+
+                        #region pricing
+                        sbresponse.Append("<PriceDetails>");
+                        sbresponse.Append("<Currency>GBP</Currency>");
+                        sbresponse.Append("<PriceBreakdown>");
+
+                        if (objsearch?.adults > 0)
+                        {
+                            sbresponse.Append("<Passenger Type=\"Adult\">");
+                            sbresponse.Append("<Quantity>" + objsearch.adults + "</Quantity>");
+                            decimal bPObAPrice = Convert.ToDecimal(punitflights?.data[loop]?.price?.adultPP);
+                            sbresponse.Append("<BasePrice>" + bPObAPrice + "</BasePrice>");
+                            decimal tPObAPrice = (decimal)(Convert.ToDouble(punitflights?.data[loop]?.price?.adultTax) );
+                            sbresponse.Append("<Tax>" + tPObAPrice + "</Tax>");
+                            sbresponse.Append("</Passenger>");
+
+                        }
+
+                        if (objsearch?.children > 0)
+                        {
+                            sbresponse.Append("<Passenger Type=\"Child\">");
+                            sbresponse.Append("<Quantity>" + objsearch?.children + "</Quantity>");
+                            sbresponse.Append("<BasePrice>" + punitflights?.data[loop]?.price?.childPp + "</BasePrice>");
+                            sbresponse.Append("<Tax>" + punitflights?.data[loop]?.price?.childTax + "</Tax>");
+                            sbresponse.Append("</Passenger>");
+
+                        }
+
+                        if (objsearch?.infant > 0)
+                        {
+                            sbresponse.Append("<Passenger Type=\"Infant\">");
+                            sbresponse.Append("<Quantity>" + objsearch.infant + "</Quantity>");
+                            sbresponse.Append("<BasePrice>" + punitflights?.data[loop]?.price?.infantPp + "</BasePrice>");
+                            sbresponse.Append("<Tax>" + punitflights?.data[loop]?.price?.infantTax + "</Tax>");
+                            sbresponse.Append("</Passenger>");
+                        }
+                        sbresponse.Append("</PriceBreakdown>");
+                        sbresponse.Append("</PriceDetails>");
+                        #endregion
+
+                        sbresponse.Append("</OutboundLegs>");
+
+                        if (journey == "R")
+                        {
+                            sbresponse.Append("<InboundLegs>");
+                            for (int legsLoop = 0; legsLoop < punitflights?.data?[loop]?.itineraries?[1]?.segments?.Count(); legsLoop++)
+                            {
+                                sbresponse.Append("<Leg id=" + "\"" + (legsLoop + 1) + "\"" + ">");
+                                sbresponse.Append(" <DepartureAirportCode>" + punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.departure?.iataCode + "</DepartureAirportCode> ");
+                                sbresponse.Append(" <DepartureAirportName>" + punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.departure?.iataName + "</DepartureAirportName> ");
+                                sbresponse.Append(" <DestinationAirportCode>" + punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.arrival?.iataCode + "</DestinationAirportCode> ");
+                                sbresponse.Append(" <DestinationAirportName>" + punitflights?.data[loop]?.itineraries?[1]?.segments?[legsLoop]?.arrival?.iataName + "</DestinationAirportName>");
+
+                                string[]? deptdatetime = punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.departure?.at?.ToString().Split(' ');
+                                deptdatetime[0] = deptdatetime[0].Replace('/', '-');
+                                string[] deptdatepart = deptdatetime[0].Split('-');
+                                sbresponse.Append(" <DepartureDate>" + deptdatepart[2] + "-" + deptdatepart[1] + "-" + deptdatepart[0] + "</DepartureDate> ");
+                                string[] deptime = deptdatetime[1].Split(':');
+                                sbresponse.Append(" <DepartureTime>" + deptime[0] + ":" + deptime[1] + "</DepartureTime> ");
+
+                                string[]? arrdatetime = punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.arrival?.at?.ToString().Split(' ');
+                                if(arrdatetime != null)
+                                {
+                                    arrdatetime[0] = arrdatetime[0].Replace('/', '-');
+                                }                                
+                                string[]? arrdatepart = arrdatetime?[0]?.Split('-');
+                                sbresponse.Append(" <ArrivalDate>" + arrdatepart?[2] + "-" + arrdatepart?[1] + "-" + arrdatepart?[0] + "</ArrivalDate> ");
+                                string[]? arrtime = arrdatetime?[1].Split(':');
+                                sbresponse.Append(" <ArrivalTime>" + arrtime?[0] + ":" + arrtime?[1] + "</ArrivalTime>");
+                                sbresponse.Append(" <AirlineCode>" + punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.marketingCarrierCode + "</AirlineCode>");
+                                sbresponse.Append(" <AirlineName>" + punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.marketingCarrierName + "</AirlineName>");
+                                sbresponse.Append(" <FlightNumber>" + punitflights?.data?[loop]?.itineraries?[1]?.segments?[legsLoop]?.aircraft?.code + "</FlightNumber>");
+                                sbresponse.Append("</Leg>");
+                            }
+
+                            #region pricing
+                            sbresponse.Append("<PriceDetails>");
+                            sbresponse.Append("<Currency>GBP</Currency>");
+                            sbresponse.Append("<PriceBreakdown>");
+
+                            if (objsearch?.adults > 0)
+                            {
+                                sbresponse.Append("<Passenger Type=\"Adult\">");
+                                sbresponse.Append("<Quantity>" + objsearch?.adults + "</Quantity>");
+                                decimal bPObAPrice = Convert.ToDecimal(punitflights?.data[loop]?.price?.adultPP);
+                                sbresponse.Append("<BasePrice>" + bPObAPrice + "</BasePrice>");
+                                decimal tPObAPrice = (decimal)(Convert.ToDouble(punitflights?.data[loop]?.price?.adultTax));
+                                sbresponse.Append("<Tax>" + tPObAPrice + "</Tax>");
+                                sbresponse.Append("</Passenger>");
+                            }
+
+                            if (objsearch?.children > 0)
+                            {
+                                sbresponse.Append("<Passenger Type=\"Child\">");
+                                sbresponse.Append("<Quantity>" + objsearch?.children + "</Quantity>");
+                                sbresponse.Append("<BasePrice>" + punitflights?.data[loop]?.price?.childPp + "</BasePrice>");
+                                sbresponse.Append("<Tax>" + punitflights?.data[loop]?.price?.childTax + "</Tax>");
+                                sbresponse.Append("</Passenger>");
+
+                            }
+
+                            if (objsearch?.infant > 0)
+                            {
+                                sbresponse.Append("<Passenger Type=\"Infant\">");
+                                sbresponse.Append("<Quantity>" + objsearch.infant + "</Quantity>");
+                                sbresponse.Append("<BasePrice>" + punitflights?.data[loop]?.price?.infantPp + "</BasePrice>");
+                                sbresponse.Append("<Tax>" + punitflights?.data[loop]?.price?.infantTax + "</Tax>");
+                                sbresponse.Append("</Passenger>");
+
+                            }
+                            sbresponse.Append("</PriceBreakdown>");
+                            sbresponse.Append("</PriceDetails>");
+                            #endregion
+
+                            sbresponse.Append("</InboundLegs>");
+                        }
+
+                        sbresponse.Append("</Itinerary>");
+
+                        sbresponse.Append("<DeepLink>");
+                        sbresponse.Append("<![CDATA[" + deeplink.ToString() + "]]>");
+                        sbresponse.Append("</DeepLink>");
+
+                        sbresponse.Append("</Flight>");
+                    }
+
+
+                    sbresponse.Append("</FlightJourneyAvailabilityResponse>");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error while generate xml { ex.Message.ToString()}");
+                    sbresponse = new StringBuilder();
+                    sbresponse.Append("<FlightJourneyAvailabilityResponse>");
+                    sbresponse.Append("<Flight><Message>No Flights Found.</Message>");
+                    sbresponse.Append("</Flight>");
+                    sbresponse.Append("</FlightJourneyAvailabilityResponse>");
+                }
+                
+            }
+            catch (Exception ex)
+            {
+                return $"Error While Create Xml {ex.Message.ToString()}";
+            }
+            return sbresponse.ToString();
         }
     }
 }
