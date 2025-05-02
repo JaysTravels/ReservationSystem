@@ -46,6 +46,7 @@ builder.Services.AddScoped<IEnquriyRepository, EnquriyRepository>();
 builder.Services.AddScoped<IInsuranceRepository, InsuranceRepository>();
 builder.Services.AddScoped<IDeeplinkRepository, DeeplinkRepository>();
 builder.Services.AddScoped<IActiveUsersRepository, ActiveUsersRepository>();
+builder.Services.AddScoped<IGoogleFlightsRepository, GoogleFlightsRepository>();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMemoryCache();
 builder.Services.AddResponseCompression();
@@ -94,7 +95,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
-builder.Services.AddControllers()
+builder.Services.AddControllers().AddXmlSerializerFormatters()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
