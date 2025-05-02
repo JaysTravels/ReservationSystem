@@ -95,7 +95,7 @@ builder.Services.AddAuthentication(options =>
     };
 });
 builder.Services.AddAuthorization();
-builder.Services.AddControllers().AddXmlSerializerFormatters()
+builder.Services.AddControllers()
                 .AddNewtonsoftJson(options =>
                 {
                     options.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
