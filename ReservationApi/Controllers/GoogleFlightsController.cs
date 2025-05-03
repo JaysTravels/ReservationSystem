@@ -32,8 +32,8 @@ namespace ReservationApi.Controllers
 
         //[Authorize]
         [HttpPost]
-        [Consumes("application/xml")]
-        [Produces("application/xml")]
+        //[Consumes("application/xml")]
+        //[Produces("application/xml")]
         public async Task<IActionResult> Post()
         {
 
@@ -47,7 +47,7 @@ namespace ReservationApi.Controllers
             if(data?.amadeusError == null)
             {
                 var Responsne = await _googleRepository.CreateXmlFeed(availabilityRequest, data);
-                return Ok(Responsne.ToString());
+                res.Data = Responsne.ToString();
             }
         
 
