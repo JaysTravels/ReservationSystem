@@ -89,21 +89,24 @@ namespace ReservationSystem.Infrastructure.Repositories
                             sAges += "1,";
                         }
                     }
-
-                    int iLoopEnd = (4 - childcount.Value);
-                    for (int iFinal = 0; iFinal < (4 - childcount); iFinal++)
+                    if (childcount.HasValue && childcount.Value >0)
                     {
-                        iLoopEnd -= 1;
+                        int iLoopEnd = (4 - childcount.Value);
+                        for (int iFinal = 0; iFinal < (4 - childcount); iFinal++)
+                        {
+                            iLoopEnd -= 1;
 
-                        if (iLoopEnd == 0)
-                        {
-                            sAges += "0";
-                        }
-                        else
-                        {
-                            sAges += "0,";
+                            if (iLoopEnd == 0)
+                            {
+                                sAges += "0";
+                            }
+                            else
+                            {
+                                sAges += "0,";
+                            }
                         }
                     }
+                  
 
                     sbresponse.Append("<FlightJourneyAvailabilityResponse>");
 
@@ -111,7 +114,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     {
                          StringBuilder deeplink = new StringBuilder();
 
-                        deeplink.Append("https://jaystravels.co.uk/wait?");
+                        deeplink.Append("https://jaystravels.co.uk/waitgoogle?");
                         deeplink.Append("google_redirectid=" + System.Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss") + "&");
                         deeplink.Append("DeparturingFrom=" + objsearch?.origin + "&");
                         deeplink.Append("Goingto=" + objsearch?.destination + "&");
@@ -122,16 +125,16 @@ namespace ReservationSystem.Infrastructure.Repositories
                         deeplink.Append("CabinClass="+cabin+"&");                       
                         deeplink.Append("adult=" + objsearch?.adults + "&");
                         deeplink.Append("child=" + objsearch?.children + "&");
-                        deeplink.Append("totPassenger=" + objsearch?.adults + objsearch?.children + "&");
+                        deeplink.Append("totPassenger=" + intNoOfPassenger.Value.ToString() + "&");
                         deeplink.Append("Airline=&");
                         //string json = JsonSerializer.Serialize(punitflights?.data?[loop]);
                         //string base64Flight = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(json));
-                        string flightDictKey = "flightId" + System.Guid.NewGuid().ToString();
+                        string flightDictKey =  System.Guid.NewGuid().ToString();
                         _cacheService.Set(flightDictKey, punitflights?.data?[loop], TimeSpan.FromMinutes(60));
-                        if (childcount > 0)
+                        //if (childcount > 0)
                             deeplink.Append("ChildAges=" + sAges + "&");
-                        else
-                            deeplink.Append("ChildAges=0,0,0,0&");
+                        //else
+                        //    deeplink.Append("ChildAges=0,0,0,0&");
                         deeplink.Append("Infanttype=0&");
                         deeplink.Append("flight="+ flightDictKey);
                         string? dLPrice = punitflights?.data?[loop]?.price?.total;    // This price logic due to First Position on Sky
