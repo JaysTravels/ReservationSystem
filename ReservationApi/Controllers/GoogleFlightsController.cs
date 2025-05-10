@@ -31,9 +31,7 @@ namespace ReservationApi.Controllers
         }
 
         //[Authorize]
-        [HttpPost]
-        //[Consumes("application/xml")]
-        //[Produces("application/xml")]
+        [HttpPost]       
         public async Task<IActionResult> Post()
         {
 
@@ -53,9 +51,24 @@ namespace ReservationApi.Controllers
 
             res.IsSuccessful = data?.amadeusError == null ? true : false;
             res.StatusCode = data?.amadeusError == null ? 200 : 500;
-            res.Message = data?.amadeusError == null ? "Found Success: Total records:" + data.data.ToList().Count() : "Error";
+            res.Message = data?.amadeusError == null ? "Found Success: Total records:" + data.data.ToList().Count() : data?.amadeusError.error.ToString();
             res.Response = data?.amadeusError == null ? "Success" : "Failed";
            
+            return Ok(res);
+
+        }
+
+        //[Authorize]
+        [HttpGet("GetFlight")]       
+        public async Task<IActionResult> GetFlight(string flightId)
+        {
+            ApiResponse res = new ApiResponse();
+            var data = await _googleRepository.GetFlightFromCache(flightId);
+            res.Data = data;
+            res.IsSuccessful = data != null ? true : false;
+            res.StatusCode = data != null ? 200 : 500;
+            res.Message = data != null ? "Success"  : "Error";
+            res.Response = data != null ? "Success" : "Error";
             return Ok(res);
 
         }
