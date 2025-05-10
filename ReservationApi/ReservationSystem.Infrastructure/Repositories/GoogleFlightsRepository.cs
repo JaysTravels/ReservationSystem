@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Xml;
 using System.Xml.Linq;
@@ -17,20 +18,19 @@ namespace ReservationSystem.Infrastructure.Repositories
     public class GoogleFlightsRepository : IGoogleFlightsRepository
     {
         private ITravelBoardSearchRepository _availability;
+        private readonly ICacheService _cacheService;
+        private readonly IDBRepository _dbRepository;
 
-        public GoogleFlightsRepository(ITravelBoardSearchRepository availability)
+        public GoogleFlightsRepository(ITravelBoardSearchRepository availability, ICacheService cacheService, IDBRepository dbRepository)
         {
-            _availability = availability;            
+            _availability = availability;
+            _cacheService = cacheService;
+            _dbRepository = dbRepository;
         }
         public async Task<AvailabilityRequest> GetFlightRequeust(string requestModel)
         {
-           
-
             var availabilityRequest = ParseFlightRequestXml(requestModel);
             return availabilityRequest;
-           
-
-
         }
 
         public static AvailabilityRequest ParseFlightRequestXml(string xmlString)
@@ -49,7 +49,8 @@ namespace ReservationSystem.Infrastructure.Repositories
                 infant = int.Parse(root.Element("Infant")?.Value ?? "0"),
                 cabinClass = root.Element("CabinClass")?.Value?.ToUpper(),
                 flightType = root.Element("FlightType")?.Value,
-                oneWay = root.Element("oneWay")?.Value != null ? Convert.ToBoolean(root.Element("oneWay")?.Value)  : false,
+                oneWay = root.Element("oneWay")?.Value != null ? Convert.ToBoolean(root.Element("oneWay")?.Value) : false,
+                maxFlights = 250,
 
             };
         }
@@ -121,16 +122,20 @@ namespace ReservationSystem.Infrastructure.Repositories
                         deeplink.Append("CabinClass="+cabin+"&");                       
                         deeplink.Append("adult=" + objsearch?.adults + "&");
                         deeplink.Append("child=" + objsearch?.children + "&");
+                        deeplink.Append("totPassenger=" + objsearch?.adults + objsearch?.children + "&");
                         deeplink.Append("Airline=&");
-                        
+                        //string json = JsonSerializer.Serialize(punitflights?.data?[loop]);
+                        //string base64Flight = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(json));
+                        string flightDictKey = "flightId" + System.Guid.NewGuid().ToString();
+                        _cacheService.Set(flightDictKey, punitflights?.data?[loop], TimeSpan.FromMinutes(60));
                         if (childcount > 0)
                             deeplink.Append("ChildAges=" + sAges + "&");
                         else
                             deeplink.Append("ChildAges=0,0,0,0&");
                         deeplink.Append("Infanttype=0&");
-
+                        deeplink.Append("flight="+ flightDictKey);
                         string? dLPrice = punitflights?.data?[loop]?.price?.total;    // This price logic due to First Position on Sky
-                        deeplink.Append("price=" + dLPrice + "&");
+                        deeplink.Append("&price=" + dLPrice + "&");
                         deeplink.Append("airline=" + punitflights?.data?[loop]?.itineraries?[0]?.segments?[0]?.marketingCarrierCode + "&");
                         sbresponse.Append("<Flight CabinClass=" + "\"" + cabin + "\"" + ">");
                         sbresponse.Append("<Itinerary JourneyType=" + "\"" + journey + "\"" + ">");
@@ -311,6 +316,19 @@ namespace ReservationSystem.Infrastructure.Repositories
                 return $"Error While Create Xml {ex.Message.ToString()}";
             }
             return sbresponse.ToString();
+        }
+
+        public async Task<FlightOffer?> GetFlightFromCache(string flightId)
+        {
+            try
+            {
+                var flightOffer = _cacheService.Get<FlightOffer>(flightId);
+                return flightOffer;
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }

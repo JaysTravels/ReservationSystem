@@ -14,5 +14,6 @@ namespace ReservationSystem.Domain.Repositories
         public Task<AvailabilityRequest> GetFlightRequeust(string requestModel);
 
         public Task<string> CreateXmlFeed(AvailabilityRequest objsearch, AvailabilityModel punitflights);
+        public Task<FlightOffer> GetFlightFromCache(string flightId);
     }
 }
