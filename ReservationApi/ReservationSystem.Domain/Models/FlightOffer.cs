@@ -29,7 +29,7 @@ namespace ReservationSystem.Domain.Models
         public string? breakPoint { get; set; }
         public BaggageDetails? baggageDetails { get; set; }
         public int? MarkupId { get; set; }
-    }
+    }  
 
     public class FlightOfferForOrder
     {
