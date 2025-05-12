@@ -65,7 +65,9 @@ namespace ReservationSystem.Infrastructure.Repositories
                 string? cabin = objsearch.cabinClass;
                 int? childcount = objsearch?.children + objsearch?.infant;
                 int? intNoOfPassenger = objsearch?.adults + objsearch?.children + objsearch?.infant;
-               
+
+                string flightResultsDictKey = "flightResults-" + System.Guid.NewGuid().ToString();
+                _cacheService.Set(flightResultsDictKey, punitflights, TimeSpan.FromMinutes(60));
 
                 if (objsearch?.oneWay == true)
                     journey = "O";
@@ -106,7 +108,15 @@ namespace ReservationSystem.Infrastructure.Repositories
                             }
                         }
                     }
-                  
+                    string JournyType = "";
+                    if (objsearch?.oneWay != null && objsearch?.oneWay == true)
+                    {
+                        JournyType = "OneWay";
+                    }
+                    else
+                    {
+                        JournyType = "Return";
+                    }
 
                     sbresponse.Append("<FlightJourneyAvailabilityResponse>");
 
@@ -120,15 +130,14 @@ namespace ReservationSystem.Infrastructure.Repositories
                         deeplink.Append("Goingto=" + objsearch?.destination + "&");
                         deeplink.Append("DeparturingDate=" + objsearch?.departureDate + "&");
                         deeplink.Append("ReturnDate=" + objsearch?.returnDate + "&");
-                        deeplink.Append("JourneyType=" + objsearch?.oneWay != null && objsearch?.oneWay == true ? "OneWay" : "Return" + "&");
-                        deeplink.Append("DirectFlight=False&");
+                        deeplink.Append("JourneyType=" + JournyType+ "&");
+                        deeplink.Append("flightType="+objsearch?.flightType+"&");
                         deeplink.Append("CabinClass="+cabin+"&");                       
                         deeplink.Append("adult=" + objsearch?.adults + "&");
                         deeplink.Append("child=" + objsearch?.children + "&");
+                        deeplink.Append("infant=" + objsearch?.infant + "&");
                         deeplink.Append("totPassenger=" + intNoOfPassenger.Value.ToString() + "&");
-                        deeplink.Append("Airline=&");
-                        //string json = JsonSerializer.Serialize(punitflights?.data?[loop]);
-                        //string base64Flight = Convert.ToBase64String(System.Text.Encoding.UTF8.GetBytes(json));
+                        deeplink.Append("flightResults=" + flightResultsDictKey + "&");                        
                         string flightDictKey =  System.Guid.NewGuid().ToString();
                         _cacheService.Set(flightDictKey, punitflights?.data?[loop], TimeSpan.FromMinutes(60));
                         //if (childcount > 0)
@@ -326,6 +335,19 @@ namespace ReservationSystem.Infrastructure.Repositories
             try
             {
                 var flightOffer = _cacheService.Get<FlightOffer>(flightId);
+                return flightOffer;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public async Task<AvailabilityModel?> GetFlightResultFromCache(string flightId)
+        {
+            try
+            {
+                var flightOffer = _cacheService.Get<AvailabilityModel>(flightId);
                 return flightOffer;
             }
             catch
