@@ -72,5 +72,20 @@ namespace ReservationApi.Controllers
             return Ok(res);
 
         }
+
+        //[Authorize]
+        [HttpGet("GetFlightResult")]
+        public async Task<IActionResult> GetFlightResult(string flightId)
+        {
+            ApiResponse res = new ApiResponse();
+            var data = await _googleRepository.GetFlightResultFromCache(flightId);
+            res.Data = data;
+            res.IsSuccessful = data != null ? true : false;
+            res.StatusCode = data != null ? 200 : 500;
+            res.Message = data != null ? "Success" : "Error";
+            res.Response = data != null ? "Success" : "Error";
+            return Ok(res);
+
+        }
     }
 }
