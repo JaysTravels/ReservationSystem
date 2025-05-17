@@ -124,7 +124,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     {
                          StringBuilder deeplink = new StringBuilder();
 
-                        deeplink.Append("https://jaystravels.co.uk/waitgoogle?");
+                        deeplink.Append("https://jaystravels.co.uk/en/waitgoogle?");
                         deeplink.Append("google_redirectid=" + System.Guid.NewGuid().ToString() + DateTime.Now.ToString("yyyy-MM-ddTHH:mm:ss") + "&");
                         deeplink.Append("DeparturingFrom=" + objsearch?.origin + "&");
                         deeplink.Append("Goingto=" + objsearch?.destination + "&");
