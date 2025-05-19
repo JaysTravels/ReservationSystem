@@ -646,7 +646,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             try
             {
                 var baggageList = doc.Descendants(amadeus + "serviceFeesGrp")?.Descendants(amadeus + "freeBagAllowanceGrp")?.ToList();
-
+                ReturnModel.baggageXml = baggageList;
                 foreach (var bitem in baggageList)
                 {
                     var itemNumber = bitem.Descendants(amadeus + "itemNumberInfo")?.Descendants(amadeus + "itemNumberDetails")?.Descendants(amadeus + "number")?.FirstOrDefault()?.Value;
