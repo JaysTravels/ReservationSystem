@@ -1283,6 +1283,22 @@ namespace ReservationSystem.Infrastructure.Repositories
                         }
 
                         #endregion
+
+                        #region Markup Fare Type
+                        try {
+                            List<MarkupFareType> _markupFareType = _MarkupFAreType.Where(e => e?.Markup?.MarkupId == markup.MarkupId && e.Markup != null).ToList();
+                            if(_markupFareType.Count() > 0)
+                            {
+                                var allowedFareTypes = _markupFareType.Select(m => m.FareType?.Fare_Type).Where(type => !string.IsNullOrEmpty(type)).ToHashSet();
+                                filterData = filterData?.Where(ftype => !string.IsNullOrEmpty(ftype?.fareTypeName) && allowedFareTypes.Contains(ftype.fareTypeName)).ToList();
+                            
+                            }
+                        }
+                        catch
+                        {
+
+                        }
+                        #endregion
                         foreach (var item in filterData)
                         {
                             item.price.MarkupID = markup.MarkupId;
