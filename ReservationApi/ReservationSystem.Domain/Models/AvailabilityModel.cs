@@ -11,6 +11,6 @@ namespace ReservationSystem.Domain.Models
     {
         public List<FlightOffer> data { get; set; }
         public AmadeusResponseError? amadeusError { get; set; }
-        public object? baggageXml { get; set; }
+        
     }
 }

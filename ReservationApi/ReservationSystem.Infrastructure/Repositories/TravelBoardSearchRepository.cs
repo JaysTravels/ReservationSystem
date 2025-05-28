@@ -412,7 +412,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             List<MarkupMarketingSource> _MarkupMarketingSource = _cacheService.GetMarkupMarketingSource();
             List<DayName> _DayName = _cacheService.GetDayName();
             List<MarkupDay> _MarkupDay = _cacheService.GetMarkupDayName();
-
+            object baggageXml = new object();
 
             List<Itinerary> itinerariesList = new List<Itinerary>();
             List<string> timeduration = new List<string>();
@@ -646,7 +646,7 @@ namespace ReservationSystem.Infrastructure.Repositories
             try
             {
                 var baggageList = doc.Descendants(amadeus + "serviceFeesGrp")?.Descendants(amadeus + "freeBagAllowanceGrp")?.ToList();
-                ReturnModel.baggageXml = baggageList;
+                
                 foreach (var bitem in baggageList)
                 {
                     var itemNumber = bitem.Descendants(amadeus + "itemNumberInfo")?.Descendants(amadeus + "itemNumberDetails")?.Descendants(amadeus + "number")?.FirstOrDefault()?.Value;
@@ -655,6 +655,7 @@ namespace ReservationSystem.Infrastructure.Repositories
                     var unitQualifier = bitem.Descendants(amadeus + "freeBagAllownceInfo")?.Descendants(amadeus + "baggageDetails")?.Descendants(amadeus + "unitQualifier")?.FirstOrDefault()?.Value;
                     baggageDetails.Add(new BaggageDetails { itemNumber = itemNumber, freeAllowance = freeAllowence, quantityCode = quantityCode, unitQualifier = unitQualifier });
                 }
+                baggageXml = baggageList;// string.Join(Environment.NewLine, baggageList.Select(x => x.ToString()));
             }
             catch (Exception ex)
             {
@@ -1361,7 +1362,10 @@ namespace ReservationSystem.Infrastructure.Repositories
             try
             {
                 ReturnModel.data = ReturnModel.data.OrderBy(e => decimal.TryParse(e.price.total, out var price) ? price : decimal.MaxValue).ToList();
-                ReturnModel.data = ReturnModel.data.DistinctBy(e => e.id).ToList();               
+                ReturnModel.data = ReturnModel.data.DistinctBy(e => e.id).ToList();
+                if (ReturnModel.data.Count > 0)
+                { ReturnModel.data[0].baggageXml = baggageXml; }
+
             }
             catch (Exception ex)
             {
