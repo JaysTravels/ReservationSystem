@@ -214,7 +214,7 @@ namespace ReservationSystem.Infrastructure.Service
                             segmentHtml.Append($@"
             <div class='segment'>
                  <table>
-                    <tr><th>Flight Number:</th><td>{segment?.number}</td></tr>
+                    <tr><th>Flight Number:</th><td>{segment?.marketingCarrierCode}-{segment?.number}</td></tr>
                     <tr><th>Departure:</th><td>{segment?.departure?.iataName} ({segment?.departure?.iataCode}) at {segment?.departure?.at?.ToString()}</td></tr>
                     <tr><th>Arrival:</th><td>{segment?.arrival?.iataName?.ToString()} ({segment?.arrival?.iataCode?.ToString()}) at {segment?.arrival?.at?.ToString()}</td></tr>
                     <tr><th>Date:</th><td>{segment?.departure?.at?.ToString()}</td></tr>
