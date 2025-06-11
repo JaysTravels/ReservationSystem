@@ -305,5 +305,41 @@ namespace ReservationSystem.Infrastructure.Repositories
            // var randomString = new string(Enumerable.Repeat(chars, remainingLength).Select(s => s[new Random().Next(s.Length)]).ToArray());
             return prefix + randomString.ToString().Substring(0,5);
         }
+
+
+        /// Hotel Code ////
+        /// 
+        static string ComputeSha256Hash(string rawData)
+        {
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                StringBuilder builder = new StringBuilder();
+                foreach (byte b in bytes)
+                {
+                    builder.Append(b.ToString("x2")); // format as hexadecimal
+                }
+
+                return builder.ToString();
+            }
+        }
+
+        public string GetHotelToken()
+        {
+            string apikey = "b92076a918a64a19cf4453c8e0d9aefc";
+            string secret = "591a5ebb55";
+            string timestamp = ((Int32)(DateTimeOffset.UtcNow.ToUnixTimeSeconds())).ToString();
+
+            string dataToHash = apikey + secret + timestamp;
+            string signature = ComputeSha256Hash(dataToHash);
+            return signature;
+        }
+
+        public string GetHotelApiKey()
+        {
+            string apikey = "b92076a918a64a19cf4453c8e0d9aefc";
+            return apikey;
+        }
     }
 }

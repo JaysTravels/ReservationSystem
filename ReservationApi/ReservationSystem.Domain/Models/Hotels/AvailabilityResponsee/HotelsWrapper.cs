@@ -13,7 +13,7 @@ namespace ReservationSystem.Domain.Models.Hotels.AvailabilityResponsee
         public int total { get; set; }
         public string checkOut { get; set; }
     }
-    public class Root
+    public class HotelAvailability
     {
         public HotelsWrapper hotels { get; set; }
     }
