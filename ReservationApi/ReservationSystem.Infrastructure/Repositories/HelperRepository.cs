@@ -327,8 +327,8 @@ namespace ReservationSystem.Infrastructure.Repositories
 
         public string GetHotelToken()
         {
-            string apikey = Environment.GetEnvironmentVariable("HotelBedsApiKey"); //   "b92076a918a64a19cf4453c8e0d9aefc";
-            string secret = Environment.GetEnvironmentVariable("HotelBedsSecret"); //   "591a5ebb55";
+            string apikey = Environment.GetEnvironmentVariable("HotelBedsApiKey"); //   
+            string secret = Environment.GetEnvironmentVariable("HotelBedsSecret"); //  
             string timestamp = ((Int32)(DateTimeOffset.UtcNow.ToUnixTimeSeconds())).ToString();
 
             string dataToHash = apikey + secret + timestamp;
@@ -338,7 +338,7 @@ namespace ReservationSystem.Infrastructure.Repositories
 
         public string GetHotelApiKey()
         {
-            string apikey = Environment.GetEnvironmentVariable("HotelBedsApiKey");// "b92076a918a64a19cf4453c8e0d9aefc";
+            string apikey = Environment.GetEnvironmentVariable("HotelBedsApiKey");// 
             return apikey;
         }
     }
