@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReservationSystem.Domain.Models.Hotels.AvailabilityResponsee
 {
-   public class HotelTax
+    public class Offer
     {
-        public bool included { get; set; }
+        public string code { get; set; }
+        public string name { get; set; }
         public string amount { get; set; }
-        public string currency { get; set; }
-        public string type { get; set; }
     }
 }

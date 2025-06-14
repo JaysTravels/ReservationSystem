@@ -10,5 +10,10 @@ namespace ReservationSystem.Domain.Models.Hotels.AvailabiltiyRequest
     {
         public List<int> HotelCodes { get; set; }
     }
-   
+
+    public class Destination
+    {
+        public string code { get; set; }
+    }
+
 }

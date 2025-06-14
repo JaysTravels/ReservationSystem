@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace ReservationSystem.Domain.Models.Hotels.AvailabilityResponsee
 {
-    public class HotelRate
+    
+    public class Rate
     {
         public string rateKey { get; set; }
         public string rateClass { get; set; }
@@ -24,5 +26,6 @@ namespace ReservationSystem.Domain.Models.Hotels.AvailabilityResponsee
         public int rooms { get; set; }
         public int adults { get; set; }
         public int children { get; set; }
+        public List<Offer> offers { get; set; }
     }
 }

@@ -8,8 +8,8 @@ namespace ReservationSystem.Domain.Models.Hotels.AvailabiltiyRequest
 {
     public class Occupancy
     {
-        public int Rooms { get; set; }
-        public int Adults { get; set; }
-        public int Children { get; set; }
+        public int rooms { get; set; }
+        public int adults { get; set; }
+        public int children { get; set; }
     }
 }

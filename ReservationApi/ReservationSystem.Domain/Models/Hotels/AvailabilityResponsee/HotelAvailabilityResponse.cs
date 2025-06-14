@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReservationSystem.Domain.Models.Hotels.AvailabilityResponsee
 {
-   public class HotelTaxes
+    public class HotelAvailabilityResponse
     {
-        public List<HotelTax> taxes { get; set; }
-        public bool allIncluded { get; set; }
+        public HotelResponse? HotelResponse { get; set; }
+        public Error? error { get; set; }
+
     }
 }

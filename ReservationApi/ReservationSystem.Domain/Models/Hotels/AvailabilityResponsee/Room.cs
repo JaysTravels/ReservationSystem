@@ -11,6 +11,6 @@ namespace ReservationSystem.Domain.Models.Hotels.AvailabilityResponsee
     {
         public string code { get; set; }
         public string name { get; set; }
-        public List<HotelRate> rates { get; set; }
+        public List<Rate> rates { get; set; }
     }
 }
