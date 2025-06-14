@@ -102,7 +102,7 @@ namespace ReservationSystem.Infrastructure.Repositories.HotelRepositories
                 }
             }
             catch (Exception ex)
-            {
+    {
                 returnModel.error = new Domain.Models.Hotels.AvailabilityResponsee.Error();
                 returnModel.error.errorText = ex.Message.ToString();
                 return returnModel;
@@ -112,6 +112,6 @@ namespace ReservationSystem.Infrastructure.Repositories.HotelRepositories
             return returnModel;
         }
 
-       
+
     }
 }

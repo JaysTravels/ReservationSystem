@@ -6,14 +6,10 @@ using System.Threading.Tasks;
 
 namespace ReservationSystem.Domain.Models.Hotels.AvailabiltiyRequest
 {
-    public class HotelCode
+    public class HotelBedsSearchRequestModel
     {
-        public List<int> HotelCodes { get; set; }
+        public Stay Stay { get; set; }
+        public List<Occupancy> Occupancies { get; set; }
+        public HotelCode HotelCode { get; set; }
     }
-   
-    public class Destination
-    {
-        public string code { get; set; }
-    }
-
 }

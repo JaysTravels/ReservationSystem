@@ -9,7 +9,9 @@ namespace ReservationSystem.Domain.Models.Hotels.AvailabilityResponsee
     public class HotelsWrapper
     {
         public List<Hotel> hotels { get; set; }
-      
+        public string checkIn { get; set; }
+        public int total { get; set; }
+        public string checkOut { get; set; }
     }
    
     public class Error
