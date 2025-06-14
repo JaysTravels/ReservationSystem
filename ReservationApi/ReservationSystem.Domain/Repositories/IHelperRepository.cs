@@ -18,5 +18,9 @@ namespace ReservationSystem.Domain.Repositories
         public Task Security_Signout(HeaderSession header);
 
         public string GenerateReferenceNumber();
+
+        public string GetHotelToken();
+
+        public string GetHotelApiKey();
     }
 }
