@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace ReservationSystem.Domain.Models.Hotels.AvailabiltiyRequest
         public Stay stay { get; set; }
         public List<Occupancy> occupancies { get; set; }
         public Destination destination { get; set; }
+        public Filter? filter { get; set; }
     }
 }
